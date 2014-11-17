@@ -113,5 +113,5 @@ class TestMacCasino2(unittest.TestCase):
 
 if __name__ == '__main__':  #pragma: no cover
     logging.getLogger().setLevel(logging.DEBUG)
-    from DrixUtilities.Testings import runTestModuleWithCoverage
+    from pyHendrixDemersTools.Testings import runTestModuleWithCoverage
     runTestModuleWithCoverage(__file__)

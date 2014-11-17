@@ -22,7 +22,7 @@ import logging
 # Local modules.
 import MacHeinrich1987
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
-import DrixUtilities.Files as Files
+import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.
 

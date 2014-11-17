@@ -23,7 +23,7 @@ import MacHeinrich1987
 import MassAbsorptionCoefficient
 
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
-import SpecimenTools.SampleRegion as SampleRegion
+import pySpecimenTools.SampleRegion as SampleRegion
 
 # Globals and constants variables.
 
@@ -97,5 +97,5 @@ def run():
     print "%0.0f nm" % range_nm
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=run)
