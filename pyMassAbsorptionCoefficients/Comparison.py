@@ -28,9 +28,9 @@ import MacHeinrich1987
 import MacHeinrichDTSA
 import MacHenke1993
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
-import DrixUtilities.Colors as Colors
-import DrixUtilities.Files as Files
-import DrixUtilities.Graphics as Graphics
+import pyHendrixDemersTools.Colors as Colors
+import pyHendrixDemersTools.Files as Files
+import pyHendrixDemersTools.Graphics as Graphics
 
 # Globals and constants variables.
 #g_output = "Thesis"
@@ -206,5 +206,5 @@ def run():
         pylab.show()
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=testMac)

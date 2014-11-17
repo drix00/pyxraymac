@@ -23,7 +23,7 @@ import numpy
 import MassAbsorptionCoefficientEnergy
 import DatabasesTools.Mac.Henke.MacHenkeWinxray as MacHenkeWinxray
 import DatabasesTools.Mac.Henke.MacHenke as MacHenke
-import NumericalMethodsTools.Interpolation.Interpolation1D as Interpolation1D
+import pyNumericalMethodsTools.Interpolation.Interpolation1D as Interpolation1D
 
 # Globals and constants variables.
 
@@ -105,5 +105,5 @@ def runAl():
         print "%s: %f" % (element, mac_cm2_g)
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=runAl)
