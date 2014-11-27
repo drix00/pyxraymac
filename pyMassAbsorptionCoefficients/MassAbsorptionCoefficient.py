@@ -14,7 +14,10 @@ __svnDate__ = "$Date: 2011-03-21 14:39:25 -0400 (Mon, 21 Mar 2011) $"
 __svnId__ = "$Id: MassAbsorptionCoefficient.py 2293 2011-03-21 18:39:25Z hdemers $"
 
 # Standard library modules.
-import ConfigParser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 # Third party modules.
 
@@ -38,7 +41,7 @@ class MassAbsorptionCoefficient(object):
 
     def readConfiguration(self, configurationFile):
         """ Read the configuration file for options."""
-        config = ConfigParser.SafeConfigParser()
+        config = configparser.SafeConfigParser()
 
         config.readfp(open(configurationFile))
 

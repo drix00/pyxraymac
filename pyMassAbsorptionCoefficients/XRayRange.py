@@ -19,8 +19,8 @@ import math
 # Third party modules.
 
 # Local modules.
-import MacHeinrich1987
-import MassAbsorptionCoefficient
+import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
+import pyMassAbsorptionCoefficients.MassAbsorptionCoefficient as MassAbsorptionCoefficient
 
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
 import pySpecimenTools.SampleRegion as SampleRegion
@@ -94,7 +94,7 @@ def run():
 
     range_nm = xrayRange.getRange_nm(24, 'Ka')
 
-    print "%0.0f nm" % range_nm
+    print("%0.0f nm" % range_nm)
 
 if __name__ == '__main__': #pragma: no cover
     import pyHendrixDemersTools.Runner as Runner

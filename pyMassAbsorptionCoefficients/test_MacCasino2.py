@@ -22,7 +22,7 @@ import logging
 # Local modules.
 
 # Project modules
-import MacCasino2
+import pyMassAbsorptionCoefficients.MacCasino2 as MacCasino2
 
 # Globals and constants variables.
 
@@ -89,7 +89,7 @@ class TestMacCasino2(unittest.TestCase):
         self.assertAlmostEquals(0.0, mac_g_cm3)
 
         mac_g_cm3 = MacCasino2.MACSTOTAL(0.0, 2)
-        self.assertAlmostEquals(-1, mac_g_cm3)
+        self.assertAlmostEquals(0.0, mac_g_cm3)
 
         #self.fail("Test if the testcase is working.")
 

@@ -22,8 +22,8 @@ warnings.simplefilter('ignore', UserWarning)
 import numpy
 
 # Local modules.
-import MassAbsorptionCoefficientEnergy
-import DatabasesTools.ElementProperties as ElementProperties
+import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEnergy as MassAbsorptionCoefficientEnergy
+import pySpecimenTools.ElementProperties as ElementProperties
 
 # Globals and constants variables.
 
@@ -338,7 +338,7 @@ class MacHeinrich1987(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientE
         if edgeEnergyN1_eV >= xrayEnergy_eV:
             return 11
 
-        print atomicNumber, xrayEnergy_eV, edgeEnergyN1_eV
+        print(atomicNumber, xrayEnergy_eV, edgeEnergyN1_eV)
 
     def computeCoefficient(self, atomicNumber, coefficients):
         """
@@ -637,7 +637,7 @@ class MacHeinrich1987(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientE
         try:
             edgeEnergyM4_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M4')
         except KeyError:
-            print "No M4 energy edge for %i" % (atomicNumber)
+            print("No M4 energy edge for %i" % (atomicNumber))
             edgeEnergyM4_eV = 0.0
 
         return b*edgeEnergyM4_eV

@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import MacPouchou1991
+import pyMassAbsorptionCoefficients.MacPouchou1991 as MacPouchou1991
 
 # Globals and constants variables.
 

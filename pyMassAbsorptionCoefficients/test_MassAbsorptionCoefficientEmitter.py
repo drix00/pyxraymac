@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import MassAbsorptionCoefficientEmitter
+import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEmitter as MassAbsorptionCoefficientEmitter
 
 # Globals and constants variables.
 

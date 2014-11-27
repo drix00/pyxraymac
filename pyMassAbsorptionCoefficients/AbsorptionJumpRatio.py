@@ -14,7 +14,10 @@ __svnDate__ = "$Date: 2011-03-21 14:39:25 -0400 (Mon, 21 Mar 2011) $"
 __svnId__ = "$Id: AbsorptionJumpRatio.py 2293 2011-03-21 18:39:25Z hdemers $"
 
 # Standard library modules.
-import ConfigParser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 # Third party modules.
 import pylab
@@ -38,7 +41,7 @@ class AbsorptionJumpRatio(object):
     def readConfigurationFile(self, configurationFile):
         """ Read the configuration file for options."""
         # pylint: disable-msg=W0201
-        config = ConfigParser.SafeConfigParser()
+        config = configparser.SafeConfigParser()
 
         config.readfp(open(configurationFile))
 

@@ -1,2 +1,7 @@
 syntax: glob
 *.pyc
+
+.coverage
+*.cfg
+syntax: regexp
+^pyMassAbsorptionCoefficients/MassAbsorptionCoefficient\.cfg$

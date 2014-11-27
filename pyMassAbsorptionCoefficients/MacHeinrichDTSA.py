@@ -15,15 +15,18 @@ __svnId__ = "$Id: MacHeinrichDTSA.py 2774 2012-06-13 12:10:25Z hdemers $"
 
 # Standard library modules.
 import math
-import ConfigParser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 # Third party modules.
 
 # Local modules.
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
-import DatabasesTools.ElementProperties as ElementProperties
+import pySpecimenTools.ElementProperties as ElementProperties
 
-import MassAbsorptionCoefficientEnergy
+import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEnergy as MassAbsorptionCoefficientEnergy
 # Globals and constants variables.
 
 class MacHeinrichDTSA(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientEnergy):
@@ -41,7 +44,7 @@ class MacHeinrichDTSA(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientE
 
     def readConfiguration(self, configurationFile):
         """ Read the configuration file for options."""
-        config = ConfigParser.SafeConfigParser()
+        config = configparser.SafeConfigParser()
 
         config.readfp(open(configurationFile))
 
@@ -207,7 +210,7 @@ def runAl():
     for element in xrayKaLines:
         energyEmitter_eV = xrayKaLines[element]
         mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
-        print "%s: %f" % (element, mac_cm2_g)
+        print("%s: %f" % (element, mac_cm2_g))
 
 if __name__ == '__main__': #pragma: no cover
     import pyHendrixDemersTools.Runner as Runner
