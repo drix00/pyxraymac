@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import MacHeinrich1987
+import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
 import pyHendrixDemersTools.Files as Files
 

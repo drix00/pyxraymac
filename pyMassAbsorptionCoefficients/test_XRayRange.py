@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import XRayRange
+import pyMassAbsorptionCoefficients.XRayRange as XRayRange
 
 # Globals and constants variables.
 

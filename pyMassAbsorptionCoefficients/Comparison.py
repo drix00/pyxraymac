@@ -14,7 +14,10 @@ __svnDate__ = "$Date: 2013-10-13 21:15:14 -0400 (Sun, 13 Oct 2013) $"
 __svnId__ = "$Id: Comparison.py 2922 2013-10-14 01:15:14Z hdemers $"
 
 # Standard library modules.
-import ConfigParser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 import os.path
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning, module='numpy')
@@ -47,7 +50,7 @@ if g_output == 'Display':
 def readConfiguration(configurationFile):
     """Read the configuration file and set the options."""
     # pylint: disable-msg=W0201
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.SafeConfigParser()
 
     config.readfp(open(configurationFile))
 

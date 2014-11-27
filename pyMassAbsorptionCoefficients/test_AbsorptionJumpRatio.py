@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import AbsorptionJumpRatio
+import pyMassAbsorptionCoefficients.AbsorptionJumpRatio as AbsorptionJumpRatio
 import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.

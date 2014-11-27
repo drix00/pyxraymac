@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import AbsorptionJumpRatioAgarwal1979
+import pyMassAbsorptionCoefficients.AbsorptionJumpRatioAgarwal1979 as AbsorptionJumpRatioAgarwal1979
 
 # Globals and constants variables.
 

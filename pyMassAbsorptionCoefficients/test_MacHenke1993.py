@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import MacHenke1993
+import pyMassAbsorptionCoefficients.MacHenke1993 as MacHenke1993
 import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.
@@ -30,7 +30,7 @@ class TestMacHenke1993(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        configurationFile = Files.getCurrentModulePath(__file__, "../DatabasesTools/Databases.cfg")
+        configurationFile = Files.getCurrentModulePath(__file__, "../testdata/Databases.cfg")
 
         self.mac = MacHenke1993.MacHenke1993(configurationFile)
 
@@ -42,7 +42,7 @@ class TestMacHenke1993(unittest.TestCase):
         self.assertTrue(True)
 
     def testConstructor(self):
-        configurationFile = Files.getCurrentModulePath(__file__, "../DatabasesTools/Databases.cfg")
+        configurationFile = Files.getCurrentModulePath(__file__, "../testdata/Databases.cfg")
 
         mac = MacHenke1993.MacHenke1993(configurationFile)
 

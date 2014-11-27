@@ -20,7 +20,7 @@ __svnId__ = "$Id: MacPouchou1991.py 2293 2011-03-21 18:39:25Z hdemers $"
 # Third party modules.
 
 # Local modules.
-import MassAbsorptionCoefficientEmitter
+import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEmitter as MassAbsorptionCoefficientEmitter
 
 # Globals and constants variables.
 LINE_Ka = 'Ka'
@@ -158,7 +158,7 @@ class MacPouchou1991(MassAbsorptionCoefficientEmitter.MassAbsorptionCoefficientE
 
 
     def extractTransitionKey(self, lineEmitter):
-        xrayTransitionKeys = self.mac_cm2_g.keys()
+        xrayTransitionKeys = list(self.mac_cm2_g.keys())
         xrayTransitionKeys.sort()
 
         for xrayTransitionKey in xrayTransitionKeys:

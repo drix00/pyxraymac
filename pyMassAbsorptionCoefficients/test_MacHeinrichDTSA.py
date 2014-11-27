@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import MacHeinrichDTSA
+import pyMassAbsorptionCoefficients.MacHeinrichDTSA as MacHeinrichDTSA
 import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.

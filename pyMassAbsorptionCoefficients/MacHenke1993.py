@@ -20,7 +20,7 @@ import logging
 import numpy
 
 # Local modules.
-import MassAbsorptionCoefficientEnergy
+import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEnergy as MassAbsorptionCoefficientEnergy
 import DatabasesTools.Mac.Henke.MacHenkeWinxray as MacHenkeWinxray
 import DatabasesTools.Mac.Henke.MacHenke as MacHenke
 import pyNumericalMethodsTools.Interpolation.Interpolation1D as Interpolation1D
@@ -91,7 +91,7 @@ def run():
     for element in xrayKaLines:
         energyEmitter_eV = xrayKaLines[element]
         mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
-        print "%s: %f" % (element, mac_cm2_g)
+        print("%s: %f" % (element, mac_cm2_g))
 
 def runAl():
     macHenke1993 = MacHenke1993("MassAbsorptionCoefficient.cfg")
@@ -102,7 +102,7 @@ def runAl():
     for element in xrayKaLines:
         energyEmitter_eV = xrayKaLines[element]
         mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
-        print "%s: %f" % (element, mac_cm2_g)
+        print("%s: %f" % (element, mac_cm2_g))
 
 if __name__ == '__main__': #pragma: no cover
     import pyHendrixDemersTools.Runner as Runner
