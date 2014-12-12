@@ -16,8 +16,10 @@ __svnId__ = "$Id: test_MacHenke1993.py 2293 2011-03-21 18:39:25Z hdemers $"
 # Standard library modules.
 import unittest
 import logging
+import os.path
 
 # Third party modules.
+from nose import SkipTest
 
 # Local modules.
 import pyMassAbsorptionCoefficients.MacHenke1993 as MacHenke1993
@@ -31,6 +33,8 @@ class TestMacHenke1993(unittest.TestCase):
         unittest.TestCase.setUp(self)
 
         configurationFile = Files.getCurrentModulePath(__file__, "../testdata/Databases.cfg")
+        if not os.path.isfile(configurationFile):
+            raise SkipTest
 
         self.mac = MacHenke1993.MacHenke1993(configurationFile)
 
