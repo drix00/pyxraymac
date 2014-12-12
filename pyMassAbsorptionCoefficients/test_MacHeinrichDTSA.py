@@ -16,8 +16,10 @@ __svnId__ = "$Id: test_MacHeinrichDTSA.py 2293 2011-03-21 18:39:25Z hdemers $"
 # Standard library modules.
 import unittest
 import logging
+import os.path
 
 # Third party modules.
+from nose import SkipTest
 
 # Local modules.
 import pyMassAbsorptionCoefficients.MacHeinrichDTSA as MacHeinrichDTSA
@@ -31,6 +33,8 @@ class TestMacHeinrichDTSA(unittest.TestCase):
         unittest.TestCase.setUp(self)
 
         configurationFile = Files.getCurrentModulePath(__file__, "MassAbsorptionCoefficient.cfg")
+        if not os.path.isfile(configurationFile):
+            raise SkipTest
 
         self.macModel = MacHeinrichDTSA.MacHeinrichDTSA(configurationFile=configurationFile)
 

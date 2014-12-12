@@ -16,8 +16,10 @@ __svnId__ = "$Id: test_MacHeinrich1987.py 2293 2011-03-21 18:39:25Z hdemers $"
 # Standard library modules.
 import unittest
 import logging
+import os.path
 
 # Third party modules.
+from nose import SkipTest
 
 # Local modules.
 import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
@@ -32,6 +34,8 @@ class TestMacHeinrich1987(unittest.TestCase):
         unittest.TestCase.setUp(self)
 
         configurationFile = Files.getCurrentModulePath(__file__, "MassAbsorptionCoefficient.cfg")
+        if not os.path.isfile(configurationFile):
+            raise SkipTest
 
         xrayTransitionData = XRayTransitionData.XRayTransitionData(configurationFile)
 
