@@ -27,9 +27,9 @@ import numpy
 import pylab
 
 # Local modules.
-import MacHeinrich1987
-import MacHeinrichDTSA
-import MacHenke1993
+import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
+import pyMassAbsorptionCoefficients.MacHeinrichDTSA as MacHeinrichDTSA
+import pyMassAbsorptionCoefficients.MacHenke1993 as MacHenke1993
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
 import pyHendrixDemersTools.Colors as Colors
 import pyHendrixDemersTools.Files as Files
