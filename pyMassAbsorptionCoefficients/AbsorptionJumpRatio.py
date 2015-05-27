@@ -23,7 +23,7 @@ except ImportError:
 import pylab
 
 # Local modules.
-import DatabasesTools.Brunetti2004.XRayLib_2_4 as XRayLib_2_4
+import pybrunetti2004data.XRayLib_2_4 as XRayLib_2_4
 import DatabasesTools.deboer1989.FluorescenceYields as FluorescenceYields
 
 # Globals and constants variables.
