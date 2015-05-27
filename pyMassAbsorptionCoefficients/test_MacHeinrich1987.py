@@ -23,7 +23,7 @@ from nose import SkipTest
 
 # Local modules.
 import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
-import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
+import pydtsadata.XRayTransitionData as XRayTransitionData
 import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.

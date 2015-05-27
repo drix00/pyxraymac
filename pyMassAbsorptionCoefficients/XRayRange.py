@@ -22,7 +22,7 @@ import math
 import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
 import pyMassAbsorptionCoefficients.MassAbsorptionCoefficient as MassAbsorptionCoefficient
 
-import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
+import pydtsadata.XRayTransitionData as XRayTransitionData
 import pySpecimenTools.SampleRegion as SampleRegion
 
 # Globals and constants variables.
