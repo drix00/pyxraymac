@@ -648,7 +648,3 @@ class MacHeinrich1987(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientE
         b = self.computeCoefficient(atomicNumber, bi)
 
         return b
-
-if __name__ == '__main__': #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=None)
