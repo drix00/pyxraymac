@@ -145,7 +145,12 @@ class Chantler2005(object):
             return self.maximumMAC_cm2_g
 
         if atomicNumberAbsorber in self.macData:
-            return self.macData[atomicNumberAbsorber](energyEmitter_eV)
+            try:
+                mac_value = self.macData[atomicNumberAbsorber](energyEmitter_eV)
+            except ValueError:
+                print(atomicNumberAbsorber, energyEmitter_eV)
+                mac_value = self.minimumMAC_cm2_g
+            return mac_value
         else:
             logging.error("No mac for %i and %0.1f", atomicNumberAbsorber, energyEmitter_eV)
             return 0.0
