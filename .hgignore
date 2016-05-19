@@ -4,5 +4,6 @@ syntax: glob
 .coverage
 *.cfg
 pyMassAbsorptionCoefficients.egg-info/
+build
 syntax: regexp
 ^pyMassAbsorptionCoefficients/MassAbsorptionCoefficient\.cfg$
