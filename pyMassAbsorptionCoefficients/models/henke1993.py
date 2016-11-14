@@ -8,26 +8,17 @@ __date__ = ""
 __copyright__ = "Copyright (c) 2007 Hendrix Demers"
 __license__ = ""
 
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2922 $"
-__svnDate__ = "$Date: 2013-10-13 21:15:14 -0400 (Sun, 13 Oct 2013) $"
-__svnId__ = "$Id: MacHenke1993.py 2922 2013-10-14 01:15:14Z hdemers $"
-
 # Standard library modules.
 import logging
 
-# Third party modules.
+import pyMassAbsorptionCoefficients.models.MacHenke as MacHenke
+import pyMassAbsorptionCoefficients.models.MacHenkeWinxray as MacHenkeWinxray
 import numpy
-
-# Local modules.
-import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEnergy as MassAbsorptionCoefficientEnergy
-import DatabasesTools.Mac.Henke.MacHenkeWinxray as MacHenkeWinxray
-import DatabasesTools.Mac.Henke.MacHenke as MacHenke
 import pyNumericalMethodsTools.Interpolation.Interpolation1D as Interpolation1D
 
 # Globals and constants variables.
 
-class MacHenke1993(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientEnergy):
+class MacHenke1993():
     def __init__(self, configurationFile, model='Henke'):
         if model == 'HenkeWinxray':
             self.macModel = MacHenkeWinxray.MacHenkeWinxray(configurationFile)

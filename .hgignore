@@ -5,5 +5,7 @@ syntax: glob
 *.cfg
 pyMassAbsorptionCoefficients.egg-info/
 build
+coverage
+.idea/workspace.xml
 syntax: regexp
 ^pyMassAbsorptionCoefficients/MassAbsorptionCoefficient\.cfg$

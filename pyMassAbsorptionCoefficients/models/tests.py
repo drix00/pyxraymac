@@ -20,5 +20,5 @@ if __name__ == "__main__":
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pyMassAbsorptionCoefficients")
+    argv.append("--cover-package=pyMassAbsorptionCoefficients.models")
     nose.main(argv=argv)
