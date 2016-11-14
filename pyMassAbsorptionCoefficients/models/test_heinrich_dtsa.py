@@ -8,22 +8,14 @@ __date__ = ""
 __copyright__ = "Copyright (c) 2007 Hendrix Demers"
 __license__ = ""
 
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2293 $"
-__svnDate__ = "$Date: 2011-03-21 14:39:25 -0400 (Mon, 21 Mar 2011) $"
-__svnId__ = "$Id: test_MacHeinrichDTSA.py 2293 2011-03-21 18:39:25Z hdemers $"
-
 # Standard library modules.
-import unittest
-import logging
 import os.path
+import unittest
 
-# Third party modules.
+import pyHendrixDemersTools.Files as Files
+import pyMassAbsorptionCoefficients.models.heinrich_dtsa as MacHeinrichDTSA
 from nose import SkipTest
 
-# Local modules.
-import pyMassAbsorptionCoefficients.MacHeinrichDTSA as MacHeinrichDTSA
-import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.
 
@@ -32,7 +24,7 @@ class TestMacHeinrichDTSA(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        configurationFile = Files.getCurrentModulePath(__file__, "MassAbsorptionCoefficient.cfg")
+        configurationFile = Files.getCurrentModulePath(__file__, "../MassAbsorptionCoefficient.cfg")
         if not os.path.isfile(configurationFile):
             raise SkipTest
 
@@ -52,8 +44,7 @@ class TestMacHeinrichDTSA(unittest.TestCase):
         self.assertAlmostEqual(4698.6, value, 1)
 
         #self.fail("Test if the TestCase is working.")
-        self.assertTrue(True)
 
-if __name__ == '__main__': #pragma: no cover
-    logging.getLogger().setLevel(logging.DEBUG)
-    unittest.main()
+if __name__ == '__main__':    #pragma: no cover
+    import nose
+    nose.runmodule()

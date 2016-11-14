@@ -8,22 +8,14 @@ __date__ = ""
 __copyright__ = "Copyright (c) 2007 Hendrix Demers"
 __license__ = ""
 
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2293 $"
-__svnDate__ = "$Date: 2011-03-21 14:39:25 -0400 (Mon, 21 Mar 2011) $"
-__svnId__ = "$Id: XRayRange.py 2293 2011-03-21 18:39:25Z hdemers $"
-
 # Standard library modules.
 import math
 
-# Third party modules.
-
-# Local modules.
 import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
-import pyMassAbsorptionCoefficients.MassAbsorptionCoefficient as MassAbsorptionCoefficient
-
-import pydtsadata.XRayTransitionData as XRayTransitionData
+import pyMassAbsorptionCoefficients.models.MassAbsorptionCoefficient as MassAbsorptionCoefficient
 import pySpecimenTools.SampleRegion as SampleRegion
+import pydtsadata.XRayTransitionData as XRayTransitionData
+
 
 # Globals and constants variables.
 
@@ -34,8 +26,8 @@ class XRayRange(object):
         macEnergy = MacHeinrich1987.MacHeinrich1987(xrayTransitionData)
 
         self.macModel = MassAbsorptionCoefficient.MassAbsorptionCoefficient(macEnergy=macEnergy
-                                                                                                                                                , xrayTransitionData=xrayTransitionData
-                                                                                                                                                , configurationFile=configurationFile)
+                                                                            , xrayTransitionData=xrayTransitionData
+                                                                            , configurationFile=configurationFile)
 
     def setSpecimen(self, specimen):
         self.specimen = specimen

@@ -8,16 +8,8 @@ __date__ = ""
 __copyright__ = "Copyright (c) 2007 Hendrix Demers"
 __license__ = ""
 
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2293 $"
-__svnDate__ = "$Date: 2011-03-21 14:39:25 -0400 (Mon, 21 Mar 2011) $"
-__svnId__ = "$Id: AbsorptionJumpRatio.py 2293 2011-03-21 18:39:25Z hdemers $"
-
 # Standard library modules.
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 
 # Third party modules.
 import pylab

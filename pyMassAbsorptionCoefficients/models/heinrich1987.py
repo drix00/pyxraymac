@@ -8,11 +8,6 @@ __date__ = ""
 __copyright__ = "Copyright (c) 2007 Hendrix Demers"
 __license__ = ""
 
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2293 $"
-__svnDate__ = "$Date: 2011-03-21 14:39:25 -0400 (Mon, 21 Mar 2011) $"
-__svnId__ = "$Id: MacHeinrich1987.py 2293 2011-03-21 18:39:25Z hdemers $"
-
 # Standard library modules.
 import math
 import warnings
@@ -22,12 +17,11 @@ warnings.simplefilter('ignore', UserWarning)
 import numpy
 
 # Local modules.
-import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEnergy as MassAbsorptionCoefficientEnergy
 import pySpecimenTools.ElementProperties as ElementProperties
 
 # Globals and constants variables.
 
-class MacHeinrich1987(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientEnergy):
+class MacHeinrich1987():
     def __init__(self, xrayTransitionData):
         self.xrayTransitionData = xrayTransitionData
 
@@ -141,7 +135,7 @@ class MacHeinrich1987(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientE
 
             mac_cm2_g = self.computeModel2(atomicNumberAbsorber, atomicMass_g_mol, energyEmitter_eV, C, n, cutoff_eV)
 
-            #mac_cm2_g = self.computeModel2b(atomicNumberAbsorber, atomicMass_g_mol, energyEmitter_eV, C, n, cutoff_eV)
+            #data_mac_cm2_g = self.computeModel2b(atomicNumberAbsorber, atomicMass_g_mol, energyEmitter_eV, C, n, cutoff_eV)
 
             if mac_cm2_g < 0.0:
                 return 1.0E6

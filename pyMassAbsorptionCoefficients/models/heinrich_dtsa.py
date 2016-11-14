@@ -8,17 +8,9 @@ __date__ = ""
 __copyright__ = "Copyright (c) 2007 Hendrix Demers"
 __license__ = ""
 
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2774 $"
-__svnDate__ = "$Date: 2012-06-13 08:10:25 -0400 (Wed, 13 Jun 2012) $"
-__svnId__ = "$Id: MacHeinrichDTSA.py 2774 2012-06-13 12:10:25Z hdemers $"
-
 # Standard library modules.
 import math
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 
 # Third party modules.
 
@@ -26,10 +18,9 @@ except ImportError:
 import pydtsadata.XRayTransitionData as XRayTransitionData
 import pySpecimenTools.ElementProperties as ElementProperties
 
-import pyMassAbsorptionCoefficients.MassAbsorptionCoefficientEnergy as MassAbsorptionCoefficientEnergy
 # Globals and constants variables.
 
-class MacHeinrichDTSA(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientEnergy):
+class MacHeinrichDTSA():
     def __init__(self, xrayTransitionData=None, configurationFile=None):
         self.xrayTransitionData = None
 
@@ -44,9 +35,9 @@ class MacHeinrichDTSA(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientE
 
     def readConfiguration(self, configurationFile):
         """ Read the configuration file for options."""
-        config = configparser.SafeConfigParser()
+        config = configparser.ConfigParser()
 
-        config.readfp(open(configurationFile))
+        config.read_file(open(configurationFile))
 
         if config.has_section("MacHeinrichDTSA"):
             if config.has_option("MacHeinrichDTSA", "path"):
@@ -143,11 +134,11 @@ class MacHeinrichDTSA(MassAbsorptionCoefficientEnergy.MassAbsorptionCoefficientE
                     if energy_eV >= eeMV:
                         eeMIV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M4')
 
-                        az = (4.62 - 0.04 * atomicNumber) * atomicNumber;
-                        cc = ((-1.29086e-9 * atomicNumber + 2.209365e-7) * atomicNumber - 7.83544e-6) * atomicNumber + 7.7708e-5;
-                        cc *= ((4.865E-6 * atomicNumber - 0.0006561) * atomicNumber + 0.0162) * atomicNumber + 1.406;
-                        bias = ((3.78e-4 * atomicNumber - 0.052) * atomicNumber + 2.51) * eeMIV;
-                        nm = 3.0 - 0.004 * atomicNumber;
+                        az = (4.62 - 0.04 * atomicNumber) * atomicNumber
+                        cc = ((-1.29086e-9 * atomicNumber + 2.209365e-7) * atomicNumber - 7.83544e-6) * atomicNumber + 7.7708e-5
+                        cc *= ((4.865E-6 * atomicNumber - 0.0006561) * atomicNumber + 0.0162) * atomicNumber + 1.406
+                        bias = ((3.78e-4 * atomicNumber - 0.052) * atomicNumber + 2.51) * eeMIV
+                        nm = 3.0 - 0.004 * atomicNumber
 
                         eeMII = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M2')
                         eeMIII = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M3')

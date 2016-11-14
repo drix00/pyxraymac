@@ -8,16 +8,8 @@ __date__ = ""
 __copyright__ = "Copyright (c) 2007 Hendrix Demers"
 __license__ = ""
 
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2922 $"
-__svnDate__ = "$Date: 2013-10-13 21:15:14 -0400 (Sun, 13 Oct 2013) $"
-__svnId__ = "$Id: Comparison.py 2922 2013-10-14 01:15:14Z hdemers $"
-
 # Standard library modules.
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 import os.path
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning, module='numpy')
@@ -27,9 +19,9 @@ import numpy
 import pylab
 
 # Local modules.
-import pyMassAbsorptionCoefficients.MacHeinrich1987 as MacHeinrich1987
-import pyMassAbsorptionCoefficients.MacHeinrichDTSA as MacHeinrichDTSA
-import pyMassAbsorptionCoefficients.MacHenke1993 as MacHenke1993
+import pyMassAbsorptionCoefficients.models.heinrich1987 as MacHeinrich1987
+import pyMassAbsorptionCoefficients.models.heinrich_dtsa as MacHeinrichDTSA
+import pyMassAbsorptionCoefficients.models.henke1993 as MacHenke1993
 import pydtsadata.XRayTransitionData as XRayTransitionData
 import pyHendrixDemersTools.Colors as Colors
 import pyHendrixDemersTools.Files as Files
@@ -53,6 +45,8 @@ def readConfiguration(configurationFile):
     config = configparser.SafeConfigParser()
 
     config.readfp(open(configurationFile))
+
+    thesisImagePath = os.getcwd()
 
     if config.has_section("Thesis"):
         if config.has_option("Thesis", "thesisImagePath"):
