@@ -7,5 +7,6 @@ pyMassAbsorptionCoefficients.egg-info/
 build
 coverage
 .idea/workspace.xml
+.idea
 syntax: regexp
 ^pyMassAbsorptionCoefficients/MassAbsorptionCoefficient\.cfg$
