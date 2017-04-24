@@ -25,7 +25,7 @@ OPTION_FILENAME = "filename"
 OPTION_ENERGY_UNIT = "energyUnit"
 
 ENERGIES_eV = "energies_eV"
-MAC_cm2_g = "data_mac_cm2_g"
+MAC_cm2_g = "mac_cm2_g"
 
 ENERGY_UNIT_eV = "eV"
 ENERGY_UNIT_keV = "keV"
@@ -161,5 +161,30 @@ def compare_all_versions():
                 plt.axvline(edge_energy_eV, zorder=-10)
     plt.show()
 
+
+def create_hdf5_file():
+    import h5py
+    import numpy as np
+
+    filename = "chantler2005.hdf5"
+    file_path = get_current_module_path(__file__, "../../data/chantler2005/%s" % (filename))
+
+    with h5py.File(file_path, "w") as hdf5_file:
+        mac = Chantler2005()
+        mac.read_mac_data()
+
+        group_elements = hdf5_file.require_group("elements")
+
+        for atomic_number in sorted(mac.experimental_data.keys()):
+            group_name = "{:02d}".format(atomic_number)
+            group_atomic_number = group_elements.require_group(group_name)
+            energies_eV = np.array(mac.experimental_data[atomic_number][ENERGIES_eV])
+            macs_cm2_g = np.array(mac.experimental_data[atomic_number][MAC_cm2_g])
+
+            group_atomic_number.create_dataset(ENERGIES_eV, data=energies_eV)
+            group_atomic_number.create_dataset(MAC_cm2_g, data=macs_cm2_g)
+
 if __name__ == '__main__':    #pragma: no cover
-    compare_all_versions()
+    #compare_all_versions()
+
+    create_hdf5_file()
