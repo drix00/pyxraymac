@@ -148,7 +148,7 @@ class TestCasino(unittest.TestCase):
                          7.0: 6.548121479457815,
                          12.0: 4.207136721849756,
                          15.0: 1.8826527366391121,
-                         30.0: None,
+                         30.0: 0.23913760241931142,
                          50.0: 0.0}
 
         compare_mac(mac_ref_cm2_g, atomic_number)

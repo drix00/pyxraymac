@@ -418,7 +418,7 @@ def SPECIAL_EQUATIONS(energy_keV, atomicNumber):
 
         if (E <= 40.):
             macs = .2920 * math.pow(l, .22601)
-            return
+            return macs
 
     if (z == 4):
         if (E >= 8.0 and E <= 12.50):
