@@ -3,8 +3,8 @@
 # Script information for the file.
 __author__ = "Hendrix Demers"
 __email__ = "hendrix.demers@mail.mcgill.ca"
-__version__ = "0.1"
-__copyright__ = "Copyright (c) 2015 Hendrix Demeners"
+__version__ = "0.2"
+__copyright__ = "Copyright (c) 2021 Hendrix Demeners"
 __license__ = ""
 
 # Standard library modules.
@@ -18,6 +18,7 @@ from setuptools import setup, find_packages
 # Local modules.
 
 # Globals and constants variables.
+
 
 class TestDataCommand(Command):
 
@@ -49,7 +50,8 @@ class TestDataCommand(Command):
                     arcname = os.path.relpath(filename, basepath)
                     z.write(filename, arcname)
 
-setup(name="pyMassAbsorptionCoefficients",
+
+setup(name="pyxraymac",
       version='0.1',
       url='',
       description="",

@@ -1,0 +1,44 @@
+# Config file for automatic testing at travis-ci.org
+
+dist: bionic
+
+language: python
+cache: pip
+python:
+  - '3.6'
+  - '3.7'
+  - '3.8'
+  - '3.9-dev'
+
+matrix:
+  allow_failures:
+    - python: 3.9-dev
+
+# command to install dependencies
+before_install:
+  - python --version
+  - pip install --upgrade pip
+  - pip install --upgrade pytest
+  - pip install --upgrade coveralls
+  - pip install --upgrade codecov
+
+install:
+  - git clone --single-branch --branch refactor https://github.com/drix00/pyxraymac.git pyxraymac
+  - cd pyxraymac
+  - pip install --upgrade -e .
+  - cd ..
+  - pip install --upgrade -e .[develop]
+  - python3 setup.py build
+
+# command to run tests
+script:
+  - pytest --cov=xraymac --cov=tests --cov-branch --cov-report xml
+
+after_success:
+  - coveralls
+  - codecov
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
