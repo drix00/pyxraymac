@@ -35,7 +35,7 @@ import pytest
 # Local modules.
 
 # Project modules.
-import apps.AbsorptionJumpRatio as AbsorptionJumpRatio
+import AbsorptionJumpRatio as AbsorptionJumpRatio
 from xray.mac import get_current_module_path
 
 # Globals and constants variables.

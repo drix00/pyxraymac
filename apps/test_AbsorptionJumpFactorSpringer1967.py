@@ -33,7 +33,7 @@ import unittest
 # Local modules.
 
 # Project modules.
-import apps.AbsorptionJumpFactorSpringer1967 as AbsorptionJumpFactorSpringer1967
+import AbsorptionJumpFactorSpringer1967 as AbsorptionJumpFactorSpringer1967
 
 # Globals and constants variables.
 
