@@ -1,18 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 .. py:currentmodule:: vpsem
-   :synopsis: Script to compute absorption of x-ray by the gas in a VP-SEM.
-   
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Script to compute absorption of x-ray by the gas in a VP-SEM.
 """
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = "0.1"
-__date__ = "2016-11-11"
-__copyright__ = "Copyright (c) 2016 Hendrix Demers"
-__license__ = "Apache License Version 2.0"
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 
@@ -21,8 +31,8 @@ import numpy as np
 
 # Local modules.
 
-# Project modules
-from xray.mac.models import Chantler2005
+# Project modules.
+from xray.mac.models.chantler2005 import Chantler2005
 
 # Globals and constants variables.
 
@@ -46,6 +56,7 @@ def run_water():
 
         absorption = np.exp(-total_mac_cm2_g*density_g_cm3*length_cm)
         print(energy_eV, total_mac_cm2_g,absorption)
+
 
 if __name__ == '__main__':
     run_water()

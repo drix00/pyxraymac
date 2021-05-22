@@ -1,12 +1,28 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2007 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: xray.mac.models.MacHenkeWinxray
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+MAC Henke model from Winxray program.
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 from configparser import ConfigParser
@@ -16,9 +32,12 @@ import struct
 # Third party modules.
 
 # Local modules.
+
+# Project modules.
 from xray.mac.models.elements import ElementProperties
 
 # Globals and constants variables.
+
 
 class MacHenkeWinxray(object):
     def __init__(self, configurationFile):
@@ -75,7 +94,7 @@ class MacHenkeWinxray(object):
 
         dummy_start, stop = 0, struct.calcsize('f'*2)
 
-        #energyMinimum, energyMaximum = struct.unpack('f'*2, data[start:stop])
+        # energyMinimum, energyMaximum = struct.unpack('f'*2, data[start:stop])
 
         start, stop = stop, stop + struct.calcsize('if')
 
@@ -89,8 +108,8 @@ class MacHenkeWinxray(object):
 
             values = struct.unpack('ff', data[start:stop])
 
-            #energies_eV.append(values[0])
-            #mac_cm2_g.append(values[1])
+            # energies_eV.append(values[0])
+            # mac_cm2_g.append(values[1])
 
             energies_eV[index] = values[0]
             mac_cm2_g[index] = values[1]

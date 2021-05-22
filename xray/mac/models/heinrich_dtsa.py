@@ -1,12 +1,28 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2007 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: xray.mac.models.heinrich_dtsa
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+MAC Heinrich model from DTSA program.
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import math
@@ -15,29 +31,26 @@ import configparser
 # Third party modules.
 
 # Local modules.
-import pydtsadata.XRayTransitionData as XRayTransitionData
-import pySpecimenTools.ElementProperties as ElementProperties
+
+# Project modules.
+from xray.mac.models.ionization_energies import IonizationEnergies
+from xray.mac.models.element_properties import get_atomic_mass_g_mol
 
 # Globals and constants variables.
 
-class MacHeinrichDTSA():
-    def __init__(self, xrayTransitionData=None, configurationFile=None):
-        self.xrayTransitionData = None
 
-        if configurationFile:
-            self.readConfiguration(configurationFile)
+class MacHeinrichDTSA:
+    def __init__(self, configuration_file=None):
+        self.ionization_energies = IonizationEnergies()
 
-        if xrayTransitionData:
-            self.xrayTransitionData = xrayTransitionData
+        if configuration_file:
+            self.readConfiguration(configuration_file)
 
-        if configurationFile:
-            self.xrayTransitionData = XRayTransitionData.XRayTransitionData(configurationFile)
-
-    def readConfiguration(self, configurationFile):
+    def readConfiguration(self, configuration_file):
         """ Read the configuration file for options."""
         config = configparser.ConfigParser()
 
-        config.read_file(open(configurationFile))
+        config.read_file(open(configuration_file))
 
         if config.has_section("MacHeinrichDTSA"):
             if config.has_option("MacHeinrichDTSA", "path"):
@@ -52,10 +65,10 @@ class MacHeinrichDTSA():
 
         bias = 0
 
-        eeK = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'K1')
+        eeK = self.ionization_energies.ionization_energy_eV(atomicNumber, 'K1')
 
         try:
-            eeNI = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'N1')
+            eeNI = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
         except:
             eeNI = 0.0
 
@@ -82,7 +95,7 @@ class MacHeinrichDTSA():
                     cc = 2.0e-4 + (1.0e-4 - atomicNumber) * atomicNumber
         else:
             try:
-                eeLIII = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'L3')
+                eeLIII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L3')
             except:
                 eeLIII = 0.0
 
@@ -93,12 +106,12 @@ class MacHeinrichDTSA():
                 nm = (-4.982E-5 * atomicNumber + 1.889e-3) * atomicNumber + 2.7575
 
                 try:
-                    eeLII = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'L2')
+                    eeLII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L2')
                 except:
                     eeLII = 0.0
 
                 try:
-                    eeLI = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'L1')
+                    eeLI = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L1')
                 except:
                     eeLI = 0.0
 
@@ -110,7 +123,7 @@ class MacHeinrichDTSA():
 
             else:
                 try:
-                    eeMI = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M1')
+                    eeMI = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M1')
                 except:
                     eeMI = 0.0
 
@@ -129,10 +142,10 @@ class MacHeinrichDTSA():
                     else:
                         bias = (((3.1779619e-3 * atomicNumber - 0.699473097) * atomicNumber + 51.114164) * atomicNumber - 1232.4022) * atomicNumber
                 else:
-                    eeMV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M5')
+                    eeMV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M5')
 
                     if energy_eV >= eeMV:
-                        eeMIV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M4')
+                        eeMIV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M4')
 
                         az = (4.62 - 0.04 * atomicNumber) * atomicNumber
                         cc = ((-1.29086e-9 * atomicNumber + 2.209365e-7) * atomicNumber - 7.83544e-6) * atomicNumber + 7.7708e-5
@@ -140,8 +153,8 @@ class MacHeinrichDTSA():
                         bias = ((3.78e-4 * atomicNumber - 0.052) * atomicNumber + 2.51) * eeMIV
                         nm = 3.0 - 0.004 * atomicNumber
 
-                        eeMII = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M2')
-                        eeMIII = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M3')
+                        eeMII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M2')
+                        eeMIII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M3')
 
                         if energy_eV >= eeMII:
                             assert(energy_eV <= eeMI)
@@ -168,7 +181,7 @@ class MacHeinrichDTSA():
                         bias = 4.5 * atomicNumber - 113.0
                         nm = 0.3736 + 0.02401 * atomicNumber
 
-        atomicWeight = ElementProperties.getAtomicMass_g_mol(atomicNumber)
+        atomicWeight = get_atomic_mass_g_mol(atomicNumber)
 
         if energy_eV > eeNI:
             mu = cc * math.pow(12397.0 / energy_eV, nm) * atomicNumber * atomicNumber * atomicNumber * atomicNumber / atomicWeight
@@ -191,18 +204,3 @@ class MacHeinrichDTSA():
         \param[in] atomicNumber
         """
         return 10.0
-
-def runAl():
-    macHenke1993 = MacHeinrichDTSA(configurationFile="MassAbsorptionCoefficient.cfg")
-    xrayKaLines = {'Al': 1487.0}
-
-    atomicNumberAbsorber = 13
-
-    for element in xrayKaLines:
-        energyEmitter_eV = xrayKaLines[element]
-        mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
-        print("%s: %f" % (element, mac_cm2_g))
-
-if __name__ == '__main__': #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=runAl)

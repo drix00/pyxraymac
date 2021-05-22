@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models
+.. py:currentmodule:: tests.mac
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Package for the MAC models.
+Tests for the :py:mod:`xray.mac` package.
 """
 
 ###############################################################################

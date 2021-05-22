@@ -1,24 +1,68 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2007 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: module_name
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+Description
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import logging
 
+# Third party modules.
+import numpy
+from scipy.interpolate import interp1d
+
+# Local modules.
+
+# Project modules.
 import xray.mac.models.MacHenke as MacHenke
 import xray.mac.models.MacHenkeWinxray as MacHenkeWinxray
-import numpy
-import pyNumericalMethodsTools.Interpolation.Interpolation1D as Interpolation1D
 
 # Globals and constants variables.
+LINEAR = 'linear'
+NEAREST = 'nearest'
+ZERO = 'zero'
+SLINEAR = 'slinear'
+QUADRATIC = 'quadratic'
+CUBIC = 'cubic'
 
-class MacHenke1993():
+
+class Interpolation1D(object):
+    def __init__(self, x, y, kind=LINEAR):
+        self._interpolateFunc = interp1d(x, y, kind=kind)
+
+        self._compute = self._computeV07
+
+    def __call__(self, x_new):
+        return self._compute(x_new)
+
+    def _computeV07(self, xNew):
+        return self._interpolateFunc(xNew)
+
+    def _computeV06(self, xNew):
+        return self._interpolateFunc(xNew)[0]
+
+
+class MacHenke1993:
     def __init__(self, configurationFile, model='Henke'):
         if model == 'HenkeWinxray':
             self.macModel = MacHenkeWinxray.MacHenkeWinxray(configurationFile)
@@ -54,7 +98,7 @@ class MacHenke1993():
 
                 self.maximumMAC_cm2_g = macs_cm2_g[-1]
 
-                self.macData[atomicNumberAbsorber] = Interpolation1D.Interpolation1D(energies_eV, macs_cm2_g)
+                self.macData[atomicNumberAbsorber] = Interpolation1D(energies_eV, macs_cm2_g)
 
             else:
                 logging.error("No mac for %i and %0.1f", atomicNumberAbsorber, energyEmitter_eV)
@@ -84,7 +128,8 @@ def run():
         mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
         print("%s: %f" % (element, mac_cm2_g))
 
-def runAl():
+
+def run_al():
     macHenke1993 = MacHenke1993("MassAbsorptionCoefficient.cfg")
     xrayKaLines = {'Al': 1487.0}
 
@@ -95,6 +140,6 @@ def runAl():
         mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
         print("%s: %f" % (element, mac_cm2_g))
 
-if __name__ == '__main__': #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=runAl)
+
+if __name__ == '__main__':  # pragma: no cover
+    run_al()

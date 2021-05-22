@@ -1,12 +1,28 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2007 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: AbsorptionJumpRatioAgarwal1979
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+Compute the absorption jump factor from the model of Agarwal (1979).
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import math
@@ -15,7 +31,10 @@ import math
 
 # Local modules.
 
+# Project modules.
+
 # Globals and constants variables.
+
 
 def getRKJonsson1928(lambdaLI, lambdaK):
     """
@@ -43,7 +62,8 @@ def getRKJonsson1928(lambdaLI, lambdaK):
 
     return rK
 
-def getRKRindfleisch1937(atomicNumber):
+
+def getRKRindfleisch1937(atomic_number):
     """
     Value of $r_{K}$ from Rindfleisch (1937).
 
@@ -72,9 +92,10 @@ def getRKRindfleisch1937(atomicNumber):
 
     a = math.pow(10.0, log10A)
 
-    rK = a*math.pow(atomicNumber, b)
+    rK = a*math.pow(atomic_number, b)
 
     return rK
+
 
 def getRKLaubert1941(lambdaK):
     """
@@ -109,7 +130,8 @@ def getRKLaubert1941(lambdaK):
 
     return rK
 
-def getRKTellezPlasencia1949(atomicNumber):
+
+def getRKTellezPlasencia1949(atomic_number):
     """
     Value of $r_{K}$ from Tellez-Plasencia (1949).
 
@@ -137,10 +159,6 @@ def getRKTellezPlasencia1949(atomicNumber):
     b = 0.0024882
 
 
-    rK = 1.0/(a + b*atomicNumber)
+    rK = 1.0/(a + b * atomic_number)
 
     return rK
-
-if __name__ == '__main__': #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=None)

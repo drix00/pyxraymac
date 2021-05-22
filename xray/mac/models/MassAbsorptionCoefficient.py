@@ -1,24 +1,44 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2007 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: xray.mac.models.MassAbsorptionCoefficient
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+Interface to the mass absorption coefficient models.
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import configparser
+
 
 # Third party modules.
 
 # Local modules.
 
+# Project modules.
+
 # Globals and constants variables.
 
+
 class MassAbsorptionCoefficient(object):
-    def __init__(self, macEnergy=None , macEmitter=None , xrayTransitionData=None , configurationFile=None):
+    def __init__(self, macEnergy=None, macEmitter=None, xrayTransitionData=None, configurationFile=None):
         if configurationFile:
             self.readConfiguration(configurationFile)
 

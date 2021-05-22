@@ -1,19 +1,28 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
-.. py:currentmodule:: test_ionization_energies
-   :synopsis: Tests for the module :py:mod:`ionization_energies`
-   
+.. py:currentmodule:: tests.mac.models.test_ionization_energies
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the module :py:mod:`ionization_energies`.
+Tests for the :py:mod:`xray.mac.models.ionization_energies` module.
 """
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = "0.1"
-__date__ = "2016-10-27"
-__copyright__ = "Copyright (c) 2016 Hendrix Demers"
-__license__ = "Apache License Version 2.0"
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import unittest
@@ -22,13 +31,14 @@ import unittest
 
 # Local modules.
 
-# Project modules
-from xray import get_current_module_path
+# Project modules.
+from xray.mac import get_current_module_path
 from xray.mac.models.ionization_energies import IonizationEnergies, SUBSHELLS
 
 # Globals and constants variables.
 
-class Test_ionization_energies(unittest.TestCase):
+
+class TestIonizationEnergies(unittest.TestCase):
     """
     TestCase class for the module `ionization_energies`.
     """
@@ -52,10 +62,10 @@ class Test_ionization_energies(unittest.TestCase):
         First test to check if the testcase is working with the testing framework.
         """
 
-        #self.fail("Test if the testcase is working.")
+        # self.fail("Test if the testcase is working.")
 
     def test_read_edge_data(self):
-        file_path = get_current_module_path(__file__, "../../../../data/chantler2005/FFastEdgeDB.csv")
+        file_path = get_current_module_path(__file__, "../../../data/chantler2005/FFastEdgeDB.csv")
 
         ionization_energies = IonizationEnergies()
         self.assertEqual(None, ionization_energies.edge_energies_eV)
@@ -72,8 +82,6 @@ class Test_ionization_energies(unittest.TestCase):
         self.assertAlmostEquals(21757.4, ionization_energies.edge_energies_eV[92]["L1"])
         self.assertAlmostEquals(32.3, ionization_energies.edge_energies_eV[92]["P1"])
 
-        #self.fail("Test if the testcase is working.")
-
     def test_ionization_energy_eV(self):
         """
         Tests for method :py:meth:`ionization_energy_eV`.
@@ -88,8 +96,6 @@ class Test_ionization_energies(unittest.TestCase):
         self.assertAlmostEquals(21757.4, ionization_energies.ionization_energy_eV(92, "L1"))
         self.assertAlmostEquals(32.3, ionization_energies.ionization_energy_eV(92, "P1"))
 
-        #self.fail("Test if the testcase is working.")
-
     def test_default_data_files(self):
         ionization_energies = IonizationEnergies()
         self.assertEqual(None, ionization_energies.edge_energies_eV)
@@ -101,11 +107,3 @@ class Test_ionization_energies(unittest.TestCase):
         self.assertAlmostEquals(115606, ionization_energies.ionization_energy_eV(92, "K"))
         self.assertAlmostEquals(21757.4, ionization_energies.ionization_energy_eV(92, "L1"))
         self.assertAlmostEquals(32.3, ionization_energies.ionization_energy_eV(92, "P1"))
-
-        #self.fail("Test if the testcase is working.")
-
-
-if __name__ == '__main__':  #pragma: no cover
-    import nose
-    nose.runmodule()
-    

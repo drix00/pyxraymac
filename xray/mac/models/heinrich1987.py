@@ -1,12 +1,28 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2007 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: xray.mac.models.heinrich1987
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+MAC Heinrich 1987 model.
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import math
@@ -17,64 +33,68 @@ warnings.simplefilter('ignore', UserWarning)
 import numpy
 
 # Local modules.
-import pySpecimenTools.ElementProperties as ElementProperties
+
+# Project modules.
+from xray.mac.models.element_properties import get_atomic_mass_g_mol
+from xray.mac.models.ionization_energies import IonizationEnergies
 
 # Globals and constants variables.
 
-class MacHeinrich1987():
-    def __init__(self, xrayTransitionData):
-        self.xrayTransitionData = xrayTransitionData
+
+class MacHeinrich1987:
+    def __init__(self):
+        self.ionization_energies = IonizationEnergies()
 
         self.coefficientC = {1: self.computeCRegion1
-                                                 , 2: self.computeCRegion2
-                                                 , 3: self.computeCRegion3
-                                                 , 4: self.computeCRegion4
-                                                 , 5: self.computeCRegion5
-                                                 , 6: self.computeCRegion6
-                                                 , 7: self.computeCRegion7
-                                                 , 8: self.computeCRegion8
-                                                 , 9: self.computeCRegion9
-                                                 , 10: self.computeCRegion10
-                                                 , 11: self.computeCRegion11
-                                                 }
+            , 2: self.computeCRegion2
+            , 3: self.computeCRegion3
+            , 4: self.computeCRegion4
+            , 5: self.computeCRegion5
+            , 6: self.computeCRegion6
+            , 7: self.computeCRegion7
+            , 8: self.computeCRegion8
+            , 9: self.computeCRegion9
+            , 10: self.computeCRegion10
+            , 11: self.computeCRegion11
+                             }
 
         self.coefficientN = {1: self.computeNRegion1
-                                                 , 2: self.computeNRegion2_4
-                                                 , 3: self.computeNRegion2_4
-                                                 , 4: self.computeNRegion2_4
-                                                 , 5: self.computeNRegion5
-                                                 , 6: self.computeNRegion6_9
-                                                 , 7: self.computeNRegion6_9
-                                                 , 8: self.computeNRegion6_9
-                                                 , 9: self.computeNRegion6_9
-                                                 , 10: self.computeNRegion10
-                                                 , 11: self.computeNRegion11
-                                                 }
+            , 2: self.computeNRegion2_4
+            , 3: self.computeNRegion2_4
+            , 4: self.computeNRegion2_4
+            , 5: self.computeNRegion5
+            , 6: self.computeNRegion6_9
+            , 7: self.computeNRegion6_9
+            , 8: self.computeNRegion6_9
+            , 9: self.computeNRegion6_9
+            , 10: self.computeNRegion10
+            , 11: self.computeNRegion11
+                             }
 
         self.coefficientB_eV = {1: self.computeBRegion1
-                                                 , 2: self.computeBRegion2_4
-                                                 , 3: self.computeBRegion2_4
-                                                 , 4: self.computeBRegion2_4
-                                                 , 5: self.computeBRegion5
-                                                 , 6: self.computeBRegion6_9
-                                                 , 7: self.computeBRegion6_9
-                                                 , 8: self.computeBRegion6_9
-                                                 , 9: self.computeBRegion6_9
-                                                 , 10: self.computeBRegion10
-                                                 }
+            , 2: self.computeBRegion2_4
+            , 3: self.computeBRegion2_4
+            , 4: self.computeBRegion2_4
+            , 5: self.computeBRegion5
+            , 6: self.computeBRegion6_9
+            , 7: self.computeBRegion6_9
+            , 8: self.computeBRegion6_9
+            , 9: self.computeBRegion6_9
+            , 10: self.computeBRegion10
+                                }
 
         self.coefficientA = {1: self.computeARegion1
-                                                 , 2: self.computeARegion2_4
-                                                 , 3: self.computeARegion2_4
-                                                 , 4: self.computeARegion2_4
-                                                 , 5: self.computeARegion5
-                                                 , 6: self.computeARegion6_9
-                                                 , 7: self.computeARegion6_9
-                                                 , 8: self.computeARegion6_9
-                                                 , 9: self.computeARegion6_9
-                                                 , 10: self.computeARegion10
-                                                 , 11: self.computeARegion11
-                                                 }
+            , 2: self.computeARegion2_4
+            , 3: self.computeARegion2_4
+            , 4: self.computeARegion2_4
+            , 5: self.computeARegion5
+            , 6: self.computeARegion6_9
+            , 7: self.computeARegion6_9
+            , 8: self.computeARegion6_9
+            , 9: self.computeARegion6_9
+            , 10: self.computeARegion10
+            , 11: self.computeARegion11
+                             }
 
         self._vec_computeMac_cm2_g = numpy.vectorize(self._computeMac_cm2_g)
 
@@ -124,7 +144,7 @@ class MacHeinrich1987():
 
         n = self.coefficientN[region](atomicNumberAbsorber)
 
-        atomicMass_g_mol = ElementProperties.getAtomicMass_g_mol(atomicNumberAbsorber)
+        atomicMass_g_mol = get_atomic_mass_g_mol(atomicNumberAbsorber)
 
         if region == 11:
             cutoff_eV = self.computeCutoff_eV(atomicNumberAbsorber)
@@ -185,7 +205,7 @@ class MacHeinrich1987():
 
         nominator = xrayEnergy_eV - cutoff_eV
 
-        edgeEnergyN1_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'N1')
+        edgeEnergyN1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
 
         denominator = edgeEnergyN1_eV - cutoff_eV
 
@@ -201,7 +221,7 @@ class MacHeinrich1987():
                                         , n
                                         , cutoff_eV):
 
-        edgeEnergyN1_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'N1')
+        edgeEnergyN1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
 
         b_eV = self.coefficientB_eV[10](atomicNumber)
 
@@ -222,7 +242,7 @@ class MacHeinrich1987():
 
     def getRegion(self, atomicNumber, xrayEnergy_eV):
         # Region 1
-        edgeEnergyK_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'K')
+        edgeEnergyK_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'K')
 
         self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyK_eV)
 
@@ -231,7 +251,7 @@ class MacHeinrich1987():
 
         # Region 2
         try:
-            edgeEnergyL1_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'L1')
+            edgeEnergyL1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L1')
         except KeyError:
             edgeEnergyL1_eV = 0.0
 
@@ -242,7 +262,7 @@ class MacHeinrich1987():
 
         # Region 3
         try:
-            edgeEnergyL2_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'L2')
+            edgeEnergyL2_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L2')
         except KeyError:
             edgeEnergyL2_eV = 0.0
 
@@ -253,7 +273,7 @@ class MacHeinrich1987():
 
         # Region 4
         try:
-            edgeEnergyL3_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'L3')
+            edgeEnergyL3_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L3')
         except KeyError:
             edgeEnergyL3_eV = 0.0
 
@@ -264,7 +284,7 @@ class MacHeinrich1987():
 
         # Region 5
         try:
-            edgeEnergyM1_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M1')
+            edgeEnergyM1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M1')
         except KeyError:
             edgeEnergyM1_eV = 0.0
 
@@ -275,7 +295,7 @@ class MacHeinrich1987():
 
         # Region 6
         try:
-            edgeEnergyM2_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M2')
+            edgeEnergyM2_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M2')
         except KeyError:
             edgeEnergyM2_eV = 0.0
 
@@ -286,7 +306,7 @@ class MacHeinrich1987():
 
         # Region 7
         try:
-            edgeEnergyM3_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M3')
+            edgeEnergyM3_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M3')
         except KeyError:
             edgeEnergyM3_eV = 0.0
 
@@ -297,7 +317,7 @@ class MacHeinrich1987():
 
         # Region 8
         try:
-            edgeEnergyM4_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M4')
+            edgeEnergyM4_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M4')
         except KeyError:
             edgeEnergyM4_eV = 0.0
 
@@ -308,7 +328,7 @@ class MacHeinrich1987():
 
         # Region 9
         try:
-            edgeEnergyM5_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M5')
+            edgeEnergyM5_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M5')
         except KeyError:
             edgeEnergyM5_eV = 0.0
 
@@ -319,7 +339,7 @@ class MacHeinrich1987():
 
         # Region 10
         try:
-            edgeEnergyN1_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'N1')
+            edgeEnergyN1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
         except KeyError:
             edgeEnergyN1_eV = 0.0
 
@@ -629,7 +649,7 @@ class MacHeinrich1987():
         b = self.computeCoefficient(atomicNumber, bi)
 
         try:
-            edgeEnergyM4_eV = self.xrayTransitionData.getIonizationEnergy_eV(atomicNumber, 'M4')
+            edgeEnergyM4_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M4')
         except KeyError:
             print("No M4 energy edge for %i" % (atomicNumber))
             edgeEnergyM4_eV = 0.0

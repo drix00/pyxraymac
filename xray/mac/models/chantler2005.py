@@ -1,12 +1,28 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2009 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: xray.mac.models.chantler2005
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+Chantler 2005 MAC model.
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import csv
@@ -16,7 +32,7 @@ import logging
 from scipy.interpolate import interp1d
 
 # Local modules.
-from xray import get_current_module_path
+from xray.mac import get_current_module_path
 
 # Globals and constants variables.
 SECTION_NAME = "Chantler2005"
@@ -30,6 +46,7 @@ MAC_cm2_g = "mac_cm2_g"
 ENERGY_UNIT_eV = "eV"
 ENERGY_UNIT_keV = "keV"
 
+
 class Chantler2005():
     def __init__(self):
         self.minimum_energy_eV = 0.0
@@ -37,6 +54,8 @@ class Chantler2005():
 
         self.mac_data = {}
         self.edge_energies_eV = {}
+
+        self.experimental_data = {}
 
     def read_mac_data(self, file_path=None, energy_unit=ENERGY_UNIT_keV):
         if file_path is None:
@@ -78,17 +97,17 @@ class Chantler2005():
             index += 2
 
     def compute_mac_cm2_g(self, energy_emitter_eV, atomic_number_absorber):
-        return self._computeMac_cm2_g(energy_emitter_eV, atomic_number_absorber)
+        return self._compute_mac_cm2_g(energy_emitter_eV, atomic_number_absorber)
 
-    def _computeMac_cm2_g(self, energyEmitter_eV, atomicNumberAbsorber):
-        if not atomicNumberAbsorber in self.mac_data:
+    def _compute_mac_cm2_g(self, energyEmitter_eV, atomic_number_absorber):
+        if atomic_number_absorber not in self.mac_data:
             self.read_mac_data()
 
-            energies_eV = self.experimental_data[atomicNumberAbsorber][ENERGIES_eV]
-            macs_cm2_g = self.experimental_data[atomicNumberAbsorber][MAC_cm2_g]
+            energies_eV = self.experimental_data[atomic_number_absorber][ENERGIES_eV]
+            macs_cm2_g = self.experimental_data[atomic_number_absorber][MAC_cm2_g]
 
             if len(energies_eV) > 0:
-                self.mac_data.setdefault(atomicNumberAbsorber, {})
+                self.mac_data.setdefault(atomic_number_absorber, {})
 
                 self.minimum_energy_eV = energies_eV[0]
 
@@ -98,10 +117,10 @@ class Chantler2005():
 
                 self.maximum_mac_cm2_g = macs_cm2_g[-1]
 
-                self.mac_data[atomicNumberAbsorber] = interp1d(energies_eV, macs_cm2_g)
+                self.mac_data[atomic_number_absorber] = interp1d(energies_eV, macs_cm2_g)
 
             else:
-                logging.error("No mac for %i and %0.1f", atomicNumberAbsorber, energyEmitter_eV)
+                logging.error("No mac for %i and %0.1f", atomic_number_absorber, energyEmitter_eV)
                 return 0.0
 
         if energyEmitter_eV <= self.minimum_energy_eV:
@@ -110,16 +129,17 @@ class Chantler2005():
         if energyEmitter_eV >= self.maximum_energy_eV:
             return self.maximum_mac_cm2_g
 
-        if atomicNumberAbsorber in self.mac_data:
+        if atomic_number_absorber in self.mac_data:
             try:
-                mac_value = self.mac_data[atomicNumberAbsorber](energyEmitter_eV)
+                mac_value = self.mac_data[atomic_number_absorber](energyEmitter_eV)
             except ValueError:
-                print(atomicNumberAbsorber, energyEmitter_eV)
+                print(atomic_number_absorber, energyEmitter_eV)
                 mac_value = self.minimum_mac_cm2_g
             return mac_value
         else:
-            logging.error("No mac for %i and %0.1f", atomicNumberAbsorber, energyEmitter_eV)
+            logging.error("No mac for %i and %0.1f", atomic_number_absorber, energyEmitter_eV)
             return 0.0
+
 
 def compare_all_versions():
     import matplotlib.pyplot as plt
@@ -167,7 +187,7 @@ def create_hdf5_file():
     import numpy as np
 
     filename = "chantler2005.hdf5"
-    file_path = get_current_module_path(__file__, "../../data/chantler2005/%s" % (filename))
+    file_path = get_current_module_path(__file__, "../../data/chantler2005/%s" % filename)
 
     with h5py.File(file_path, "w") as hdf5_file:
         mac = Chantler2005()
@@ -183,8 +203,3 @@ def create_hdf5_file():
 
             group_atomic_number.create_dataset(ENERGIES_eV, data=energies_eV)
             group_atomic_number.create_dataset(MAC_cm2_g, data=macs_cm2_g)
-
-if __name__ == '__main__':    #pragma: no cover
-    #compare_all_versions()
-
-    create_hdf5_file()

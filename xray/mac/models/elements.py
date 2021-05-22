@@ -1,12 +1,28 @@
 #!/usr/bin/env python
-""" """
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2016 Hendrix Demers"
-__license__ = ""
+"""
+.. py:currentmodule:: module_name
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+Description
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import csv
@@ -15,7 +31,9 @@ import logging
 # Third party modules.
 
 # Local modules.
-from xray import get_current_module_path
+
+# Project modules.
+from xray.mac import get_current_module_path
 
 # Globals and constants variables.
 ATOMIC_NUMBER = "atomic number"
@@ -27,11 +45,14 @@ FERMI_ENERGY_eV = "Fermi energy (eV)"
 K_FERMI = "k Fermi (eV)"
 PLASMON_ENERGY_eV = "plasmon energy (eV)"
 
+
 class AtomicNumberError(KeyError):
     pass
 
+
 class SymbolError(KeyError):
     pass
+
 
 class ElementProperties():
     def __init__(self):
@@ -41,21 +62,22 @@ class ElementProperties():
         if file_path is None:
             file_path = get_current_module_path(__file__, "../../../data/element_properties.csv")
 
-        fieldnames = [ATOMIC_NUMBER, SYMBOL, NAME, MASS_DENSITY_g_cm3, ATOMIC_MASS_g_mol, FERMI_ENERGY_eV, K_FERMI, PLASMON_ENERGY_eV]
+        fieldnames = [ATOMIC_NUMBER, SYMBOL, NAME, MASS_DENSITY_g_cm3, ATOMIC_MASS_g_mol, FERMI_ENERGY_eV, K_FERMI,
+                      PLASMON_ENERGY_eV]
         input_file = csv.DictReader(open(file_path), fieldnames=fieldnames)
 
         # Read the header row.
         next(input_file)
 
         self.data = {}
-        for fieldname in fieldnames:
-            self.data[fieldname] = {}
+        for field_name in fieldnames:
+            self.data[field_name] = {}
 
         for items in input_file:
             atomic_number = int(items[ATOMIC_NUMBER])
-            for fieldname, value in items.items():
+            for field_name, value in items.items():
                 if value != "":
-                    self.data[fieldname][atomic_number] = value
+                    self.data[field_name][atomic_number] = value
 
     def symbol(self, atomic_number):
         if self.data is None:

@@ -1,25 +1,42 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
-.. py:currentmodule:: test_MacCasino2
+.. py:currentmodule:: tests.mac.models.test_casino
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for module `MacCasino2`.
+Tests for the :py:mod:`xray.mac.models.casino` module.
 """
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2012 Hendrix Demers"
-__license__ = ""
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import unittest
 
-from xray.mac.models.casino import mac_zaluzec_cm2_g, MACSTOTAL, MACS_HENKE_EBISU, EFFICACITE, MACS_HEINRICH, SPECIAL_EQUATIONS
+# Third party modules.
 
+# Local modules.
+
+# Project modules.
+from xray.mac.models.casino import mac_zaluzec_cm2_g, MACSTOTAL, MACS_HENKE_EBISU, EFFICACITE, MACS_HEINRICH, \
+    SPECIAL_EQUATIONS
 
 # Globals and constants variables.
+
 
 class TestCasino(unittest.TestCase):
     """
@@ -45,7 +62,7 @@ class TestCasino(unittest.TestCase):
         First test to check if the testcase is working with the testing framework.
         """
 
-        #self.fail("Test if the testcase is working.")
+        # self.fail("Test if the testcase is working.")
         self.assert_(True)
 
     def test_mac_zaluzec_cm2_g(self):
@@ -100,8 +117,6 @@ class TestCasino(unittest.TestCase):
             wavelength_A = 12.3981/energie_keV
             mac_cm2_g = mac_zaluzec_cm2_g(wavelength_A, atomic_number)
             self.assertAlmostEqual(macs_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
-
-        #self.fail("Test if the testcase is working.")
 
     def test_SPECIAL_EQUATIONS(self):
         """
@@ -257,8 +272,6 @@ class TestCasino(unittest.TestCase):
 
         compare_mac(mac_ref_cm2_g, atomic_number)
 
-        #self.fail("Test if the testcase is working.")
-
     def test_MACS_HENKE_EBISU(self):
         """
         Tests for method `MACS_HENKE_EBISU`.
@@ -295,8 +308,6 @@ class TestCasino(unittest.TestCase):
         mac_cm2_g = MACS_HENKE_EBISU(energie_keV, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
-        #self.fail("Test if the testcase is working.")
-
     def test_MACSTOTAL(self):
         """
         Tests for method `MACSTOTAL`.
@@ -316,8 +327,6 @@ class TestCasino(unittest.TestCase):
 
         self.assertRaises(ValueError, MACSTOTAL, 0.0, 1)
         self.assertRaises(ValueError, MACSTOTAL, 0.0, 2)
-
-        #self.fail("Test if the testcase is working.")
 
     def test_MACS_HEINRICH(self):
         """
@@ -382,8 +391,6 @@ class TestCasino(unittest.TestCase):
             mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
             self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
 
-        #self.fail("Test if the testcase is working.")
-
     def test_EFFICACITE(self):
         """
         Tests for method `EFFICACITE`.
@@ -408,9 +415,3 @@ class TestCasino(unittest.TestCase):
         for energie_keV in energies_keV:
             efficiency = EFFICACITE(energie_keV)
             self.assertAlmostEqual(efficiencies_ref[energie_keV], efficiency, msg=energie_keV)
-
-        #self.fail("Test if the testcase is working.")
-
-if __name__ == '__main__':    #pragma: no cover
-    import nose
-    nose.runmodule()

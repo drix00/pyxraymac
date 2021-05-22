@@ -1,11 +1,28 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-# Script information for the file.
-__author__ = "Hendrix Demers"
-__email__ = "hendrix.demers@mail.mcgill.ca"
-__version__ = "0.2"
-__copyright__ = "Copyright (c) 2021 Hendrix Demeners"
-__license__ = ""
+"""
+.. py:currentmodule:: module_name
+.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
+
+Description
+"""
+
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import os
@@ -15,13 +32,15 @@ from distutils.cmd import Command
 # Third party modules.
 from setuptools import setup, find_packages
 
+
 # Local modules.
+
+# Project modules.
 
 # Globals and constants variables.
 
 
 class TestDataCommand(Command):
-
     description = "create a zip of all files in the testData folder"
     user_options = [('dist-dir=', 'd',
                      "directory to put final built distributions in "
@@ -52,7 +71,7 @@ class TestDataCommand(Command):
 
 
 setup(name="pyxraymac",
-      version='0.1',
+      version='0.2',
       url='',
       description="",
       author="Hendrix Demers",
@@ -69,16 +88,13 @@ setup(name="pyxraymac",
 
       packages=find_packages(),
 
-      include_package_data=False, # Do not include test data
+      include_package_data=False,  # Do not include test data
 
       install_requires=['numpy',
                         'matplotlib',
                         'scipy',
                         ],
-      setup_requires=['nose', 'coverage'],
-
-      test_suite='nose.collector',
+      setup_requires=['pytest', 'pytest-cov', 'coverage'],
 
       cmdclass={'zip_testdata': TestDataCommand},
-)
-
+      )

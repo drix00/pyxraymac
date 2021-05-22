@@ -1,18 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
-.. py:currentmodule:: ionization_energy
-   :synopsis: Container of ionization energy for each atomic number and subshell.
-   
+.. py:currentmodule:: xray.mac.models.ionization_energy
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Container of ionization energy for each atomic number and subshell.
 """
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = "0.1"
-__date__ = "2016-10-26"
-__copyright__ = "Copyright (c) 2016 Hendrix Demers"
-__license__ = "Apache License Version 2.0"
+###############################################################################
+# Copyright 2021 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
 import csv
@@ -20,22 +30,22 @@ import csv
 # Third party modules.
 
 # Local modules.
-from xray import get_current_module_path
 
-# Project modules
+# Project modules.
+from xray.mac import get_current_module_path
 
 # Globals and constants variables.
-SUBSHELLS = [     "K",
-                  "L1", "L2", "L3",
-                  "M1", "M2", "M3", "M4", "M5",
-                  "N1", "N2", "N3", "N4", "N5", "N6", "N7",
-                  "O1", "O2", "O3", "O4", "O5", "O6", "O7",
-                  "P1"]
+SUBSHELLS = ["K",
+             "L1", "L2", "L3",
+             "M1", "M2", "M3", "M4", "M5",
+             "N1", "N2", "N3", "N4", "N5", "N6", "N7",
+             "O1", "O2", "O3", "O4", "O5", "O6", "O7",
+             "P1"]
 
-class IonizationEnergies():
+
+class IonizationEnergies:
     def __init__(self):
         self.edge_energies_eV = None
-
 
     def read_edge_data(self, file_path=None):
         if file_path is None:
