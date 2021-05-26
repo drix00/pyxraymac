@@ -70,29 +70,29 @@ class TestMacHenkeWinxray(unittest.TestCase):
     def test_read_text_data(self):
         enegies_eV, mac_cm2_g = self.macData.readTextData(28)  # noqa
 
-        self.assertEquals(500, len(enegies_eV))
+        self.assertEqual(500, len(enegies_eV))
 
-        self.assertEquals(500, len(mac_cm2_g))
+        self.assertEqual(500, len(mac_cm2_g))
 
-        self.assertEquals(10.0, enegies_eV[0])
+        self.assertEqual(10.0, enegies_eV[0])
 
-        self.assertEquals(98739.2, mac_cm2_g[0])
+        self.assertEqual(98739.2, mac_cm2_g[0])
 
-        self.assertEquals(30000.0, enegies_eV[-1])
+        self.assertEqual(30000.0, enegies_eV[-1])
 
-        self.assertEquals(9.77398, mac_cm2_g[-1])
+        self.assertEqual(9.77398, mac_cm2_g[-1])
 
     def test_read_binary_data(self):
         enegies_eV, mac_cm2_g = self.macData.readBinaryData(28)  # noqa
 
-        self.assertEquals(500, len(enegies_eV))
+        self.assertEqual(500, len(enegies_eV))
 
-        self.assertEquals(500, len(mac_cm2_g))
+        self.assertEqual(500, len(mac_cm2_g))
 
-        self.assertAlmostEquals(10.0, enegies_eV[0], 1)
+        self.assertAlmostEqual(10.0, enegies_eV[0], 1)
 
-        self.assertAlmostEquals(98739.2, mac_cm2_g[0], 1)
+        self.assertAlmostEqual(98739.2, mac_cm2_g[0], 1)
 
-        self.assertAlmostEquals(30000.0, enegies_eV[-1], 1)
+        self.assertAlmostEqual(30000.0, enegies_eV[-1], 1)
 
-        self.assertAlmostEquals(9.77398, mac_cm2_g[-1], 1)
+        self.assertAlmostEqual(9.77398, mac_cm2_g[-1], 1)

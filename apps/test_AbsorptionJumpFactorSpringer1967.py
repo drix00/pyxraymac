@@ -67,7 +67,7 @@ class TestAbsorptionJumpFactorSpringer1967(unittest.TestCase):
         for atomicNumber in factor_K_references:
             factor = self.modelSpringer1967.compute_factor_K(atomicNumber)
 
-            self.assertAlmostEquals(factor_K_references[atomicNumber], factor, 2)
+            self.assertAlmostEqual(factor_K_references[atomicNumber], factor, 2)
 
     def testComputeFactorLIII(self):
         factor_LIII_references = {40: 0.455, 60: 0.410, 80: 0.363}
@@ -75,4 +75,4 @@ class TestAbsorptionJumpFactorSpringer1967(unittest.TestCase):
         for atomicNumber in factor_LIII_references:
             factor = self.modelSpringer1967.compute_factor_LIII(atomicNumber)
 
-            self.assertAlmostEquals(factor_LIII_references[atomicNumber], factor, 2)
+            self.assertAlmostEqual(factor_LIII_references[atomicNumber], factor, 2)

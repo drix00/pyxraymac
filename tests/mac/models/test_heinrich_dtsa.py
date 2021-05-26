@@ -52,6 +52,6 @@ class TestMacHeinrichDTSA(unittest.TestCase):
         self.assertTrue(True)
 
     def test_compute_mac_cm2_g(self):
-        value = self.macModel.computeMac_cm2_g(1041.0, 79)
+        value = self.macModel.compute_mac_cm2_g(1041.0, 79)
 
         self.assertAlmostEqual(4698.6, value, 1)

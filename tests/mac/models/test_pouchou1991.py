@@ -52,38 +52,38 @@ class TestMacPouchou1991(unittest.TestCase):
         self.assertTrue(True)
 
     def test_is_available(self):
-        self.assertEquals(True, self.mac.is_available(73, 14, 'Ka'))
+        self.assertEqual(True, self.mac.is_available(73, 14, 'Ka'))
 
-        self.assertEquals(False, self.mac.is_available(73, 14, 'La'))
+        self.assertEqual(False, self.mac.is_available(73, 14, 'La'))
 
     def test_mac_cm2_g(self):
-        self.assertEquals(1490.0, self.mac.mac_cm2_g(73, 14, 'Ka'))
+        self.assertEqual(1490.0, self.mac.mac_cm2_g(73, 14, 'Ka'))
 
-        self.assertEquals(3500.0, self.mac.mac_cm2_g(5, 5, 'Ka'))
+        self.assertEqual(3500.0, self.mac.mac_cm2_g(5, 5, 'Ka'))
 
-        self.assertEquals(13500.0, self.mac.mac_cm2_g(26, 6, 'Ka'))
+        self.assertEqual(13500.0, self.mac.mac_cm2_g(26, 6, 'Ka'))
 
-        self.assertEquals(15500.0, self.mac.mac_cm2_g(73, 7, 'Ka'))
+        self.assertEqual(15500.0, self.mac.mac_cm2_g(73, 7, 'Ka'))
 
     def test_extract_transition_key(self):
-        self.assertEquals('Ka', self.mac.extract_transition_key('Ka'))
+        self.assertEqual('Ka', self.mac.extract_transition_key('Ka'))
 
-        self.assertEquals('Ka', self.mac.extract_transition_key('K'))
+        self.assertEqual('Ka', self.mac.extract_transition_key('K'))
 
-        self.assertEquals('Ka', self.mac.extract_transition_key('Ka1'))
+        self.assertEqual('Ka', self.mac.extract_transition_key('Ka1'))
 
-        self.assertEquals('Ka', self.mac.extract_transition_key('Ka2'))
+        self.assertEqual('Ka', self.mac.extract_transition_key('Ka2'))
 
-        self.assertEquals('La', self.mac.extract_transition_key('La'))
+        self.assertEqual('La', self.mac.extract_transition_key('La'))
 
-        self.assertEquals('La', self.mac.extract_transition_key('L'))
+        self.assertEqual('La', self.mac.extract_transition_key('L'))
 
-        self.assertEquals('La', self.mac.extract_transition_key('La2'))
+        self.assertEqual('La', self.mac.extract_transition_key('La2'))
 
-        self.assertEquals('Lb', self.mac.extract_transition_key('Lb'))
+        self.assertEqual('Lb', self.mac.extract_transition_key('Lb'))
 
-        self.assertEquals('La', self.mac.extract_transition_key('L'))
+        self.assertEqual('La', self.mac.extract_transition_key('L'))
 
-        self.assertEquals('Lb', self.mac.extract_transition_key('Lb2'))
+        self.assertEqual('Lb', self.mac.extract_transition_key('Lb2'))
 
-        self.assertEquals('Ma', self.mac.extract_transition_key('Ma'))
+        self.assertEqual('Ma', self.mac.extract_transition_key('Ma'))

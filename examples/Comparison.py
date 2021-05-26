@@ -98,11 +98,11 @@ def graphic_henke_heinrich(thesis_image_path):
     macsHenke = []
 
     for xrayEnergy_eV in xray_energies_eV:
-        mac_cm2_g = heinrich1987.computeMac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
+        mac_cm2_g = heinrich1987.compute_mac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
 
         macsH1987.append(mac_cm2_g)
 
-        mac_cm2_g = heinrich_dtsa.computeMac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
+        mac_cm2_g = heinrich_dtsa.compute_mac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
 
         macsHDTSA.append(mac_cm2_g)
 
@@ -152,11 +152,11 @@ def show_graphic():
     macsHDTSA = []
 
     for xrayEnergy_eV in xray_energies_eV:
-        mac_cm2_g = heinrich1987.computeMac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
+        mac_cm2_g = heinrich1987.compute_mac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
 
         macsH1987.append(mac_cm2_g)
 
-        mac_cm2_g = heinrich_dtsa.computeMac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
+        mac_cm2_g = heinrich_dtsa.compute_mac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
 
         macsHDTSA.append(mac_cm2_g)
 
@@ -189,10 +189,10 @@ def test_mac():
         macsHenke = []
 
         for xrayEnergy_eV in xray_energies_eV:
-            mac_cm2_g = heinrich1987.computeMac_cm2_g(xrayEnergy_eV, atomic_number)
+            mac_cm2_g = heinrich1987.compute_mac_cm2_g(xrayEnergy_eV, atomic_number)
             macsH1987.append(mac_cm2_g)
 
-            mac_cm2_g = heinrichDTSA.computeMac_cm2_g(xrayEnergy_eV, atomic_number)
+            mac_cm2_g = heinrichDTSA.compute_mac_cm2_g(xrayEnergy_eV, atomic_number)
             macsHDTSA.append(mac_cm2_g)
 
             mac_cm2_g = henke1993.computeMac_cm2_g(xrayEnergy_eV, atomic_number)

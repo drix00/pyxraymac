@@ -27,7 +27,7 @@ MAC Heinrich 1987 model.
 # Standard library modules.
 import math
 import warnings
-warnings.simplefilter('ignore', UserWarning)
+import logging
 
 # Third party modules.
 import numpy
@@ -36,326 +36,300 @@ import numpy
 
 # Project modules.
 from xray.mac.models.element_properties import get_atomic_mass_g_mol
-from xray.mac.models.ionization_energies import IonizationEnergies
+from xray.mac.models.ionization_energies import IonizationEnergiesDtsa
+
 
 # Globals and constants variables.
 
 
 class MacHeinrich1987:
     def __init__(self):
-        self.ionization_energies = IonizationEnergies()
+        self.ionization_energies = IonizationEnergiesDtsa()
 
-        self.coefficientC = {1: self.computeCRegion1
-            , 2: self.computeCRegion2
-            , 3: self.computeCRegion3
-            , 4: self.computeCRegion4
-            , 5: self.computeCRegion5
-            , 6: self.computeCRegion6
-            , 7: self.computeCRegion7
-            , 8: self.computeCRegion8
-            , 9: self.computeCRegion9
-            , 10: self.computeCRegion10
-            , 11: self.computeCRegion11
-                             }
+        self.coefficient_C = {
+            1: self.compute_C_region1,
+            2: self.compute_C_region2,
+            3: self.compute_C_region3,
+            4: self.compute_C_region4,
+            5: self.compute_C_region5,
+            6: self.compute_C_region6,
+            7: self.compute_C_region7,
+            8: self.compute_C_region8,
+            9: self.compute_C_region9,
+            10: self.compute_C_region10,
+            11: self.compute_C_region11}
 
-        self.coefficientN = {1: self.computeNRegion1
-            , 2: self.computeNRegion2_4
-            , 3: self.computeNRegion2_4
-            , 4: self.computeNRegion2_4
-            , 5: self.computeNRegion5
-            , 6: self.computeNRegion6_9
-            , 7: self.computeNRegion6_9
-            , 8: self.computeNRegion6_9
-            , 9: self.computeNRegion6_9
-            , 10: self.computeNRegion10
-            , 11: self.computeNRegion11
-                             }
+        self.coefficient_n = {
+            1: self.compute_n_region1,
+            2: self.compute_n_region2_4,
+            3: self.compute_n_region2_4,
+            4: self.compute_n_region2_4,
+            5: self.compute_n_region5,
+            6: self.compute_n_region6_9,
+            7: self.compute_n_region6_9,
+            8: self.compute_n_region6_9,
+            9: self.compute_n_region6_9,
+            10: self.compute_n_region10,
+            11: self.compute_n_region11}
 
-        self.coefficientB_eV = {1: self.computeBRegion1
-            , 2: self.computeBRegion2_4
-            , 3: self.computeBRegion2_4
-            , 4: self.computeBRegion2_4
-            , 5: self.computeBRegion5
-            , 6: self.computeBRegion6_9
-            , 7: self.computeBRegion6_9
-            , 8: self.computeBRegion6_9
-            , 9: self.computeBRegion6_9
-            , 10: self.computeBRegion10
-                                }
+        self.coefficient_b_eV = {
+            1: self.compute_b_region1,
+            2: self.compute_b_region2_4,
+            3: self.compute_b_region2_4,
+            4: self.compute_b_region2_4,
+            5: self.compute_b_region5,
+            6: self.compute_b_region6_9,
+            7: self.compute_b_region6_9,
+            8: self.compute_b_region6_9,
+            9: self.compute_b_region6_9,
+            10: self.compute_b_region10}
 
-        self.coefficientA = {1: self.computeARegion1
-            , 2: self.computeARegion2_4
-            , 3: self.computeARegion2_4
-            , 4: self.computeARegion2_4
-            , 5: self.computeARegion5
-            , 6: self.computeARegion6_9
-            , 7: self.computeARegion6_9
-            , 8: self.computeARegion6_9
-            , 9: self.computeARegion6_9
-            , 10: self.computeARegion10
-            , 11: self.computeARegion11
-                             }
+        self.coefficient_a = {
+            1: self.compute_a_region1,
+            2: self.compute_a_region2_4,
+            3: self.compute_a_region2_4,
+            4: self.compute_a_region2_4,
+            5: self.compute_a_region5,
+            6: self.compute_a_region6_9,
+            7: self.compute_a_region6_9,
+            8: self.compute_a_region6_9,
+            9: self.compute_a_region6_9,
+            10: self.compute_a_region10,
+            11: self.compute_a_region10}
 
-        self._vec_computeMac_cm2_g = numpy.vectorize(self._computeMac_cm2_g)
+        self._vec_computeMac_cm2_g = numpy.vectorize(self._compute_mac_cm2_g)
 
-    def checkXrayEnergyCloseEdgeEnergy(self, xrayEnergy_eV, edgeEnergy_eV):
+    @staticmethod
+    def check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_eV):  # noqa
         """Warning -5 eV or + 20 eV from edge energy."""
-        differenceEnergy_eV = xrayEnergy_eV - edgeEnergy_eV
+        difference_energy_eV = xray_energy_eV - edge_energy_eV  # noqa
 
-        if differenceEnergy_eV >= -5.0 and differenceEnergy_eV <= 20.0:
-            message = "X-ray emitted (%0.1f eV) is near the energy edge (%0.1f eV) by %0.1f eV." % (xrayEnergy_eV, edgeEnergy_eV, differenceEnergy_eV)
+        if -5.0 <= difference_energy_eV <= 20.0:
+            args = (xray_energy_eV, edge_energy_eV, difference_energy_eV)
+            message = "X-ray emitted (%0.1f eV) is near the energy edge (%0.1f eV) by %0.1f eV." % args
             warnings.warn(message)
+            logging.warning(message)
 
-    def checkVeryLowEnergy_eV(self, energyEmitter_eV, energyLimit_eV=180.0):
+    @staticmethod
+    def check_very_low_energy_eV(energy_emitter_eV, energy_limit_eV=180.0):  # noqa
         """Warning for energy below 180 eV or below 1.1*cutoff."""
-        if energyEmitter_eV <= energyLimit_eV:
-            message = "X-ray emitted (%0.1f eV) is very low, less than limit (%0.1f)." % (energyEmitter_eV, energyLimit_eV)
+        if energy_emitter_eV <= energy_limit_eV:
+            args = (energy_emitter_eV, energy_limit_eV)
+            message = "X-ray emitted (%0.1f eV) is very low, less than limit (%0.1f)." % args
             warnings.warn(message)
+            logging.warning(message)
 
-    def checkEnergyBetweenM4M5Z(self, region, atomicNumber):
+    @staticmethod
+    def check_energy_between_m4_m5_z(region, atomic_number):
         """Warning for energy between M4 and M5 for elements of Z < 70."""
-        if region == 9 and atomicNumber < 70:
-            message = "X-ray emitted between M4 and M5 for element %i." % (atomicNumber)
+        if region == 9 and atomic_number < 70:
+            message = "X-ray emitted between M4 and M5 for element %i." % atomic_number
             warnings.warn(message)
+            logging.warning(message)
 
-    def checkEnergyBelowM5(self, region):
+    @staticmethod
+    def check_energy_below_m5(region):
         """Warning if the energy is below the edge M5 of the absorber."""
         if region >= 10:
             message = "X-ray emitted below M5."
             warnings.warn(message)
+            logging.warning(message)
 
-    def computeMac_cm2_g(self, energyEmitter_eV, atomicNumberAbsorber):
-        if isinstance(energyEmitter_eV, numpy.ndarray):
-            return self._vec_computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
+    def compute_mac_cm2_g(self, energy_emitter_eV, atomic_number_absorber):  # noqa
+        if isinstance(energy_emitter_eV, numpy.ndarray):
+            return self._vec_computeMac_cm2_g(energy_emitter_eV, atomic_number_absorber)
         else:
-            return self._computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
+            return self._compute_mac_cm2_g(energy_emitter_eV, atomic_number_absorber)
 
-    def _computeMac_cm2_g(self, energyEmitter_eV, atomicNumberAbsorber):
-        if energyEmitter_eV <= 0.0:
+    def _compute_mac_cm2_g(self, energy_emitter_eV, atomic_number_absorber):  # noqa
+        if energy_emitter_eV <= 0.0:
             return 1.0E6
 
-        self.checkVeryLowEnergy_eV(energyEmitter_eV)
+        self.check_very_low_energy_eV(energy_emitter_eV)
 
-        region = self.getRegion(atomicNumberAbsorber, energyEmitter_eV)
+        region = self.get_region(atomic_number_absorber, energy_emitter_eV)
+        self.check_energy_below_m5(region)
 
-        self.checkEnergyBetweenM4M5Z(region, atomicNumberAbsorber)
+        self.check_energy_between_m4_m5_z(region, atomic_number_absorber)
 
-        C = self.coefficientC[region](atomicNumberAbsorber)
+        C = self.coefficient_C[region](atomic_number_absorber)  # noqa
 
-        n = self.coefficientN[region](atomicNumberAbsorber)
+        n = self.coefficient_n[region](atomic_number_absorber)  # noqa
 
-        atomicMass_g_mol = get_atomic_mass_g_mol(atomicNumberAbsorber)
+        atomic_mass_g_mol = get_atomic_mass_g_mol(atomic_number_absorber)
 
         if region == 11:
-            cutoff_eV = self.computeCutoff_eV(atomicNumberAbsorber)
+            cutoff_eV = self.compute_cutoff_eV(atomic_number_absorber)  # noqa
 
-            self.checkVeryLowEnergy_eV(energyEmitter_eV, energyLimit_eV=cutoff_eV*1.1)
+            self.check_very_low_energy_eV(energy_emitter_eV, energy_limit_eV=cutoff_eV * 1.1)
 
-            #print energyEmitter_eV, cutoff_eV
+            mac_cm2_g = self.compute_model2(atomic_number_absorber, atomic_mass_g_mol, energy_emitter_eV, C, n,
+                                            cutoff_eV)
 
-            mac_cm2_g = self.computeModel2(atomicNumberAbsorber, atomicMass_g_mol, energyEmitter_eV, C, n, cutoff_eV)
-
-            #data_mac_cm2_g = self.computeModel2b(atomicNumberAbsorber, atomicMass_g_mol, energyEmitter_eV, C, n, cutoff_eV)
+            # mac_cm2_g = self.compute_model2b(atomic_numberAbsorber, atomic_mass_g_mol, energyEmitter_eV, C, n,
+            #                                  cutoff_eV)
 
             if mac_cm2_g < 0.0:
                 return 1.0E6
 
             return mac_cm2_g
         else:
-            b_eV = self.coefficientB_eV[region](atomicNumberAbsorber)
+            b_eV = self.coefficient_b_eV[region](atomic_number_absorber)  # noqa
 
-            a = self.coefficientA[region](atomicNumberAbsorber)
+            a = self.coefficient_a[region](atomic_number_absorber)  # noqa
 
-            mac_cm2_g = self.computeModel1(atomicNumberAbsorber, atomicMass_g_mol, energyEmitter_eV, C, n, b_eV, a)
+            mac_cm2_g = self.compute_model1(atomic_number_absorber, atomic_mass_g_mol, energy_emitter_eV, C, n, b_eV, a)
 
             if mac_cm2_g < 0.0:
                 return 1.0E6
 
             return mac_cm2_g
 
-    def computeModel1(self, atomicNumber, atomicMass_g_mol
-                                        , xrayEnergy_eV
-                                        , C
-                                        , n
-                                        , b_eV
-                                        , a):
-        factor1 = C*math.pow(atomicNumber, 4)/atomicMass_g_mol
+    def compute_model1(self, atomic_number, atomic_mass_g_mol, xray_energy_eV, C, n, b_eV, a):  # noqa
+        factor1 = C * math.pow(atomic_number, 4) / atomic_mass_g_mol
 
-        factor2 = math.pow(12397.0/xrayEnergy_eV, n)
+        factor2 = math.pow(12397.0 / xray_energy_eV, n)
 
-        argExp = (-xrayEnergy_eV + b_eV)/a
+        arg_exp = (-xray_energy_eV + b_eV) / a
 
-        factor3 = 1.0 - math.exp(argExp)
+        factor3 = 1.0 - math.exp(arg_exp)
 
-        mac_cm2_g = factor1*factor2*factor3
+        mac_cm2_g = factor1 * factor2 * factor3
 
         return mac_cm2_g
 
-    def computeModel2(self, atomicNumber, atomicMass_g_mol
-                                        , xrayEnergy_eV
-                                        , C
-                                        , n
-                                        , cutoff_eV):
-        factor1 = 1.02*C
+    def compute_model2(self, atomic_number, atomic_mass_g_mol, xray_energy_eV, C, n, cutoff_eV):  # noqa
+        # Typo in equation (4) : 1.02 C should be 1.02, C is twice in the equation.
+        # factor1 = 1.02 * C
         factor1 = 1.02
 
-        factor2 = math.pow(12397.0/xrayEnergy_eV, n)
+        factor2 = math.pow(12397.0 / xray_energy_eV, n)
 
-        factor3 = C*math.pow(atomicNumber, 4)/atomicMass_g_mol
+        factor3 = C * math.pow(atomic_number, 4) / atomic_mass_g_mol
 
-        nominator = xrayEnergy_eV - cutoff_eV
+        nominator = xray_energy_eV - cutoff_eV
 
-        edgeEnergyN1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
+        edge_energy_n1_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'N1')  # noqa
 
-        denominator = edgeEnergyN1_eV - cutoff_eV
+        denominator = edge_energy_n1_eV - cutoff_eV
 
-        factor4 = nominator/denominator
+        factor4 = nominator / denominator
 
-        mac_cm2_g = factor1*factor2*factor3*factor4
-
-        return mac_cm2_g
-
-    def computeModel2b(self, atomicNumber, atomicMass_g_mol
-                                        , xrayEnergy_eV
-                                        , C
-                                        , n
-                                        , cutoff_eV):
-
-        edgeEnergyN1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
-
-        b_eV = self.coefficientB_eV[10](atomicNumber)
-
-        a = self.coefficientA[10](atomicNumber)
-
-        factor1 = self.computeModel1(atomicNumber, atomicMass_g_mol, edgeEnergyN1_eV, C, n, b_eV, a)
-
-        nominator = xrayEnergy_eV - cutoff_eV
-
-        denominator = edgeEnergyN1_eV - cutoff_eV
-
-        factor4 = nominator/denominator
-
-        mac_cm2_g = 1.02*factor1*factor4
+        mac_cm2_g = factor1 * factor2 * factor3 * factor4
 
         return mac_cm2_g
 
+    def compute_model2b(self, atomic_number, atomic_mass_g_mol, xray_energy_eV, C, n, cutoff_eV):  # noqa
 
-    def getRegion(self, atomicNumber, xrayEnergy_eV):
+        edge_energy_n1_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'N1')  # noqa
+
+        b_eV = self.coefficient_b_eV[10](atomic_number)  # noqa
+
+        a = self.coefficient_a[10](atomic_number)  # noqa
+
+        factor1 = self.compute_model1(atomic_number, atomic_mass_g_mol, edge_energy_n1_eV, C, n, b_eV, a)
+
+        nominator = xray_energy_eV - cutoff_eV
+
+        denominator = edge_energy_n1_eV - cutoff_eV
+
+        factor4 = nominator / denominator
+
+        mac_cm2_g = 1.02 * factor1 * factor4
+
+        return mac_cm2_g
+
+    def get_region(self, atomic_number, xray_energy_eV):  # noqa
         # Region 1
-        edgeEnergyK_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'K')
+        edge_energy_K_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'K')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyK_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_K_eV)
 
-        if xrayEnergy_eV >= edgeEnergyK_eV:
+        if xray_energy_eV >= edge_energy_K_eV:
             return 1
 
         # Region 2
-        try:
-            edgeEnergyL1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L1')
-        except KeyError:
-            edgeEnergyL1_eV = 0.0
+        edge_energy_L1_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'L1')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyL1_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_L1_eV)
 
-        if edgeEnergyK_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyL1_eV:
+        if edge_energy_K_eV >= xray_energy_eV > edge_energy_L1_eV:
             return 2
 
         # Region 3
-        try:
-            edgeEnergyL2_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L2')
-        except KeyError:
-            edgeEnergyL2_eV = 0.0
+        edge_energy_L2_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'L2')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyL2_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_L2_eV)
 
-        if edgeEnergyL1_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyL2_eV:
+        if edge_energy_L1_eV >= xray_energy_eV > edge_energy_L2_eV:
             return 3
 
         # Region 4
-        try:
-            edgeEnergyL3_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L3')
-        except KeyError:
-            edgeEnergyL3_eV = 0.0
+        edge_energy_L3_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'L3')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyL3_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_L3_eV)
 
-        if edgeEnergyL2_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyL3_eV:
+        if edge_energy_L2_eV >= xray_energy_eV > edge_energy_L3_eV:
             return 4
 
         # Region 5
-        try:
-            edgeEnergyM1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M1')
-        except KeyError:
-            edgeEnergyM1_eV = 0.0
+        edge_energy_M1_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'M1')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyM1_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_M1_eV)
 
-        if edgeEnergyL3_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyM1_eV:
+        if edge_energy_L3_eV >= xray_energy_eV > edge_energy_M1_eV:
             return 5
 
         # Region 6
-        try:
-            edgeEnergyM2_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M2')
-        except KeyError:
-            edgeEnergyM2_eV = 0.0
+        edge_energy_M2_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'M2')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyM2_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_M2_eV)
 
-        if edgeEnergyM1_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyM2_eV:
+        if edge_energy_M1_eV >= xray_energy_eV > edge_energy_M2_eV:
             return 6
 
         # Region 7
-        try:
-            edgeEnergyM3_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M3')
-        except KeyError:
-            edgeEnergyM3_eV = 0.0
+        edge_energy_M3_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'M3')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyM3_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_M3_eV)
 
-        if edgeEnergyM2_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyM3_eV:
+        if edge_energy_M2_eV >= xray_energy_eV > edge_energy_M3_eV:
             return 7
 
         # Region 8
-        try:
-            edgeEnergyM4_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M4')
-        except KeyError:
-            edgeEnergyM4_eV = 0.0
+        edge_energy_M4_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'M4')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyM4_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_M4_eV)
 
-        if edgeEnergyM3_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyM4_eV:
+        if edge_energy_M3_eV >= xray_energy_eV > edge_energy_M4_eV:
             return 8
 
         # Region 9
-        try:
-            edgeEnergyM5_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M5')
-        except KeyError:
-            edgeEnergyM5_eV = 0.0
+        edge_energy_M5_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'M5')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyM5_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_M5_eV)
 
-        if edgeEnergyM4_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyM5_eV:
+        if edge_energy_M4_eV >= xray_energy_eV > edge_energy_M5_eV:
             return 9
 
         # Region 10
-        try:
-            edgeEnergyN1_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
-        except KeyError:
-            edgeEnergyN1_eV = 0.0
+        edge_energy_N1_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'N1')  # noqa
 
-        self.checkXrayEnergyCloseEdgeEnergy(xrayEnergy_eV, edgeEnergyN1_eV)
+        self.check_xray_energy_close_edge_energy(xray_energy_eV, edge_energy_N1_eV)
 
-        if edgeEnergyM5_eV >= xrayEnergy_eV and xrayEnergy_eV > edgeEnergyN1_eV:
+        if edge_energy_M5_eV >= xray_energy_eV > edge_energy_N1_eV:
             return 10
 
         # Region 11
-        if edgeEnergyN1_eV >= xrayEnergy_eV:
+        if edge_energy_N1_eV >= xray_energy_eV:
             return 11
 
-        print(atomicNumber, xrayEnergy_eV, edgeEnergyN1_eV)
+        raise RuntimeError("Region not found for Z={}, E_X={}, E_N1={}".format(atomic_number, xray_energy_eV,
+                                                                               edge_energy_N1_eV))
 
-    def computeCoefficient(self, atomicNumber, coefficients):
-        """
+    @staticmethod
+    def compute_coefficient(atomic_number, coefficients):
+        r"""
         Compute the value of the coefficient C, n, a, or b:
 
         $C = \sum C_{i} \cdot Z^{i}$
@@ -364,301 +338,295 @@ class MacHeinrich1987:
         $b = \sum b_{i} \cdot Z^{i}$
 
         """
-        sumCoefficient = 0.0
+        sum_coefficient = 0.0
 
         for index, value in enumerate(coefficients):
-            sumCoefficient += value*math.pow(atomicNumber, index)
+            sum_coefficient += value * math.pow(atomic_number, index)
 
-        return sumCoefficient
+        return sum_coefficient
 
-    def computeCRegion1(self, atomicNumber):
-        if atomicNumber < 6:
+    def compute_C_region1(self, atomic_number):  # noqa
+        if atomic_number < 6:
             ci = [-2.87536E-4, 1.808599E-3]
 
-            c = self.computeCoefficient(atomicNumber, ci)
+            c = self.compute_coefficient(atomic_number, ci)
 
             return c
         else:
             ci = [5.253E-3, 1.33257E-3, -7.5937E-5, 1.69357E-6, -1.3975E-8]
 
-            c = self.computeCoefficient(atomicNumber, ci)
+            c = self.compute_coefficient(atomic_number, ci)
 
             return c
 
-    def computeCRegion2(self, atomicNumber):
+    def compute_C_region2(self, atomic_number):  # noqa
         ci = [-9.24E-5, 1.41478E-4, -5.24999E-6, 9.85296E-8, -9.07306E-10, 3.19254E-12]
 
-        c = self.computeCoefficient(atomicNumber, ci)
+        c = self.compute_coefficient(atomic_number, ci)
 
         return c
 
-    def computeCRegion3(self, atomicNumber):
-        c = self.computeCRegion2(atomicNumber)
+    def compute_C_region3(self, atomic_number):  # noqa
+        c = self.compute_C_region2(atomic_number)
 
         factor = 0.858
 
-        return c*factor
+        return c * factor
 
-    def computeCRegion4(self, atomicNumber):
-        c = self.computeCRegion2(atomicNumber)
+    def compute_C_region4(self, atomic_number):  # noqa
+        c = self.compute_C_region2(atomic_number)
 
         term1 = 0.8933
 
-        term2 = -atomicNumber*8.29E-3
+        term2 = -atomic_number * 8.29E-3
 
-        term3 = atomicNumber*atomicNumber*6.38E-5
+        term3 = atomic_number * atomic_number * 6.38E-5
 
         factor = term1 + term2 + term3
 
-        return c*factor
+        return c * factor
 
-    def computeCRegion5(self, atomicNumber):
-        if atomicNumber < 30:
+    def compute_C_region5(self, atomic_number):  # noqa
+        if atomic_number < 30:
             ci = [1.889757E-2, -1.8517159E-3, 6.9602789E-5, -1.1641145E-6, 7.2773258E-9]
 
-            c = self.computeCoefficient(atomicNumber, ci)
+            c = self.compute_coefficient(atomic_number, ci)
 
             return c
         else:
             ci = [3.0039E-3, -1.73663566E-4, 4.0424792E-6, -4.0585911E-8, 1.497763E-10]
 
-            c = self.computeCoefficient(atomicNumber, ci)
+            c = self.compute_coefficient(atomic_number, ci)
 
             return c
 
-    def computeC1(self, atomicNumber):
+    def compute_C1(self, atomic_number):  # noqa
         c1i = [7.7708E-5, -7.83544E-6, 2.209365E-7, -1.29086E-9]
 
-        c1 = self.computeCoefficient(atomicNumber, c1i)
+        c1 = self.compute_coefficient(atomic_number, c1i)
 
         return c1
 
-    def computeC2(self, atomicNumber):
+    def compute_C2(self, atomic_number):  # noqa
         c2i = [1.406, 0.0162, -6.561E-4, 4.865E-6]
 
-        c2 = self.computeCoefficient(atomicNumber, c2i)
+        c2 = self.compute_coefficient(atomic_number, c2i)
 
         return c2
 
-    def computeC3(self, atomicNumber):
+    def compute_C3(self, atomic_number):  # noqa
         c3i = [0.584, 0.01955, -1.285E-4]
 
-        c3 = self.computeCoefficient(atomicNumber, c3i)
+        c3 = self.compute_coefficient(atomic_number, c3i)
 
         return c3
 
-    def computeC4(self, atomicNumber):
+    def compute_C4(self, atomic_number):  # noqa
         c4i = [1.082, 1.366E-3]
 
-        c4 = self.computeCoefficient(atomicNumber, c4i)
+        c4 = self.compute_coefficient(atomic_number, c4i)
 
         return c4
 
-    def computeC5(self, atomicNumber):
+    def compute_C5(self, atomic_number):  # noqa
         c5i = [1.6442, -0.0480, 4.0664E-4]
 
-        c5 = self.computeCoefficient(atomicNumber, c5i)
+        c5 = self.compute_coefficient(atomic_number, c5i)
 
         return c5
 
-    def computeCRegion6(self, atomicNumber):
-        c1 = self.computeC1(atomicNumber)
+    def compute_C_region6(self, atomic_number):  # noqa
+        c1 = self.compute_C1(atomic_number)
 
-        c2 = self.computeC2(atomicNumber)
+        c2 = self.compute_C2(atomic_number)
 
-        c3 = self.computeC3(atomicNumber)
+        c3 = self.compute_C3(atomic_number)
 
-        c = c1*c2*c3
-
-        return c
-
-    def computeCRegion7(self, atomicNumber):
-        c1 = self.computeC1(atomicNumber)
-
-        c2 = self.computeC2(atomicNumber)
-
-        c4 = self.computeC4(atomicNumber)
-
-        c = c1*c2*c4
+        c = c1 * c2 * c3
 
         return c
 
-    def computeCRegion8(self, atomicNumber):
-        c1 = self.computeC1(atomicNumber)
+    def compute_C_region7(self, atomic_number):  # noqa
+        c1 = self.compute_C1(atomic_number)
 
-        c2 = self.computeC2(atomicNumber)
+        c2 = self.compute_C2(atomic_number)
 
-        c = c1*c2*0.95
+        c4 = self.compute_C4(atomic_number)
 
-        return c
-
-    def computeCRegion9(self, atomicNumber):
-        c1 = self.computeC1(atomicNumber)
-
-        c2 = self.computeC2(atomicNumber)
-
-        c5 = self.computeC5(atomicNumber)
-
-        c = c1*c2*c5
+        c = c1 * c2 * c4
 
         return c
 
-    def computeCRegion10(self, atomicNumber):
+    def compute_C_region8(self, atomic_number):  # noqa
+        c1 = self.compute_C1(atomic_number)
+
+        c2 = self.compute_C2(atomic_number)
+
+        c = c1 * c2 * 0.95
+
+        return c
+
+    def compute_C_region9(self, atomic_number):  # noqa
+        c1 = self.compute_C1(atomic_number)
+
+        c2 = self.compute_C2(atomic_number)
+
+        c5 = self.compute_C5(atomic_number)
+
+        c = c1 * c2 * c5
+
+        return c
+
+    def compute_C_region10(self, atomic_number):  # noqa
         ci = [4.3156E-3, -1.4653E-4, 1.707073E-6, -6.69827E-9]
 
-        c = self.computeCoefficient(atomicNumber, ci)
+        c = self.compute_coefficient(atomic_number, ci)
 
-        return c*1.08
+        return c * 1.08
 
-    def computeCRegion11(self, atomicNumber):
-        c = self.computeCRegion10(atomicNumber)
+    def compute_C_region11(self, atomic_number):  # noqa
+        c = self.compute_C_region10(atomic_number)
 
         return c
 
-    def computeCutoff_eV(self, atmicNumber):
-        factor1 = 0.252*atmicNumber - 31.1812
+    def compute_cutoff_eV(self, atomic_number):  # noqa
+        factor1 = 0.252 * atomic_number - 31.1812
 
-        term1 = factor1*atmicNumber
+        term1 = factor1 * atomic_number
 
         cutoff = term1 + 1042.0
 
         return cutoff
 
-    def computeNRegion1(self, atomicNumber):
-        if atomicNumber < 6:
+    def compute_n_region1(self, atomic_number):
+        if atomic_number < 6:
             bi = [3.34745, 0.02652873, -0.01273815]
 
-            b = self.computeCoefficient(atomicNumber, bi)
+            b = self.compute_coefficient(atomic_number, bi)
 
             return b
         else:
             bi = [3.112, -0.0121]
 
-            b = self.computeCoefficient(atomicNumber, bi)
+            b = self.compute_coefficient(atomic_number, bi)
 
             return b
 
-    def computeNRegion2_4(self, atomicNumber):
+    def compute_n_region2_4(self, atomic_number):
         bi = [2.7575, 1.889E-3, -4.982E-5]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeNRegion5(self, atomicNumber):
+    def compute_n_region5(self, atomic_number):
         bi = [0.5385, 0.084597, -1.08246E-3, 4.4509E-6]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeNRegion6_9(self, atomicNumber):
+    def compute_n_region6_9(self, atomic_number):
         bi = [3.0, -0.004]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeNRegion10(self, atomicNumber):
+    def compute_n_region10(self, atomic_number):
         bi = [0.3736, 0.02401]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeNRegion11(self, atomicNumber):
-        n = self.computeNRegion10(atomicNumber)
+    def compute_n_region11(self, atomic_number):
+        n = self.compute_n_region10(atomic_number)
 
         return n
 
-    def computeARegion1(self, atomicNumber):
-        if atomicNumber < 6:
+    def compute_a_region1(self, atomic_number):
+        if atomic_number < 6:
             bi = [24.4545, 155.6055, -14.15422]
 
-            b = self.computeCoefficient(atomicNumber, bi)
+            b = self.compute_coefficient(atomic_number, bi)
 
             return b
         else:
             bi = [0.0, 47.0, 6.52, -0.152624]
 
-            b = self.computeCoefficient(atomicNumber, bi)
+            b = self.compute_coefficient(atomic_number, bi)
 
             return b
 
-    def computeARegion2_4(self, atomicNumber):
+    def compute_a_region2_4(self, atomic_number):
         bi = [0.0, 17.8096, 0.067429, 0.01253775, -1.16286E-4]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeARegion5(self, atomicNumber):
+    def compute_a_region5(self, atomic_number):
         bi = [0.0, 10.2575657, -0.822863477, 2.63199611E-2, -1.8641019E-4]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeARegion6_9(self, atomicNumber):
+    def compute_a_region6_9(self, atomic_number):
         bi = [0.0, 4.62, -0.04]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeARegion10(self, atomicNumber):
+    def compute_a_region10(self, atomic_number):
         bi = [0.0, 19.64, -0.61239, 5.39309E-3]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b
 
-    def computeARegion11(self, atomicNumber):
-        return self.computeARegion10(atomicNumber)
-
-    def computeBRegion1(self, atomicNumber):
-        if atomicNumber < 6:
+    def compute_b_region1(self, atomic_number):
+        if atomic_number < 6:
             bi = [-103.0, 18.2]
 
-            b = self.computeCoefficient(atomicNumber, bi)
+            b = self.compute_coefficient(atomic_number, bi)
 
             return b
         else:
             return 0.0
 
-    def computeBRegion2_4(self, atomicNumber):
+    @staticmethod
+    def compute_b_region2_4(atomic_number):  # noqa
         return 0.0
 
-    def computeBRegion5(self, atomicNumber):
-        if atomicNumber < 61:
+    def compute_b_region5(self, atomic_number):
+        if atomic_number < 61:
             bi = [0.0, 5.654, -0.536839169, 0.018972278, -1.683474E-4]
 
-            b = self.computeCoefficient(atomicNumber, bi)
+            b = self.compute_coefficient(atomic_number, bi)
 
             return b
         else:
             bi = [0.0, -1232.4022, 51.114164, -0.699473097, 3.1779619E-3]
 
-            b = self.computeCoefficient(atomicNumber, bi)
+            b = self.compute_coefficient(atomic_number, bi)
 
             return b
 
-    def computeBRegion6_9(self, atomicNumber):
+    def compute_b_region6_9(self, atomic_number):
         bi = [2.51, -0.052, 3.78E-4]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
-        try:
-            edgeEnergyM4_eV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M4')
-        except KeyError:
-            print("No M4 energy edge for %i" % (atomicNumber))
-            edgeEnergyM4_eV = 0.0
+        edge_energy_M4_eV = self.ionization_energies.ionization_energy_eV(atomic_number, 'M4')  # noqa
 
-        return b*edgeEnergyM4_eV
+        return b * edge_energy_M4_eV
 
-    def computeBRegion10(self, atomicNumber):
+    def compute_b_region10(self, atomic_number):
         bi = [-113.0, 4.5]
 
-        b = self.computeCoefficient(atomicNumber, bi)
+        b = self.compute_coefficient(atomic_number, bi)
 
         return b

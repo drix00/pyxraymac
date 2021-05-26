@@ -73,7 +73,7 @@ class TestAbsorptionJumpRatio(unittest.TestCase):
 
         AbsorptionJumpRatio.AbsorptionJumpRatio(configuration_file)
 
-        # self.assertEquals("pathname", absorptionJumpRatio.pathname)
+        # self.assertEqual("pathname", absorptionJumpRatio.pathname)
 
     def testCopper(self):
         jump_factor_LI = 0.1174
@@ -82,15 +82,15 @@ class TestAbsorptionJumpRatio(unittest.TestCase):
 
         jump_factor = self.absorptionJumpRatio.get_absorption_jump_factor(29, 'LI', 1200.0)
 
-        self.assertAlmostEquals(jump_factor_LI, jump_factor, 3)
+        self.assertAlmostEqual(jump_factor_LI, jump_factor, 3)
 
         jump_factor = self.absorptionJumpRatio.get_absorption_jump_factor(29, 'LI', 12000.0)
 
-        self.assertAlmostEquals(jump_factor_LIK, jump_factor, 3)
+        self.assertAlmostEqual(jump_factor_LIK, jump_factor, 3)
 
     def testFEL3Al(self):
         jump_factor_reference = 0.49363
 
         jump_factor = self.absorptionJumpRatio.get_absorption_jump_factor(26, 'L3', 1486.9)
 
-        self.assertAlmostEquals(jump_factor_reference, jump_factor, 3)
+        self.assertAlmostEqual(jump_factor_reference, jump_factor, 3)

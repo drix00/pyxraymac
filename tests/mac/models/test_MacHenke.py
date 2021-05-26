@@ -65,18 +65,18 @@ class TestMacHenke(unittest.TestCase):
 
         self.assertTrue(mac_data.data_path != "")
 
-        self.assertEquals("sf.tar.gz", mac_data._filename)
+        self.assertEqual("sf.tar.gz", mac_data._filename)
 
     def test_read_data(self):
         enegies_eV, macs_cm2_g = self.macData.readData(28)  # noqa
 
-        self.assertAlmostEquals(10.0, enegies_eV[0])
+        self.assertAlmostEqual(10.0, enegies_eV[0])
 
-        self.assertAlmostEquals(30000.0, enegies_eV[-1])
+        self.assertAlmostEqual(30000.0, enegies_eV[-1])
 
-        self.assertAlmostEquals(9.87, macs_cm2_g[0]*1.0E-4, 2)
+        self.assertAlmostEqual(9.87, macs_cm2_g[0]*1.0E-4, 2)
 
-        self.assertAlmostEquals(9.77, macs_cm2_g[-1], 2)
+        self.assertAlmostEqual(9.77, macs_cm2_g[-1], 2)
 
     def test_wavelength(self):
         wavelengths_electron_non_relativistic_williams1996_nm = {
@@ -98,20 +98,20 @@ class TestMacHenke(unittest.TestCase):
         wavelengths_photon_A = {10.2: 1215.6, 91.5: 135.5, 14988.0: 0.8}  # noqa
 
         for energy_eV in wavelengths_electron_non_relativistic_williams1996_nm:
-            self.assertAlmostEquals(wavelengths_electron_non_relativistic_williams1996_nm[energy_eV],
-                                    MacHenke.WavelenghtElectron_nm(energy_eV), 4)
+            self.assertAlmostEqual(wavelengths_electron_non_relativistic_williams1996_nm[energy_eV],
+                                   MacHenke.WavelenghtElectron_nm(energy_eV), 4)
 
-            self.assertAlmostEquals(wavelengths_electron_relativistic_williams1996_nm[energy_eV],
-                                    MacHenke.WavelenghtElectronRelativistic_nm(energy_eV), 4)
+            self.assertAlmostEqual(wavelengths_electron_relativistic_williams1996_nm[energy_eV],
+                                   MacHenke.WavelenghtElectronRelativistic_nm(energy_eV), 4)
 
         for energy_eV in wavelengths_photon_A:
-            self.assertAlmostEquals(wavelengths_photon_A[energy_eV] / 10.0, MacHenke.WavelenghtPhoton_nm(energy_eV), 1)
+            self.assertAlmostEqual(wavelengths_photon_A[energy_eV] / 10.0, MacHenke.WavelenghtPhoton_nm(energy_eV), 1)
 
     def test_compute_mac_cm2_g(self):
         mac_cm2_g = self.macData.compute_mac_cm2_g(28, 10.2, 1.14)
 
-        self.assertAlmostEquals(8.01, mac_cm2_g*1.0E-4, 2)
+        self.assertAlmostEqual(8.01, mac_cm2_g*1.0E-4, 2)
 
         mac_cm2_g = self.macData.compute_mac_cm2_g(28, 1486.7, 8.88)
 
-        self.assertAlmostEquals(4.28, mac_cm2_g*1.0E-3, 2)
+        self.assertAlmostEqual(4.28, mac_cm2_g*1.0E-3, 2)

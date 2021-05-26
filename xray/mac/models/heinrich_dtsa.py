@@ -26,7 +26,6 @@ MAC Heinrich model from DTSA program.
 
 # Standard library modules.
 import math
-import configparser
 
 # Third party modules.
 
@@ -43,151 +42,157 @@ class MacHeinrichDTSA:
     def __init__(self):
         self.ionization_energies = IonizationEnergies()
 
-    def computeMac_cm2_g(self, energy_eV, atomicNumber):
+    def compute_mac_cm2_g(self, energy_eV, atomic_number):  # noqa
         if energy_eV <= 10.0:
             return 1e6
 
-        if atomicNumber < 3 or atomicNumber > 95:
+        if atomic_number < 3 or atomic_number > 95:
             return 0.001
 
+        z = atomic_number
         bias = 0
 
-        eeK = self.ionization_energies.ionization_energy_eV(atomicNumber, 'K')
+        ee_K = self.ionization_energies.ionization_energy_eV(z, 'K')  # noqa
 
         try:
-            eeNI = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')
-        except:
-            eeNI = 0.0
+            ee_NI = self.ionization_energies.ionization_energy_eV(z, 'N1')  # noqa
+        except KeyError:
+            ee_NI = 0.0  # noqa
 
         # energy is above the K edge.
-        if energy_eV > eeK:
-            if atomicNumber < 6:
-                cc = 1.808599e-3 * atomicNumber - 2.87536e-4
-                az = (-14.15422 * atomicNumber + 155.6055) * atomicNumber + 24.4545
-                bias = 18.2 * atomicNumber - 103.0
-                nm = (-0.01273815 * atomicNumber + 0.02652873) * atomicNumber + 3.34745
+        if energy_eV > ee_K:
+            if z < 6:
+                cc = 1.808599e-3 * z - 2.87536e-4
+                az = (-14.15422 * z + 155.6055) * z + 24.4545
+                bias = 18.2 * z - 103.0
+                nm = (-0.01273815 * z + 0.02652873) * z + 3.34745
             else:
-                cc = 5.253e-3 + atomicNumber * (1.33257e-3 + atomicNumber * (-7.5937e-5 + atomicNumber * (1.69357e-6 + -1.3975e-8 * atomicNumber)))
-                az = ((-0.152624 * atomicNumber + 6.52) * atomicNumber + 47.0) * atomicNumber
-                nm = 3.112 - 0.0121 * atomicNumber
+                cc = 5.253e-3 + z * (1.33257e-3 + z * (-7.5937e-5 + z * (1.69357e-6 + -1.3975e-8 * z)))
+                az = ((-0.152624 * z + 6.52) * z + 47.0) * z
+                nm = 3.112 - 0.0121 * z
 
                 # These special conditions are not mentioned in the IXCOM 11
                 # article but are implemented in DTSA
-                assert(energy_eV > eeK)
+                assert(energy_eV > ee_K)
 
-                if atomicNumber >= 50:
-                    az = ((-0.015 * atomicNumber + 3.52) * atomicNumber + 47) * atomicNumber
+                if z >= 50:
+                    az = ((-0.015 * z + 3.52) * z + 47) * z
 
-                if atomicNumber >= 57:
-                    cc = 2.0e-4 + (1.0e-4 - atomicNumber) * atomicNumber
+                if z >= 57:
+                    cc = 2.0e-4 + (1.0e-4 - z) * z
         else:
             try:
-                eeLIII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L3')
-            except:
-                eeLIII = 0.0
+                ee_LIII = self.ionization_energies.ionization_energy_eV(z, 'L3')  # noqa
+            except KeyError:
+                ee_LIII = 0.0  # noqa
 
             # energy is below K-edge & above L3-edge.
-            if energy_eV > eeLIII:
-                cc = -0.0924e-3 + atomicNumber * (0.141478e-3 + atomicNumber * (-0.00524999e-3 + atomicNumber * (9.85296E-8 + atomicNumber * (-9.07306E-10 + atomicNumber * 3.19245E-12))))
-                az = (((-1.16286e-4 * atomicNumber + 0.01253775) * atomicNumber + 0.067429) * atomicNumber + 17.8096) * atomicNumber
-                nm = (-4.982E-5 * atomicNumber + 1.889e-3) * atomicNumber + 2.7575
+            if energy_eV > ee_LIII:
+                factor1 = -9.07306E-10 + z * 3.19245E-12
+                cc = -0.0924e-3 + z * (0.141478e-3 + z * (-0.00524999e-3 + z * (9.85296E-8 + z * factor1)))
+                az = (((-1.16286e-4 * z + 0.01253775) * z + 0.067429) * z + 17.8096) * z
+                nm = (-4.982E-5 * z + 1.889e-3) * z + 2.7575
 
                 try:
-                    eeLII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L2')
-                except:
-                    eeLII = 0.0
+                    ee_LII = self.ionization_energies.ionization_energy_eV(z, 'L2')  # noqa
+                except KeyError:
+                    ee_LII = 0.0  # noqa
 
                 try:
-                    eeLI = self.ionization_energies.ionization_energy_eV(atomicNumber, 'L1')
-                except:
-                    eeLI = 0.0
+                    eeLI = self.ionization_energies.ionization_energy_eV(z, 'L1')  # noqa
+                except KeyError:
+                    eeLI = 0.0  # noqa
 
-                if energy_eV < eeLI and energy_eV > eeLII:
+                if eeLI > energy_eV > ee_LII:
                     cc *= 0.858
 
-                if energy_eV < eeLII:
-                    cc *= (0.8933 + atomicNumber * (-8.29e-3 + 6.38E-5 * atomicNumber))
+                if energy_eV < ee_LII:
+                    cc *= (0.8933 + z * (-8.29e-3 + 6.38E-5 * z))
 
             else:
                 try:
-                    eeMI = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M1')
-                except:
-                    eeMI = 0.0
+                    ee_MI = self.ionization_energies.ionization_energy_eV(z, 'M1')  # noqa
+                except KeyError:
+                    ee_MI = 0.0  # noqa
 
-                if energy_eV <= eeLIII and energy_eV > eeMI:
-                    nm = ((4.4509E-6 * atomicNumber - 1.08246e-3) * atomicNumber + 0.084597) * atomicNumber + 0.5385
+                if ee_LIII >= energy_eV > ee_MI:
+                    nm = ((4.4509E-6 * z - 1.08246e-3) * z + 0.084597) * z + 0.5385
 
-                    if atomicNumber < 30:
-                        cc = (((7.2773258e-9 * atomicNumber - 1.1641145e-6) * atomicNumber + 6.9602789e-5) * atomicNumber - 1.8517159e-3) * atomicNumber + 1.889757e-2
+                    if z < 30:
+                        factor1 = z + 1.889757e-2
+                        cc = (((7.2773258e-9 * z - 1.1641145e-6) * z + 6.9602789e-5) * z - 1.8517159e-3) * factor1
                     else:
-                        cc = (((1.497763e-10 * atomicNumber - 4.0585911e-8) * atomicNumber + 4.0424792e-6) * atomicNumber - 1.73663566e-4) * atomicNumber + 3.0039e-3
+                        factor1 = z + 3.0039e-3
+                        cc = (((1.497763e-10 * z - 4.0585911e-8) * z + 4.0424792e-6) * z - 1.73663566e-4) * factor1
 
-                    az = (((-1.8641019e-4 * atomicNumber + 2.63199611e-2) * atomicNumber - 0.822863477) * atomicNumber + 10.2575657) * atomicNumber
+                    az = (((-1.8641019e-4 * z + 2.63199611e-2) * z - 0.822863477) * z + 10.2575657) * z
 
-                    if atomicNumber < 61:
-                        bias = (((-1.683474e-4 * atomicNumber + 0.018972278) * atomicNumber - 0.536839169) * atomicNumber + 5.654) * atomicNumber
+                    if z < 61:
+                        bias = (((-1.683474e-4 * z + 0.018972278) * z - 0.536839169) * z + 5.654) * z
                     else:
-                        bias = (((3.1779619e-3 * atomicNumber - 0.699473097) * atomicNumber + 51.114164) * atomicNumber - 1232.4022) * atomicNumber
+                        bias = (((3.1779619e-3 * z - 0.699473097) * z + 51.114164) * z - 1232.4022) * z
                 else:
-                    eeMV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M5')
+                    ee_MV = self.ionization_energies.ionization_energy_eV(z, 'M5')  # noqa
 
-                    if energy_eV >= eeMV:
-                        eeMIV = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M4')
+                    if energy_eV >= ee_MV:
+                        ee_MIV = self.ionization_energies.ionization_energy_eV(z, 'M4')  # noqa
 
-                        az = (4.62 - 0.04 * atomicNumber) * atomicNumber
-                        cc = ((-1.29086e-9 * atomicNumber + 2.209365e-7) * atomicNumber - 7.83544e-6) * atomicNumber + 7.7708e-5
-                        cc *= ((4.865E-6 * atomicNumber - 0.0006561) * atomicNumber + 0.0162) * atomicNumber + 1.406
-                        bias = ((3.78e-4 * atomicNumber - 0.052) * atomicNumber + 2.51) * eeMIV
-                        nm = 3.0 - 0.004 * atomicNumber
+                        az = (4.62 - 0.04 * z) * z
+                        cc = ((-1.29086e-9 * z + 2.209365e-7) * z - 7.83544e-6) * z + 7.7708e-5
+                        cc *= ((4.865E-6 * z - 0.0006561) * z + 0.0162) * z + 1.406
+                        bias = ((3.78e-4 * z - 0.052) * z + 2.51) * ee_MIV
+                        nm = 3.0 - 0.004 * z
 
-                        eeMII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M2')
-                        eeMIII = self.ionization_energies.ionization_energy_eV(atomicNumber, 'M3')
+                        ee_MII = self.ionization_energies.ionization_energy_eV(z, 'M2')  # noqa
+                        ee_MIII = self.ionization_energies.ionization_energy_eV(z, 'M3')  # noqa
 
-                        if energy_eV >= eeMII:
-                            assert(energy_eV <= eeMI)
+                        if energy_eV >= ee_MII:
+                            assert(energy_eV <= ee_MI)
 
-                            cc *= ((-0.0001285 * atomicNumber + 0.01955) * atomicNumber + 0.584)
-                        elif energy_eV >= eeMIII:
-                            assert(energy_eV < eeMII)
+                            cc *= ((-0.0001285 * z + 0.01955) * z + 0.584)
+                        elif energy_eV >= ee_MIII:
+                            assert(energy_eV < ee_MII)
 
-                            cc *= 0.001366 * atomicNumber + 1.082
-                        elif energy_eV >= eeMIV:
-                            assert(energy_eV < eeMIII)
+                            cc *= 0.001366 * z + 1.082
+                        elif energy_eV >= ee_MIV:
+                            assert(energy_eV < ee_MIII)
 
                             cc *= 0.95
                         else:
-                            assert(energy_eV < eeMIV)
-                            assert(energy_eV >= eeMV)
+                            assert(energy_eV < ee_MIV)
+                            assert(energy_eV >= ee_MV)
 
-                            cc *= (4.0664e-4 * atomicNumber - 4.8e-2) * atomicNumber + 1.6442
+                            cc *= (4.0664e-4 * z - 4.8e-2) * z + 1.6442
                     else:
-                        assert(energy_eV < eeMV)
+                        assert(energy_eV < ee_MV)
 
-                        cc = 1.08 * (((-6.69827e-9 * atomicNumber + 1.707073e-6) * atomicNumber - 1.4653e-4) * atomicNumber + 4.3156e-3)
-                        az = ((5.39309e-3 * atomicNumber - 0.61239) * atomicNumber + 19.64) * atomicNumber
-                        bias = 4.5 * atomicNumber - 113.0
-                        nm = 0.3736 + 0.02401 * atomicNumber
+                        cc = 1.08 * (((-6.69827e-9 * z + 1.707073e-6) * z - 1.4653e-4) * z + 4.3156e-3)
+                        az = ((5.39309e-3 * z - 0.61239) * z + 19.64) * z
+                        bias = 4.5 * z - 113.0
+                        nm = 0.3736 + 0.02401 * z
 
-        atomicWeight = get_atomic_mass_g_mol(atomicNumber)
+        atomic_weight = get_atomic_mass_g_mol(z)
 
-        if energy_eV > eeNI:
-            mu = cc * math.pow(12397.0 / energy_eV, nm) * atomicNumber * atomicNumber * atomicNumber * atomicNumber / atomicWeight
+        if energy_eV > ee_NI:
+            mu = cc * math.pow(12397.0 / energy_eV, nm) * z * z * z * z / atomic_weight
             mu = mu * (1 - math.exp((bias - energy_eV) / az))
         else:
-            mu = cc * math.pow(12397.0 / energy_eV, nm) * atomicNumber * atomicNumber * atomicNumber * atomicNumber / atomicWeight * (1 - math.exp((bias - eeNI) / az))
+            factor1 = 1 - math.exp((bias - ee_NI) / az)
+            mu = cc * math.pow(12397.0 / energy_eV, nm) * z * z * z * z / atomic_weight * factor1
 
-            cutoff = self.getCutOff(atomicNumber)
+            cutoff = self.get_cutoff(z)
 
-            mu = 1.02 * mu * (energy_eV - cutoff) / (eeNI - cutoff)
+            mu = 1.02 * mu * (energy_eV - cutoff) / (ee_NI - cutoff)
 
         mu_cm2_g = mu
 
         return mu_cm2_g
 
-    def getCutOff(self, atomicNumber):
-        """
+    @staticmethod
+    def get_cutoff(atomic_number):  # noqa
+        r"""
         Compute the cut off value.
 
-        \param[in] atomicNumber
+        \param[in] atomic_number
         """
         return 10.0

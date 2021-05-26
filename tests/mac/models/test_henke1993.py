@@ -67,11 +67,11 @@ class TestMacHenke1993(unittest.TestCase):
     def test_compute_mac_cm2_g(self):
         mac_cm2_g = self.mac.computeMac_cm2_g(10.2, 28)
 
-        self.assertAlmostEquals(9.709, mac_cm2_g*1.0E-4, 2)
+        self.assertAlmostEqual(9.709, mac_cm2_g*1.0E-4, 2)
 
         mac_cm2_g = self.mac.computeMac_cm2_g(1486.7, 28)
 
-        self.assertAlmostEquals(4.285, mac_cm2_g*1.0E-3, 2)
+        self.assertAlmostEqual(4.285, mac_cm2_g*1.0E-3, 2)
 
     def test_copper_m_edges(self):
         mac1_cm2_g = self.mac.computeMac_cm2_g(130.0, 29)
@@ -86,8 +86,8 @@ class TestMacHenke1993(unittest.TestCase):
         # self.assertTrue(mac2_cm2_g > mac3_cm2_g)
         # self.assertTrue(mac1_cm2_g > mac3_cm2_g)
 
-        self.assertAlmostEquals(5.839230, mac1_cm2_g*1.0E-4, 2)
+        self.assertAlmostEqual(5.839230, mac1_cm2_g*1.0E-4, 2)
 
-        self.assertAlmostEquals(6.1090, mac2_cm2_g*1.0E-4, 2)
+        self.assertAlmostEqual(6.1090, mac2_cm2_g*1.0E-4, 2)
 
-        self.assertAlmostEquals(7.58129, mac3_cm2_g*1.0E-4, 2)
+        self.assertAlmostEqual(7.58129, mac3_cm2_g*1.0E-4, 2)

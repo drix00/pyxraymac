@@ -32,6 +32,8 @@ import unittest
 # Local modules.
 
 # Project modules.
+import numpy as np
+
 from xray.mac.models.heinrich1987 import MacHeinrich1987
 from xray.mac.models.ionization_energies import IonizationEnergiesDtsa
 
@@ -64,9 +66,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 5
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_absorber_carbon(self):
         """
@@ -78,9 +80,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 6
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     #        data_mac_cm2_g = self.heinrich1987.mac_cm2_g(energy_eV, atomicNumberAbsorber)
 
@@ -94,9 +96,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 29
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region3(self):
         """
@@ -108,9 +110,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 47
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region4(self):
         """
@@ -122,9 +124,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 47
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_absorber_copper(self):
         """
@@ -136,9 +138,23 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 29
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+
+    def test_mac_vector(self):
+        """
+        Test energy region 5, Z < 30.
+
+        """
+        energies_eV = np.array([183.0, 277.0, 392.0])
+        macs_ref_cm2_g = np.array([37113.31949492, 19141.49605365,  9925.82401593])
+
+        atomic_number_absorber = 29
+
+        macs_cm2_g = self.heinrich1987.compute_mac_cm2_g(energies_eV, atomic_number_absorber)
+
+        np.testing.assert_allclose(macs_ref_cm2_g, macs_cm2_g)
 
     def test_absorber_zinc(self):
         """
@@ -150,9 +166,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 30
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_absorber_neodymium(self):
         """
@@ -164,9 +180,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 60
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_absorber_promethium(self):
         """
@@ -179,9 +195,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 61
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region6(self):
         """
@@ -193,9 +209,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 79
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region6_m4(self):
         """
@@ -207,18 +223,18 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 79
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
         macs_cm2_g = {100.0: 100070.5, 105.0: 105933.2, 183.0: 42943.0}
 
         atomic_number_absorber = 31
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region7(self):
         """
@@ -230,9 +246,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 79
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region8(self):
         """
@@ -244,9 +260,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 79
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region9(self):
         """
@@ -258,9 +274,12 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 79
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+
+        mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(1490.0, 69)
+        self.assertAlmostEqual(1815.0240923054969, mac_cm2_g, 0)
 
     def test_region10(self):
         """
@@ -272,9 +291,9 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 79
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_region11(self):
         """
@@ -282,16 +301,19 @@ class TestMacHeinrich1987(unittest.TestCase):
 
         .. todo:: Test energy region 11.
         """
-        # macs_cm2_g = {183.0: 10876.0, 277.0: 16874.0, 392.0: 14695.0, 677.0: 9285.0, 849.0: 6763.5}
-
-        macs_cm2_g = {}
+        macs_cm2_g = {
+            183.0: 14800.49302937263,
+            277.0: 22962.565133671458,
+            392.0: 19997.03945903206,
+            677.0: 12634.929382350225,
+            849.0: 6763.5}
 
         atomic_number_absorber = 79
 
         for energy_eV in macs_cm2_g:
-            mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+            mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-            self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
+            self.assertAlmostEqual(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
     def test_absorber_plutonium(self):
         """
@@ -323,21 +345,30 @@ class TestMacHeinrich1987(unittest.TestCase):
         atomic_number_absorber = 79
 
         for xrayEnergy_eV in regions:
-            region = self.heinrich1987.getRegion(atomic_number_absorber, xrayEnergy_eV)
+            region = self.heinrich1987.get_region(atomic_number_absorber, xrayEnergy_eV)
 
-            self.assertEquals(regions[xrayEnergy_eV], region)
+            self.assertEqual(regions[xrayEnergy_eV], region)
+
+        region = self.heinrich1987.get_region(atomic_number=6, xray_energy_eV=1.0)
+        assert region == 2
+
+        region = self.heinrich1987.get_region(atomic_number=79, xray_energy_eV=-50.0)
+        assert region == 11
 
     def test_low_energy(self):
         atomic_number_absorber = 14
         energy_eV = 1.0  # noqa
 
-        mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+        mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-        self.assertAlmostEquals(1.0E6, mac_cm2_g, 0)
+        self.assertAlmostEqual(1.0E6, mac_cm2_g, 0)
 
         atomic_number_absorber = 79
         energy_eV = 1.0  # noqa
 
-        mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
+        mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(energy_eV, atomic_number_absorber)
 
-        self.assertAlmostEquals(1.0E6, mac_cm2_g, 0)
+        self.assertAlmostEqual(1.0E6, mac_cm2_g, 0)
+
+        mac_cm2_g = self.heinrich1987.compute_mac_cm2_g(-50.0, atomic_number_absorber)
+        self.assertAlmostEqual(1.0E6, mac_cm2_g, 0)

@@ -74,13 +74,13 @@ class TestIonizationEnergies(unittest.TestCase):
         self.assertEqual(24, len(ionization_energies.edge_energies_eV[1]))
         self.assertEqual(len(SUBSHELLS), len(ionization_energies.edge_energies_eV[1]))
 
-        self.assertAlmostEquals(13.6, ionization_energies.edge_energies_eV[1]["K"])
-        self.assertAlmostEquals(0.0, ionization_energies.edge_energies_eV[1]["L1"])
-        self.assertAlmostEquals(0.0, ionization_energies.edge_energies_eV[1]["P1"])
+        self.assertAlmostEqual(13.6, ionization_energies.edge_energies_eV[1]["K"])
+        self.assertAlmostEqual(0.0, ionization_energies.edge_energies_eV[1]["L1"])
+        self.assertAlmostEqual(0.0, ionization_energies.edge_energies_eV[1]["P1"])
 
-        self.assertAlmostEquals(115606, ionization_energies.edge_energies_eV[92]["K"])
-        self.assertAlmostEquals(21757.4, ionization_energies.edge_energies_eV[92]["L1"])
-        self.assertAlmostEquals(32.3, ionization_energies.edge_energies_eV[92]["P1"])
+        self.assertAlmostEqual(115606, ionization_energies.edge_energies_eV[92]["K"])
+        self.assertAlmostEqual(21757.4, ionization_energies.edge_energies_eV[92]["L1"])
+        self.assertAlmostEqual(32.3, ionization_energies.edge_energies_eV[92]["P1"])
 
     def test_ionization_energy_eV(self):
         """
@@ -88,13 +88,13 @@ class TestIonizationEnergies(unittest.TestCase):
         """
         ionization_energies = IonizationEnergies()
 
-        self.assertAlmostEquals(13.6, ionization_energies.ionization_energy_eV(1, "K"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(1, "L1"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(1, "P1"))
+        self.assertAlmostEqual(13.6, ionization_energies.ionization_energy_eV(1, "K"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(1, "L1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(1, "P1"))
 
-        self.assertAlmostEquals(115606, ionization_energies.ionization_energy_eV(92, "K"))
-        self.assertAlmostEquals(21757.4, ionization_energies.ionization_energy_eV(92, "L1"))
-        self.assertAlmostEquals(32.3, ionization_energies.ionization_energy_eV(92, "P1"))
+        self.assertAlmostEqual(115606, ionization_energies.ionization_energy_eV(92, "K"))
+        self.assertAlmostEqual(21757.4, ionization_energies.ionization_energy_eV(92, "L1"))
+        self.assertAlmostEqual(32.3, ionization_energies.ionization_energy_eV(92, "P1"))
 
     def test_chantler2005_ionization_energy_eV_convert_subshell(self):
         """
@@ -102,24 +102,24 @@ class TestIonizationEnergies(unittest.TestCase):
         """
         ionization_energies = IonizationEnergies()
 
-        self.assertAlmostEquals(13.6, ionization_energies.ionization_energy_eV(1, "K"))
-        self.assertAlmostEquals(13.6, ionization_energies.ionization_energy_eV(1, "K1"))
-        self.assertAlmostEquals(13.6, ionization_energies.ionization_energy_eV(1, "KI"))
+        self.assertAlmostEqual(13.6, ionization_energies.ionization_energy_eV(1, "K"))
+        self.assertAlmostEqual(13.6, ionization_energies.ionization_energy_eV(1, "K1"))
+        self.assertAlmostEqual(13.6, ionization_energies.ionization_energy_eV(1, "KI"))
 
-        self.assertAlmostEquals(17166.3, ionization_energies.ionization_energy_eV(92, "L3"))
-        self.assertAlmostEquals(17166.3, ionization_energies.ionization_energy_eV(92, "LIII"))
+        self.assertAlmostEqual(17166.3, ionization_energies.ionization_energy_eV(92, "L3"))
+        self.assertAlmostEqual(17166.3, ionization_energies.ionization_energy_eV(92, "LIII"))
 
     def test_default_data_files(self):
         ionization_energies = IonizationEnergies()
         self.assertEqual(None, ionization_energies.edge_energies_eV)
 
-        self.assertAlmostEquals(13.6, ionization_energies.ionization_energy_eV(1, "K"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(1, "L1"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(1, "P1"))
+        self.assertAlmostEqual(13.6, ionization_energies.ionization_energy_eV(1, "K"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(1, "L1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(1, "P1"))
 
-        self.assertAlmostEquals(115606, ionization_energies.ionization_energy_eV(92, "K"))
-        self.assertAlmostEquals(21757.4, ionization_energies.ionization_energy_eV(92, "L1"))
-        self.assertAlmostEquals(32.3, ionization_energies.ionization_energy_eV(92, "P1"))
+        self.assertAlmostEqual(115606, ionization_energies.ionization_energy_eV(92, "K"))
+        self.assertAlmostEqual(21757.4, ionization_energies.ionization_energy_eV(92, "L1"))
+        self.assertAlmostEqual(32.3, ionization_energies.ionization_energy_eV(92, "P1"))
 
     def test_dtsa_read_edge_data(self):
         file_path = get_current_module_path(__file__, "../../../data/dtsa/XrayDataEdge.csv")
@@ -130,11 +130,11 @@ class TestIonizationEnergies(unittest.TestCase):
         self.assertEqual(93, len(ionization_energies.edge_energies_eV))
         self.assertEqual(1, len(ionization_energies.edge_energies_eV[3]))
 
-        self.assertAlmostEquals(54.75, ionization_energies.ionization_energy_eV(3, "K"))
+        self.assertAlmostEqual(54.75, ionization_energies.ionization_energy_eV(3, "K"))
 
-        self.assertAlmostEquals(125020.0, ionization_energies.edge_energies_eV[95]["K"])
-        self.assertAlmostEquals(23772.0, ionization_energies.edge_energies_eV[95]["L1"])
-        self.assertAlmostEquals(366.49, ionization_energies.edge_energies_eV[95]["O1"])
+        self.assertAlmostEqual(125020.0, ionization_energies.edge_energies_eV[95]["K"])
+        self.assertAlmostEqual(23772.0, ionization_energies.edge_energies_eV[95]["L1"])
+        self.assertAlmostEqual(366.49, ionization_energies.edge_energies_eV[95]["O1"])
 
     def test_dtsa_ionization_energy_eV(self):
         """
@@ -142,27 +142,27 @@ class TestIonizationEnergies(unittest.TestCase):
         """
         ionization_energies = IonizationEnergiesDtsa()
 
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(1, "K"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(1, "L1"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(1, "P1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(1, "K"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(1, "L1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(1, "P1"))
 
-        self.assertAlmostEquals(54.75, ionization_energies.ionization_energy_eV(3, "K"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(3, "L1"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(3, "P1"))
+        self.assertAlmostEqual(54.75, ionization_energies.ionization_energy_eV(3, "K"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(3, "L1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(3, "P1"))
 
-        self.assertAlmostEquals(115600.0, ionization_energies.ionization_energy_eV(92, "K"))
-        self.assertAlmostEquals(21756.0, ionization_energies.ionization_energy_eV(92, "L1"))
-        self.assertAlmostEquals(323.69, ionization_energies.ionization_energy_eV(92, "O1"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(92, "P1"))
+        self.assertAlmostEqual(115600.0, ionization_energies.ionization_energy_eV(92, "K"))
+        self.assertAlmostEqual(21756.0, ionization_energies.ionization_energy_eV(92, "L1"))
+        self.assertAlmostEqual(323.69, ionization_energies.ionization_energy_eV(92, "O1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(92, "P1"))
 
-        self.assertAlmostEquals(125020.0, ionization_energies.ionization_energy_eV(95, "K"))
-        self.assertAlmostEquals(23772.0, ionization_energies.ionization_energy_eV(95, "L1"))
-        self.assertAlmostEquals(366.49, ionization_energies.ionization_energy_eV(95, "O1"))
+        self.assertAlmostEqual(125020.0, ionization_energies.ionization_energy_eV(95, "K"))
+        self.assertAlmostEqual(23772.0, ionization_energies.ionization_energy_eV(95, "L1"))
+        self.assertAlmostEqual(366.49, ionization_energies.ionization_energy_eV(95, "O1"))
 
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(96, "K"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(96, "L1"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(96, "O1"))
-        self.assertAlmostEquals(0.0, ionization_energies.ionization_energy_eV(96, "P1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(96, "K"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(96, "L1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(96, "O1"))
+        self.assertAlmostEqual(0.0, ionization_energies.ionization_energy_eV(96, "P1"))
 
     def test_dtsa_ionization_energy_eV_convert_subshell(self):
         """
@@ -170,9 +170,9 @@ class TestIonizationEnergies(unittest.TestCase):
         """
         ionization_energies = IonizationEnergiesDtsa()
 
-        self.assertAlmostEquals(54.75, ionization_energies.ionization_energy_eV(3, "K"))
-        self.assertAlmostEquals(54.75, ionization_energies.ionization_energy_eV(3, "K1"))
-        self.assertAlmostEquals(54.75, ionization_energies.ionization_energy_eV(3, "KI"))
+        self.assertAlmostEqual(54.75, ionization_energies.ionization_energy_eV(3, "K"))
+        self.assertAlmostEqual(54.75, ionization_energies.ionization_energy_eV(3, "K1"))
+        self.assertAlmostEqual(54.75, ionization_energies.ionization_energy_eV(3, "KI"))
 
-        self.assertAlmostEquals(18503.0, ionization_energies.ionization_energy_eV(95, "L3"))
-        self.assertAlmostEquals(18503.0, ionization_energies.ionization_energy_eV(95, "LIII"))
+        self.assertAlmostEqual(18503.0, ionization_energies.ionization_energy_eV(95, "L3"))
+        self.assertAlmostEqual(18503.0, ionization_energies.ionization_energy_eV(95, "LIII"))
