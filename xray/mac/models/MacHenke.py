@@ -187,8 +187,10 @@ def WavelenghtPhoton_nm(energy_eV):
 
 
 class MacHenke(object):
-    def __init__(self, configurationFile):
-        self.readConfigurationFile(configurationFile)
+    def __init__(self, data_path):
+        self.data_path = data_path
+
+        self._filename = "sf.tar.gz"
 
     def computeCoefficient_keVcm2_g(self, atomicNumber):
         r0_m = 2.817938e-15
@@ -210,26 +212,10 @@ class MacHenke(object):
 
         return K_keVcm2_g
 
-    def readConfigurationFile(self, configurationFile):
-        """ Read the configuration file for options."""
-        config = ConfigParser()
-
-        config.read_file(open(configurationFile))
-
-        if config.has_section("MacHenke"):
-            if config.has_option("MacHenke", "pathname"):
-                self._pathname = config.get("MacHenke", "pathname")
-
-            if config.has_option("MacHenke", "filename"):
-                self._filename = config.get("MacHenke", "filename")
-
-            if config.has_option("MacHenke", "resultspath"):
-                self.resultspath = config.get("MacHenke", "resultspath")
-
     def getElements(self):
         elements = []
 
-        gzFilename = os.path.join(self._pathname, self._filename)
+        gzFilename = os.path.join(self.data_path, self._filename)
 
         tarFile = tarfile.TarFile.gzopen(gzFilename, mode='r')
 
@@ -243,7 +229,7 @@ class MacHenke(object):
         return elements
 
     def readData(self, atomicNumber):
-        gzFilename = os.path.join(self._pathname, self._filename)
+        gzFilename = os.path.join(self.data_path, self._filename)
 
         tarFile = tarfile.TarFile.gzopen(gzFilename, mode='r')
 
@@ -284,8 +270,8 @@ class MacHenke(object):
 
         return energies_eV, macs_cm2_g
 
-    def writeMAC(self):
-        create_path(self.resultspath)
+    def writeMAC(self, results_path):
+        create_path(results_path)
 
         elements = self.getElements()
 
@@ -299,7 +285,7 @@ class MacHenke(object):
             assert len(energies_eV) == len(macs_cm2_g)
 
             filename = str(element) + ".dat"
-            filename = os.path.join(self.resultspath, filename)
+            filename = os.path.join(results_path, filename)
 
             macFile = open(filename, 'w')
 

@@ -45,30 +45,30 @@ class TestMacHenkeWinxray(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        configuration_file = get_current_module_path(__file__, "../MassAbsorptionCoefficient.cfg")
-        if not os.path.isfile(configuration_file):
-            pytest.skip("Configuration file not found")
+        data_path = get_current_module_path(__file__, "../../../data/henke1993/winxray")
+        if not os.path.isdir(data_path):
+            pytest.skip("Data path file not found: {}".format(data_path))
 
-        self.macData = MacHenkeWinxray.MacHenkeWinxray(configuration_file)
+        self.macData = MacHenkeWinxray.MacHenkeWinxray(data_path)
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the TestCase is working.")
         self.assertTrue(True)
 
-    def testConstructor(self):
-        configuration_file = get_current_module_path(__file__, "../MassAbsorptionCoefficient.cfg")
+    def test_constructor(self):
+        data_path = get_current_module_path(__file__, "../../../data/henke1993/winxray")
 
-        mac_data = MacHenkeWinxray.MacHenkeWinxray(configuration_file)
+        mac_data = MacHenkeWinxray.MacHenkeWinxray(data_path)
 
         self.assertTrue(mac_data.pathnameBinary != "")
 
         self.assertTrue(mac_data.pathnameText != "")
 
-    def testReadTextData(self):
-        enegies_eV, mac_cm2_g = self.macData.readTextData(28)
+    def test_read_text_data(self):
+        enegies_eV, mac_cm2_g = self.macData.readTextData(28)  # noqa
 
         self.assertEquals(500, len(enegies_eV))
 
@@ -82,8 +82,8 @@ class TestMacHenkeWinxray(unittest.TestCase):
 
         self.assertEquals(9.77398, mac_cm2_g[-1])
 
-    def testReadBinaryData(self):
-        enegies_eV, mac_cm2_g = self.macData.readBinaryData(28)
+    def test_read_binary_data(self):
+        enegies_eV, mac_cm2_g = self.macData.readBinaryData(28)  # noqa
 
         self.assertEquals(500, len(enegies_eV))
 

@@ -35,7 +35,7 @@ import pytest
 
 # Project modules.
 from xray.mac import get_current_module_path
-import xray.mac.models.henke1993 as MacHenke1993
+from xray.mac.models.henke1993 import MacHenke1993
 
 # Globals and constants variables.
 
@@ -45,35 +45,35 @@ class TestMacHenke1993(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        configuration_file = get_current_module_path(__file__, "../testdata/Databases.cfg")
-        if not os.path.isfile(configuration_file):
-            pytest.skip("Configuration file not found")
+        data_path = get_current_module_path(__file__, "../../../data/henke1993/data")
+        if not os.path.isdir(data_path):
+            pytest.skip("Data path file not found: {}".format(data_path))
 
-        self.mac = MacHenke1993.MacHenke1993(configuration_file)
+        self.mac = MacHenke1993(data_path)
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the TestCase is working.")
         self.assertTrue(True)
 
-    def testConstructor(self):
-        configuration_file = get_current_module_path(__file__, "../testdata/Databases.cfg")
+    def test_constructor(self):
+        data_path = get_current_module_path(__file__, "../../../data/henke1993/data")
 
-        mac = MacHenke1993.MacHenke1993(configuration_file)
-        self.assertTrue(True)
+        mac = MacHenke1993(data_path)
+        self.assertTrue(len(mac.macData) == 0)
 
-    def testComputeMac_cm2_g(self):
+    def test_compute_mac_cm2_g(self):
         mac_cm2_g = self.mac.computeMac_cm2_g(10.2, 28)
 
-        self.assertAlmostEquals((9.709), mac_cm2_g*1.0E-4, 2)
+        self.assertAlmostEquals(9.709, mac_cm2_g*1.0E-4, 2)
 
         mac_cm2_g = self.mac.computeMac_cm2_g(1486.7, 28)
 
-        self.assertAlmostEquals((4.285), mac_cm2_g*1.0E-3, 2)
+        self.assertAlmostEquals(4.285, mac_cm2_g*1.0E-3, 2)
 
-    def testCopperMEdges(self):
+    def test_copper_m_edges(self):
         mac1_cm2_g = self.mac.computeMac_cm2_g(130.0, 29)
 
         mac2_cm2_g = self.mac.computeMac_cm2_g(115.0, 29)
@@ -86,8 +86,8 @@ class TestMacHenke1993(unittest.TestCase):
         # self.assertTrue(mac2_cm2_g > mac3_cm2_g)
         # self.assertTrue(mac1_cm2_g > mac3_cm2_g)
 
-        self.assertAlmostEquals((5.839230), mac1_cm2_g*1.0E-4, 2)
+        self.assertAlmostEquals(5.839230, mac1_cm2_g*1.0E-4, 2)
 
-        self.assertAlmostEquals((6.1090), mac2_cm2_g*1.0E-4, 2)
+        self.assertAlmostEquals(6.1090, mac2_cm2_g*1.0E-4, 2)
 
-        self.assertAlmostEquals((7.58129), mac3_cm2_g*1.0E-4, 2)
+        self.assertAlmostEquals(7.58129, mac3_cm2_g*1.0E-4, 2)

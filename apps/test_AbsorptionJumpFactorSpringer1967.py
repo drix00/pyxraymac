@@ -57,7 +57,7 @@ class TestAbsorptionJumpFactorSpringer1967(unittest.TestCase):
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the TestCase is working.")
         self.assertTrue(True)
 

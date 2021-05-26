@@ -40,22 +40,10 @@ from xray.mac.models.elements import ElementProperties
 
 
 class MacHenkeWinxray(object):
-    def __init__(self, configurationFile):
-        self.readConfigurationFile(configurationFile)
-
-    def readConfigurationFile(self, configurationFile):
-        """ Read the configuration file for options."""
-        # pylint: disable-msg=W0201
-        config = ConfigParser()
-
-        config.read_file(open(configurationFile))
-
-        if config.has_section("MacHenkeWinxray"):
-            if config.has_option("MacHenkeWinxray", "pathnameBinary"):
-                self.pathnameBinary = config.get("MacHenkeWinxray", "pathnameBinary")
-
-            if config.has_option("MacHenkeWinxray", "pathnameText"):
-                self.pathnameText = config.get("MacHenkeWinxray", "pathnameText")
+    def __init__(self, data_path):
+        self.data_path = data_path
+        self.pathnameBinary = os.path.join(data_path, "binary")
+        self.pathnameText = os.path.join(data_path, "text")
 
     def readData(self, atomicNumber):
         return self.readTextData(atomicNumber)

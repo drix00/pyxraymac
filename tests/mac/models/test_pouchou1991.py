@@ -32,7 +32,7 @@ import unittest
 # Local modules.
 
 # Project modules.
-import xray.mac.models.pouchou1991 as MacPouchou1991
+from xray.mac.models.pouchou1991 import MacPouchou1991
 
 # Globals and constants variables.
 
@@ -42,12 +42,12 @@ class TestMacPouchou1991(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        self.mac = MacPouchou1991.MacPouchou1991()
+        self.mac = MacPouchou1991()
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the TestCase is working.")
         self.assertTrue(True)
 

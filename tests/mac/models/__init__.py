@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac` package.
+Tests for the :py:mod:`xray.mac.models` package.
 """
 
 ###############################################################################
@@ -33,4 +33,3 @@ Tests for the :py:mod:`xray.mac` package.
 # Project modules.
 
 # Globals and constants variables.
-

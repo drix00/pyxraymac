@@ -57,7 +57,7 @@ class TestCasino(unittest.TestCase):
 
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         """
         First test to check if the testcase is working with the testing framework.
         """
@@ -72,7 +72,7 @@ class TestCasino(unittest.TestCase):
 
         mac_ref_cm2_g = 837938.9116018773
         atomic_number = 13
-        wavelength_A = 202.854347826
+        wavelength_A = 202.854347826  # noqa
         mac_cm2_g = mac_zaluzec_cm2_g(wavelength_A, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
@@ -84,11 +84,11 @@ class TestCasino(unittest.TestCase):
                           5.0: 18.516130819039912,
                           10.0: 2.2522353140592553}
 
-        energies_keV = sorted(macs_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
-            wavelength_A = 12.3981/energie_keV
+        energies_keV = sorted(macs_ref_cm2_g.keys())  # noqa
+        for energy_keV in energies_keV:
+            wavelength_A = 12.3981/energy_keV  # noqa
             mac_cm2_g = mac_zaluzec_cm2_g(wavelength_A, atomic_number)
-            self.assertAlmostEqual(macs_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+            self.assertAlmostEqual(macs_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         atomic_number = 4
         macs_ref_cm2_g = {0.1: 315647.0180940999,
@@ -98,11 +98,11 @@ class TestCasino(unittest.TestCase):
                           5.0: 3.7734188099041619,
                           10.0: 0.39670107324940557}
 
-        energies_keV = sorted(macs_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
-            wavelength_A = 12.3981/energie_keV
+        energies_keV = sorted(macs_ref_cm2_g.keys())  # noqa
+        for energy_keV in energies_keV:
+            wavelength_A = 12.3981/energy_keV  # noqa
             mac_cm2_g = mac_zaluzec_cm2_g(wavelength_A, atomic_number)
-            self.assertAlmostEqual(macs_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+            self.assertAlmostEqual(macs_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         atomic_number = 79
         macs_ref_cm2_g = {0.1: 14554.743378487043,
@@ -112,25 +112,25 @@ class TestCasino(unittest.TestCase):
                           5.0: 702.60382519274265,
                           10.0: 115.75123581861371}
 
-        energies_keV = sorted(macs_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
-            wavelength_A = 12.3981/energie_keV
+        energies_keV = sorted(macs_ref_cm2_g.keys())  # noqa
+        for energy_keV in energies_keV:
+            wavelength_A = 12.3981/energy_keV  # noqa
             mac_cm2_g = mac_zaluzec_cm2_g(wavelength_A, atomic_number)
-            self.assertAlmostEqual(macs_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+            self.assertAlmostEqual(macs_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
-    def test_SPECIAL_EQUATIONS(self):
+    def compare_mac(self, mac_ref_cm2_g, atomic_number):
+        energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
+        for energie_keV in energies_keV:  # noqa
+            mac_cm2_g = SPECIAL_EQUATIONS(energie_keV, atomic_number)
+            if mac_cm2_g is not None:
+                self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+            else:
+                self.assertEqual(None, mac_cm2_g, msg=energie_keV)
+
+    def test_special_equations(self):
         """
         Tests for method `SPECIAL_EQUATIONS`.
         """
-
-        def compare_mac(mac_ref_cm2_g, atomic_number):
-            energies_keV = sorted(mac_ref_cm2_g.keys())
-            for energie_keV in energies_keV:
-                mac_cm2_g = SPECIAL_EQUATIONS(energie_keV, atomic_number)
-                if mac_cm2_g is not None:
-                    self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
-                else:
-                    self.assertEqual(None, mac_cm2_g, msg=energie_keV)
 
         atomic_number = 1
         mac_ref_cm2_g = {0.1: 0.0,
@@ -146,7 +146,7 @@ class TestCasino(unittest.TestCase):
                          10.0: 0.09799012234499979,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 2
         mac_ref_cm2_g = {1.0: 3.9559633687657905,
@@ -156,7 +156,7 @@ class TestCasino(unittest.TestCase):
                          30.0: 0.07350235898200384,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 3
         mac_ref_cm2_g = {5.0: 5.2947017843354764,
@@ -166,7 +166,7 @@ class TestCasino(unittest.TestCase):
                          30.0: 0.23913760241931142,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 4
         mac_ref_cm2_g = {5.0: 7.845115390997546,
@@ -175,7 +175,7 @@ class TestCasino(unittest.TestCase):
                          30.0: 0.4878487401767469,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 5
         mac_ref_cm2_g = {10.0: 7.622129191433776,
@@ -185,7 +185,7 @@ class TestCasino(unittest.TestCase):
                          35.0: 0.0,
                          50.0: 0.42022409}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 6
         mac_ref_cm2_g = {10.0: 11.68225651,
@@ -194,7 +194,7 @@ class TestCasino(unittest.TestCase):
                          30.0: 1.80234908,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 7
         mac_ref_cm2_g = {10.0: 16.29504405,
@@ -203,7 +203,7 @@ class TestCasino(unittest.TestCase):
                          35.0: 3.36012704,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 8
         mac_ref_cm2_g = {10.0: 16.63414006,
@@ -211,7 +211,7 @@ class TestCasino(unittest.TestCase):
                          38.0: 3.97868026,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 9
         mac_ref_cm2_g = {10.0: 19.22812814,
@@ -219,7 +219,7 @@ class TestCasino(unittest.TestCase):
                          38.0: 3.87790122,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 10
         mac_ref_cm2_g = {10.0: 29.22233616,
@@ -227,7 +227,7 @@ class TestCasino(unittest.TestCase):
                          38.0: 2.66238021,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 11
         mac_ref_cm2_g = {10.0: 53.23487856,
@@ -235,44 +235,44 @@ class TestCasino(unittest.TestCase):
                          38.0: 2.25585760,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 12
         mac_ref_cm2_g = {10.0: 0.0,
                          28.0: 2.02211034,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 13
         mac_ref_cm2_g = {10.0: 0.0,
                          38.0: 0.64809106,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 14
         mac_ref_cm2_g = {10.0: 0.0,
                          38.0: 0.13414860,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 15
         mac_ref_cm2_g = {10.0: 118.27759319,
                          38.0: 0.0,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
         atomic_number = 16
         mac_ref_cm2_g = {10.0: 0.0,
                          38.0: 0.04083431,
                          50.0: 0.0}
 
-        compare_mac(mac_ref_cm2_g, atomic_number)
+        self.compare_mac(mac_ref_cm2_g, atomic_number)
 
-    def test_MACS_HENKE_EBISU(self):
+    def test_macs_henke_ebisu(self):
         """
         Tests for method `MACS_HENKE_EBISU`.
         """
@@ -285,32 +285,32 @@ class TestCasino(unittest.TestCase):
                          5.0: -1.0,
                          10.0: -1.0}
 
-        energies_keV = sorted(mac_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
-            mac_cm2_g = MACS_HENKE_EBISU(energie_keV, atomic_number)
-            self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+        energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
+        for energy_keV in energies_keV:  # noqa
+            mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
+            self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         mac_ref_cm2_g = 3.7542043000041594
         atomic_number = 1
-        energie_keV = 1.2
-        mac_cm2_g = MACS_HENKE_EBISU(energie_keV, atomic_number)
+        energy_keV = 1.2  # noqa
+        mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
         mac_ref_cm2_g = -1.0
         atomic_number = 2
-        energie_keV = 1.2
-        mac_cm2_g = MACS_HENKE_EBISU(energie_keV, atomic_number)
+        energy_keV = 1.2  # noqa
+        mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
         mac_ref_cm2_g = -1.0
         atomic_number = 96
-        energie_keV = 1.2
-        mac_cm2_g = MACS_HENKE_EBISU(energie_keV, atomic_number)
+        energy_keV = 1.2  # noqa
+        mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
-    def test_MACSTOTAL(self):
+    def test_macs_total(self):
         """
-        Tests for method `MACSTOTAL`.
+        Tests for method `MACS_TOTAL`.
         """
 
         atomic_number = 6
@@ -320,15 +320,15 @@ class TestCasino(unittest.TestCase):
                          5.0: 18.516130819039919,
                          10.0: 2.2522353140592566}
 
-        energies_keV = sorted(mac_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
+        energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
+        for energie_keV in energies_keV:  # noqa
             mac_cm2_g = MACSTOTAL(energie_keV, atomic_number)
             self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
 
         self.assertRaises(ValueError, MACSTOTAL, 0.0, 1)
         self.assertRaises(ValueError, MACSTOTAL, 0.0, 2)
 
-    def test_MACS_HEINRICH(self):
+    def test_macs_heinrich(self):
         """
         Tests for method `MACS_HEINRICH`.
         """
@@ -340,16 +340,16 @@ class TestCasino(unittest.TestCase):
                          5.0: 18.516130819039919,
                          10.0: 2.2522353140592566}
 
-        energies_keV = sorted(mac_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
-            wavelength_A = 12.3981/energie_keV
+        energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
+        for energy_keV in energies_keV:  # noqa
+            wavelength_A = 12.3981/energy_keV  # noqa
             mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
-            self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+            self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         mac_ref_cm2_g = 375.07124151210633
         atomic_number = 4
-        energie_keV = 1.2
-        wavelength_A = 12.3981 / energie_keV
+        energy_keV = 1.2  # noqa
+        wavelength_A = 12.3981 / energy_keV  # noqa
         mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
@@ -360,11 +360,11 @@ class TestCasino(unittest.TestCase):
                          0.900: 1699.549897374447,
                          }
 
-        energies_keV = sorted(mac_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
-            wavelength_A = 12.3981/energie_keV
+        energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
+        for energy_keV in energies_keV:
+            wavelength_A = 12.3981/energy_keV  # noqa
             mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
-            self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+            self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         atomic_number = 79
         mac_ref_cm2_g = {85.0: 3276.5609362875975,
@@ -385,13 +385,13 @@ class TestCasino(unittest.TestCase):
                          0.2: -0.00061774618102137168
                          }
 
-        energies_keV = sorted(mac_ref_cm2_g.keys())
-        for energie_keV in energies_keV:
-            wavelength_A = 12.3981/energie_keV
+        energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
+        for energy_keV in energies_keV:
+            wavelength_A = 12.3981/energy_keV  # noqa
             mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
-            self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
+            self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
-    def test_EFFICACITE(self):
+    def test_efficiency(self):
         """
         Tests for method `EFFICACITE`.
         """
@@ -410,8 +410,7 @@ class TestCasino(unittest.TestCase):
                             20.0: 0.9543591372789866,
                             30.0: 0.6078814863135107}
 
-
-        energies_keV = sorted(efficiencies_ref.keys())
-        for energie_keV in energies_keV:
-            efficiency = EFFICACITE(energie_keV)
-            self.assertAlmostEqual(efficiencies_ref[energie_keV], efficiency, msg=energie_keV)
+        energies_keV = sorted(efficiencies_ref.keys())  # noqa
+        for energy_keV in energies_keV:
+            efficiency = EFFICACITE(energy_keV)
+            self.assertAlmostEqual(efficiencies_ref[energy_keV], efficiency, msg=energy_keV)

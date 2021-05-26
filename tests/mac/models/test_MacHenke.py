@@ -45,40 +45,40 @@ class TestMacHenke(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        configuration_file = get_current_module_path(__file__, "../MassAbsorptionCoefficient.cfg")
-        if not os.path.isfile(configuration_file):
-            pytest.skip("Configuration file not found")
+        data_path = get_current_module_path(__file__, "../../../data/henke1993/data")
+        if not os.path.isdir(data_path):
+            pytest.skip("Data path file not found: {}".format(data_path))
 
-        self.macData = MacHenke.MacHenke(configuration_file)
+        self.macData = MacHenke.MacHenke(data_path)
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the TestCase is working.")
         self.assertTrue(True)
 
-    def testConstructor(self):
-        configuration_file = get_current_module_path(__file__, "../MassAbsorptionCoefficient.cfg")
+    def test_constructor(self):
+        data_path = get_current_module_path(__file__, "../../../data/henke1993/data")
 
-        mac_data = MacHenke.MacHenke(configuration_file)
+        mac_data = MacHenke.MacHenke(data_path)
 
-        self.assertTrue(mac_data._pathname != "")
+        self.assertTrue(mac_data.data_path != "")
 
         self.assertEquals("sf.tar.gz", mac_data._filename)
 
-    def testReadData(self):
-        enegies_eV, macs_cm2_g = self.macData.readData(28)
+    def test_read_data(self):
+        enegies_eV, macs_cm2_g = self.macData.readData(28)  # noqa
 
         self.assertAlmostEquals(10.0, enegies_eV[0])
 
         self.assertAlmostEquals(30000.0, enegies_eV[-1])
 
-        self.assertAlmostEquals((9.87), macs_cm2_g[0]*1.0E-4, 2)
+        self.assertAlmostEquals(9.87, macs_cm2_g[0]*1.0E-4, 2)
 
-        self.assertAlmostEquals((9.77), macs_cm2_g[-1], 2)
+        self.assertAlmostEquals(9.77, macs_cm2_g[-1], 2)
 
-    def testWavelenght(self):
+    def test_wavelength(self):
         wavelengths_electron_non_relativistic_williams1996_nm = {
             100.0E3: 0.00386,
             120.0E3: 0.00352,
@@ -95,21 +95,23 @@ class TestMacHenke(unittest.TestCase):
             400.0E3: 0.00164,
             1000.0E3: 0.00087}
 
-        wavelengths_photon_A = {10.2: 1215.6, 91.5: 135.5, 14988.0: 0.8}
+        wavelengths_photon_A = {10.2: 1215.6, 91.5: 135.5, 14988.0: 0.8}  # noqa
 
         for energy_eV in wavelengths_electron_non_relativistic_williams1996_nm:
-            self.assertAlmostEquals(wavelengths_electron_non_relativistic_williams1996_nm[energy_eV], MacHenke.WavelenghtElectron_nm(energy_eV), 4)
+            self.assertAlmostEquals(wavelengths_electron_non_relativistic_williams1996_nm[energy_eV],
+                                    MacHenke.WavelenghtElectron_nm(energy_eV), 4)
 
-            self.assertAlmostEquals(wavelengths_electron_relativistic_williams1996_nm[energy_eV], MacHenke.WavelenghtElectronRelativistic_nm(energy_eV), 4)
+            self.assertAlmostEquals(wavelengths_electron_relativistic_williams1996_nm[energy_eV],
+                                    MacHenke.WavelenghtElectronRelativistic_nm(energy_eV), 4)
 
         for energy_eV in wavelengths_photon_A:
             self.assertAlmostEquals(wavelengths_photon_A[energy_eV] / 10.0, MacHenke.WavelenghtPhoton_nm(energy_eV), 1)
 
-    def testComputeMac_cm2_g(self):
+    def test_compute_mac_cm2_g(self):
         mac_cm2_g = self.macData.compute_mac_cm2_g(28, 10.2, 1.14)
 
-        self.assertAlmostEquals((8.01), mac_cm2_g*1.0E-4, 2)
+        self.assertAlmostEquals(8.01, mac_cm2_g*1.0E-4, 2)
 
         mac_cm2_g = self.macData.compute_mac_cm2_g(28, 1486.7, 8.88)
 
-        self.assertAlmostEquals((4.28), mac_cm2_g*1.0E-3, 2)
+        self.assertAlmostEquals(4.28, mac_cm2_g*1.0E-3, 2)

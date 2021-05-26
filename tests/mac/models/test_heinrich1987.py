@@ -25,17 +25,16 @@ Tests for the :py:mod:`xray.mac.models.heinrich1987` module.
 ###############################################################################
 
 # Standard library modules.
-import os.path
 import unittest
 
 # Third party modules.
-import pytest
 
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
-import xray.mac.models.heinrich1987 as MacHeinrich1987
+from xray.mac.models.heinrich1987 import MacHeinrich1987
+from xray.mac.models.ionization_energies import IonizationEnergiesDtsa
+
 
 # Globals and constants variables.
 
@@ -45,20 +44,17 @@ class TestMacHeinrich1987(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        configuration_file = get_current_module_path(__file__, "../MassAbsorptionCoefficient.cfg")
-        if not os.path.isfile(configuration_file):
-            pytest.skip("Configuration file not found")
-
-        self.heinrich1987 = MacHeinrich1987.MacHeinrich1987()
+        self.heinrich1987 = MacHeinrich1987()
+        self.heinrich1987.ionization_energies = IonizationEnergiesDtsa()
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the TestCase is working.")
         self.assertTrue(True)
 
-    def testAbsorberBoron(self):
+    def test_absorber_boron(self):
         """
         Test energy region 1, Z < 6.
 
@@ -72,7 +68,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testAbsorberCarbon(self):
+    def test_absorber_carbon(self):
         """
         Test energy region 1, Z > 5.
 
@@ -86,9 +82,9 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-#        data_mac_cm2_g = self.heinrich1987.mac_cm2_g(energy_eV, atomicNumberAbsorber)
+    #        data_mac_cm2_g = self.heinrich1987.mac_cm2_g(energy_eV, atomicNumberAbsorber)
 
-    def testRegion2(self):
+    def test_region2(self):
         """
         Test energy region 2.
 
@@ -102,7 +98,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion3(self):
+    def test_region3(self):
         """
         Test energy region 3.
 
@@ -116,7 +112,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion4(self):
+    def test_region4(self):
         """
         Test energy region 4.
 
@@ -130,7 +126,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testAbsorberCopper(self):
+    def test_absorber_copper(self):
         """
         Test energy region 5, Z < 30.
 
@@ -144,7 +140,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testAbsorberZinc(self):
+    def test_absorber_zinc(self):
         """
         Test energy region 5, Z > 29.
 
@@ -158,7 +154,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testAbsorberNeodymium(self):
+    def test_absorber_neodymium(self):
         """
         Test energy region 5, Z < 61.
 
@@ -172,7 +168,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testAbsorberPromethium(self):
+    def test_absorber_promethium(self):
         """
         Test energy region 5, Z > 60.
 
@@ -187,7 +183,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion6(self):
+    def test_region6(self):
         """
         Test energy region 6.
 
@@ -201,9 +197,9 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion6M4(self):
+    def test_region6_m4(self):
         """
-        Test energy region 6 with and wihout M4.
+        Test energy region 6 with and without M4.
 
         """
         macs_cm2_g = {2958.0: 2192.0, 3314: 1801.5, 3692.0: 1496.0}
@@ -224,7 +220,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion7(self):
+    def test_region7(self):
         """
         Test energy region 7.
 
@@ -238,7 +234,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion8(self):
+    def test_region8(self):
         """
         Test energy region 8.
 
@@ -252,7 +248,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion9(self):
+    def test_region9(self):
         """
         Test energy region 9.
 
@@ -266,7 +262,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion10(self):
+    def test_region10(self):
         """
         Test energy region 10.
 
@@ -280,7 +276,7 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testRegion11(self):
+    def test_region11(self):
         """
         Test energy region 11.
 
@@ -297,31 +293,32 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertAlmostEquals(macs_cm2_g[energy_eV], mac_cm2_g, 0)
 
-    def testAbsorberPlutomium(self):
+    def test_absorber_plutonium(self):
         """
         .. todo:: Add test for plutonium absorber.
         """
 
         # self.fail("Test if the TestCase is working.")
 
-    def testGetRegion(self):
-        regions = {86.4+1.0: 11
-                            , 107.8+1.0: 11
-                            , 333.89+1.0: 11
-                            , 351.99+1.0: 11
-                            , 545.38+1.0: 11
-                            , 643.67+1.0: 11
-                            , 758.77+1.0: 10
-                            , 2205.6+1.0: 9
-                            , 2291.0+1.0: 8
-                            , 2742.9+1.0: 7
-                            , 3147.7+1.0: 6
-                            , 3424.8+1.0: 5
-                            , 11918.0+1.0: 4
-                            , 13733.0+1.0: 3
-                            , 14352.0+1.0: 2
-                            , 80722.0+1.0: 1
-                            }
+    def test_get_region(self):
+        regions = {
+            86.4 + 1.0: 11,
+            107.8 + 1.0: 11,
+            333.89 + 1.0: 11,
+            351.99 + 1.0: 11,
+            545.38 + 1.0: 11,
+            643.67 + 1.0: 11,
+            758.77 + 1.0: 10,
+            2205.6 + 1.0: 9,
+            2291.0 + 1.0: 8,
+            2742.9 + 1.0: 7,
+            3147.7 + 1.0: 6,
+            3424.8 + 1.0: 5,
+            11918.0 + 1.0: 4,
+            13733.0 + 1.0: 3,
+            14352.0 + 1.0: 2,
+            80722.0 + 1.0: 1
+        }
 
         atomic_number_absorber = 79
 
@@ -330,16 +327,16 @@ class TestMacHeinrich1987(unittest.TestCase):
 
             self.assertEquals(regions[xrayEnergy_eV], region)
 
-    def testLowEnergy(self):
+    def test_low_energy(self):
         atomic_number_absorber = 14
-        energy_eV = 1.0
+        energy_eV = 1.0  # noqa
 
         mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
 
         self.assertAlmostEquals(1.0E6, mac_cm2_g, 0)
 
         atomic_number_absorber = 79
-        energy_eV = 1.0
+        energy_eV = 1.0  # noqa
 
         mac_cm2_g = self.heinrich1987.computeMac_cm2_g(energy_eV, atomic_number_absorber)
 

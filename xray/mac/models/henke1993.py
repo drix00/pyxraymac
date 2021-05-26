@@ -34,8 +34,8 @@ from scipy.interpolate import interp1d
 # Local modules.
 
 # Project modules.
-import xray.mac.models.MacHenke as MacHenke
-import xray.mac.models.MacHenkeWinxray as MacHenkeWinxray
+from xray.mac.models.MacHenke import MacHenke
+from xray.mac.models.MacHenkeWinxray import MacHenkeWinxray
 
 # Globals and constants variables.
 LINEAR = 'linear'
@@ -63,11 +63,11 @@ class Interpolation1D(object):
 
 
 class MacHenke1993:
-    def __init__(self, configurationFile, model='Henke'):
+    def __init__(self, data_path, model='Henke'):
         if model == 'HenkeWinxray':
-            self.macModel = MacHenkeWinxray.MacHenkeWinxray(configurationFile)
+            self.macModel = MacHenkeWinxray(data_path)
         else:
-            self.macModel = MacHenke.MacHenke(configurationFile)
+            self.macModel = MacHenke(data_path)
 
         self.minimumEnergy_eV = 0.0
 

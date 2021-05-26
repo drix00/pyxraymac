@@ -46,7 +46,7 @@ class TestChantler2005(unittest.TestCase):
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the testcase is working.")
         self.assert_(True)
 
@@ -59,7 +59,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertEquals(92, len(mac.experimental_data))
 
         atomic_number = 1
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(0.013668*1.0e3, energies_eV[0])
@@ -69,7 +69,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertAlmostEquals(0.0000000088048, mac_cm2_g[-1])
 
         atomic_number = 92
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(0.0324615*1.0e3, energies_eV[0])
@@ -87,7 +87,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertEquals(92, len(mac.experimental_data))
 
         atomic_number = 1
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(0.013668*1.0e3, energies_eV[0])
@@ -97,7 +97,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertAlmostEquals(0.0000000088048, mac_cm2_g[-1])
 
         atomic_number = 92
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(0.0324615*1.0e3, energies_eV[0])
@@ -106,7 +106,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertAlmostEquals(432.9451*1.0e3, energies_eV[-1])
         self.assertAlmostEquals(0.15459, mac_cm2_g[-1])
 
-    def test_read_mac_data_NISTMonte2(self):
+    def test_read_mac_data_nist_monte2(self):
         file_path = get_current_module_path(__file__, "../../../data/chantler2005/FFastMAC_nistMonte2.csv")
 
         mac = Chantler2005()
@@ -115,7 +115,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertEquals(92, len(mac.experimental_data))
 
         atomic_number = 1
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(10.69, energies_eV[0])
@@ -125,7 +125,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertAlmostEquals(0.1753, mac_cm2_g[-1])
 
         atomic_number = 92
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(10.69, energies_eV[0])
@@ -141,7 +141,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertEquals(92, len(mac.experimental_data))
 
         atomic_number = 1
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(0.013668*1.0e3, energies_eV[0])
@@ -151,7 +151,7 @@ class TestChantler2005(unittest.TestCase):
         self.assertAlmostEquals(0.0000000088048, mac_cm2_g[-1])
 
         atomic_number = 92
-        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+        energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
         mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
         self.assertAlmostEquals(0.0324615*1.0e3, energies_eV[0])
@@ -164,18 +164,18 @@ class TestChantler2005(unittest.TestCase):
         chantler2005 = Chantler2005()
 
         atomic_number = 1
-        energy_eV = 13.7
+        energy_eV = 13.7  # noqa
         mac_cm2_g = chantler2005.compute_mac_cm2_g(energy_eV, atomic_number)
         self.assertAlmostEquals(2890658.8235294116, mac_cm2_g)
 
-        energy_eV = 14.0
+        energy_eV = 14.0  # noqa
         mac_cm2_g = chantler2005.compute_mac_cm2_g(energy_eV, atomic_number)
         self.assertAlmostEquals(2736735.1622112636, mac_cm2_g)
 
-        energy_eV = 14.8
+        energy_eV = 14.8  # noqa
         mac_cm2_g = chantler2005.compute_mac_cm2_g(energy_eV, atomic_number)
         self.assertAlmostEquals(2376537.9133143006, mac_cm2_g)
 
-        energy_eV = 1000.0
+        energy_eV = 1000.0  # noqa
         mac_cm2_g = chantler2005.compute_mac_cm2_g(energy_eV, atomic_number)
         self.assertAlmostEquals(6.924559683551284, mac_cm2_g)

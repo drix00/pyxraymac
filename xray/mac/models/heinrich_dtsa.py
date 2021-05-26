@@ -40,21 +40,8 @@ from xray.mac.models.element_properties import get_atomic_mass_g_mol
 
 
 class MacHeinrichDTSA:
-    def __init__(self, configuration_file=None):
+    def __init__(self):
         self.ionization_energies = IonizationEnergies()
-
-        if configuration_file:
-            self.readConfiguration(configuration_file)
-
-    def readConfiguration(self, configuration_file):
-        """ Read the configuration file for options."""
-        config = configparser.ConfigParser()
-
-        config.read_file(open(configuration_file))
-
-        if config.has_section("MacHeinrichDTSA"):
-            if config.has_option("MacHeinrichDTSA", "path"):
-                self.dataPath = config.get("MacHeinrichDTSA", "path")
 
     def computeMac_cm2_g(self, energy_eV, atomicNumber):
         if energy_eV <= 10.0:
@@ -65,7 +52,7 @@ class MacHeinrichDTSA:
 
         bias = 0
 
-        eeK = self.ionization_energies.ionization_energy_eV(atomicNumber, 'K1')
+        eeK = self.ionization_energies.ionization_energy_eV(atomicNumber, 'K')
 
         try:
             eeNI = self.ionization_energies.ionization_energy_eV(atomicNumber, 'N1')

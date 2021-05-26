@@ -59,7 +59,7 @@ class TestElements(unittest.TestCase):
 
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         """
         First test to check if the testcase is working with the testing framework.
         """
@@ -121,12 +121,12 @@ class TestElements(unittest.TestCase):
         """
         Tests for method :py:meth:`atomic_number`.
         """
-        
+
         self.assertEqual(1, self.properties.atomic_number('H'))
         self.assertEqual(6, self.properties.atomic_number('C'))
         self.assertEqual(79, self.properties.atomic_number('Au'))
         self.assertEqual(106, self.properties.atomic_number('Unh'))
 
-# .. todo:: test get_fermi_erngy_eV
+# .. todo:: test get_fermi_energy_eV
 # .. todo:: test get_k_fermi
-# .. todo:: test get_plamons_energy_eV
+# .. todo:: test get_plasmon_energy_eV

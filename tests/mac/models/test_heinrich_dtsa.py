@@ -25,17 +25,14 @@ Tests for the :py:mod:`xray.mac.models.heinrich_dtsa` module.
 ###############################################################################
 
 # Standard library modules.
-import os.path
 import unittest
 
 # Third party modules.
-import pytest
 
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
-import xray.mac.models.heinrich_dtsa as MacHeinrichDTSA
+from xray.mac.models.heinrich_dtsa import MacHeinrichDTSA
 
 # Globals and constants variables.
 
@@ -45,20 +42,16 @@ class TestMacHeinrichDTSA(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        configuration_file = get_current_module_path(__file__, "../MassAbsorptionCoefficient.cfg")
-        if not os.path.isfile(configuration_file):
-            pytest.skip("Configuration file not found")
-
-        self.macModel = MacHeinrichDTSA.MacHeinrichDTSA(configuration_file=configuration_file)
+        self.macModel = MacHeinrichDTSA()
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
+    def test_skeleton(self):
         # self.fail("Test if the TestCase is working.")
         self.assertTrue(True)
 
-    def testComputeMAC_cm2_g(self):
+    def test_compute_mac_cm2_g(self):
         value = self.macModel.computeMac_cm2_g(1041.0, 79)
 
         self.assertAlmostEqual(4698.6, value, 1)

@@ -33,4 +33,3 @@ Tests for the :py:mod:`xray.mac` package.
 # Project modules.
 
 # Globals and constants variables.
-
