@@ -183,11 +183,11 @@ A = [0, 1.008, 4.003, 6.941, 9.012, 10.81, 12.01, 14.01, 16.00, 19.00, 20.18,
      244, 243, 247, 247, 251, 254, 257, 257, 254, 257]
 
 
-def SQR(a):
+def square(a):
     return a * a
 
 
-def mac_zaluzec_cm2_g(wavelength_A, atomic_number_absorbeur):
+def mac_zaluzec_cm2_g(wavelength_A, atomic_number_absorber):  # noqa
     """
     Compute mass absorption coefficient from Zaluzec model.
 
@@ -196,365 +196,367 @@ def mac_zaluzec_cm2_g(wavelength_A, atomic_number_absorbeur):
     @todo Find the unit of the returned mass absorption coefficient.
 
     @param wavelength_A electron wavelength in Angstrom.
-    @param atomic_number_absorbeur atomic number of the absorber element.
+    @param atomic_number_absorber atomic number of the absorber element.
     @return mass absorption coefficient in ??.
     @retval -1.0 if the inputs are out of range of the model.
     """
-    l = wavelength_A
-    absorbeur = atomic_number_absorbeur
+    l_A = wavelength_A  # noqa
+    absorber = atomic_number_absorber
 
-    E = 12398.1 / l  # en ev
-    energy = E
+    energy_eV = 12398.1 / l_A  # noqa
     c = 0.
     n = 0.
     c_abs = 0.0
 
     # Ne fonct. pas puisque pas de raie de plus faible energie que .183
-    if ((energy < 185) and (absorbeur != 1)):
-        # .. todo:: Bug in CASINO: wavelngth passed to MACSTOTAL.
-        c_abs = MACSTOTAL(energy * 1.0e-3, absorbeur)
-        # c_abs = MACSTOTAL(l, absorbeur)
-        return ((c_abs))
+    if energy_eV < 185 and absorber != 1:
+        # .. todo:: Bug in CASINO: wavelength passed to macs_total.
+        c_abs = macs_total(energy_eV * 1.0e-3, absorber)
+        # c_abs = macs_total(l, absorber)
+        return c_abs
 
-    if (energy > 1487 and absorbeur != 1):
-        # .. todo:: Bug in CASINO: wavelngth passed to MACSTOTAL.
-        c_abs = MACSTOTAL(energy * 1.0e-3, absorbeur)
-        # c_abs = MACSTOTAL(l, absorbeur)
-        return ((c_abs))
+    if energy_eV > 1487 and absorber != 1:
+        # .. todo:: Bug in CASINO: wavelngth passed to macs_total.
+        c_abs = macs_total(energy_eV * 1.0e-3, absorber)
+        # c_abs = macs_total(l, absorber)
+        return c_abs
     else:
-        if (absorbeur == HYDROGEN):
-            if (E > 1487):
-                c_abs = SPECIAL_EQUATIONS(E / 1000.0, absorbeur)
-                return ((c_abs))
+        if absorber == HYDROGEN:
+            if energy_eV > 1487:
+                c_abs = special_equations(energy_eV / 1000.0, absorber)
+                return c_abs
 
-            if (E > 679 and E <= 1487):
+            if 679 < energy_eV <= 1487:
                 c = 0.001472
                 n = 3.359
-            if (E > 395 and E <= 679):
+            if 395 < energy_eV <= 679:
                 c = 0.001816
                 n = 3.285
-            if (E <= 395):
+            if energy_eV <= 395:
                 c = 0.002138
                 n = 3.231
 
-            if (c == 0.0):
+            if c == 0.0:
                 logging.error("Erreur dans la fonction COEFF_ABS H")
                 raise ValueError
             else:
-                c_abs = c * math.pow((12398.1 / E), n)
+                c_abs = c * math.pow((12398.1 / energy_eV), n)
 
-            if (c_abs < 0.0):
+            if c_abs < 0.0:
                 c_abs = 0.0
 
-            return ((c_abs))
+            return c_abs
 
-        if (absorbeur == BERYLLIUM):
-            if (E > 679 and E <= 1487):
+        if absorber == BERYLLIUM:
+            if 679 < energy_eV <= 1487:
                 c = 0.3102
                 n = 3.001
-            if (E > 285 and E <= 679):
+            if 285 < energy_eV <= 679:
                 c = 0.5060
                 n = 2.831
-            if (E <= 285):
+            if energy_eV <= 285:
                 c = 2.2480
                 n = 2.419
 
-            if (c == 0.0):
+            if c == 0.0:
                 logging.error("\n\nerreur dans la fonction COEFF_ABS Be")
                 raise ValueError
             else:
-                c_abs = c * math.pow((12398.1 / E), n)
+                c_abs = c * math.pow((12398.1 / energy_eV), n)
 
-            return ((c_abs))
+            return c_abs
 
-        if (absorbeur == CARBON):
-            if (E > 705 and E <= 1487):
+        if absorber == CARBON:
+            if 705 < energy_eV <= 1487:
                 c = 1.966
                 n = 2.788
-            if (E > 285 and E <= 705):
+            if 285 < energy_eV <= 705:
                 c = 4.1290
                 n = 2.529
-            if (E <= 285):
+            if energy_eV <= 285:
                 c = 0.2572
                 n = 2.404
 
-            if (c == 0.0):
+            if c == 0.0:
                 logging.error("\n\nerreur dans la fonction COEFF_ABS C")
                 raise ValueError
             else:
-                c_abs = c * math.pow((12398.1 / E), n)
+                c_abs = c * math.pow((12398.1 / energy_eV), n)
 
-            return ((c_abs))
+            return c_abs
 
-        if (absorbeur == OXYGEN):
-            if (E > 532 and E <= 1487):
+        if absorber == OXYGEN:
+            if 532 < energy_eV <= 1487:
                 c = 6.9980
                 n = 2.573
-            if (E <= 532):
+            if energy_eV <= 532:
                 c = .4810
                 n = 2.479
 
-            if (c == 0.0):
+            if c == 0.0:
                 logging.error("\n\nerreur dans la fonction COEFF_ABS O")
                 raise ValueError
             else:
-                c_abs = c * math.pow((12398.1 / E), n)
+                c_abs = c * math.pow((12398.1 / energy_eV), n)
 
-            return ((c_abs))
+            return c_abs
 
-        if (absorbeur == ALUMINUM):
-            if (E > 556 and E <= 1487):
+        if absorber == ALUMINUM:
+            if 556 < energy_eV <= 1487:
                 c = 1.2860
                 n = 2.712
-                c_abs = c * math.pow((12398.1 / E), n)
+                c_abs = c * math.pow((12398.1 / energy_eV), n)
 
-                return ((c_abs))
-            if (E <= 556):
-                c_abs = -7.059e-4 * math.pow(l, 4) - 4.815e-2 * math.pow(l, 3) + 25.79 * SQR(l) - 3.644e2 * l + 1801.
+                return c_abs
+            if energy_eV <= 556:
+                c_abs = -7.059e-4 * math.pow(l_A, 4) - \
+                        4.815e-2 * math.pow(l_A, 3) + \
+                        25.79 * square(l_A) - 3.644e2 * l_A + 1801.
 
-                if (c_abs < 0.0):
+                if c_abs < 0.0:
                     c_abs = 0.0
 
-                return ((c_abs))
+                return c_abs
 
-            if (c_abs == 0.0):
+            if c_abs == 0.0:
                 logging.error("\n\nerreur dans la fonction COEFF_ABS Al")
                 raise ValueError
 
-        if (absorbeur == SILICON):
-            if (E > 637 and E <= 1487):
+        if absorber == SILICON:
+            if 637 < energy_eV <= 1487:
                 c = 1.759
                 n = 2.706
-                c_abs = c * math.pow((12398.1 / E), n)
+                c_abs = c * math.pow((12398.1 / energy_eV), n)
 
-                return ((c_abs))
+                return c_abs
 
-            if (E <= 637):
-                c_abs = -0.2407 * math.pow(l, 3) + 39.83 * SQR(l) - 527. * l + 2278.
-                if (c_abs < 0.0):
+            if energy_eV <= 637:
+                c_abs = -0.2407 * math.pow(l_A, 3) + 39.83 * square(l_A) - 527. * l_A + 2278.
+                if c_abs < 0.0:
                     c_abs = 0.0
 
-                return ((c_abs))
+                return c_abs
 
-            if (c_abs == 0.0):
+            if c_abs == 0.0:
                 logging.error("\n\nerreur dans la fonction COEFF_ABS Si")
                 raise ValueError
 
-        if (absorbeur == GOLD):
-            if (E > 776 and E <= 1487):
+        if absorber == GOLD:
+            if 776 < energy_eV <= 1487:
                 c = 41.17
                 n = 1.906
-                c_abs = c * math.pow((12398.1 / E), n)
+                c_abs = c * math.pow((12398.1 / energy_eV), n)
 
-                return ((c_abs))
+                return c_abs
 
-            if (E <= 776):
-                c_abs = -4.411e-4 * math.pow(l, 5) + 9.878e-2 * math.pow(l, 4) - 8.218 * math.pow(l, 3) + 302. * SQR(
-                    l) - 4.466e3 * l + 29660.
-                if (c_abs < 0.0):
+            if energy_eV <= 776:
+                c_abs = -4.411e-4 * math.pow(l_A, 5) + \
+                        9.878e-2 * math.pow(l_A, 4) - \
+                        8.218 * math.pow(l_A, 3) + \
+                        302. * square(l_A) - 4.466e3 * l_A + 29660.
+                if c_abs < 0.0:
                     c_abs = 0.0
 
-                return ((c_abs))
+                return c_abs
 
-            if (c_abs == 0.0):
+            if c_abs == 0.0:
                 logging.error("\n\nerreur dans la fonction COEFF_ABS Au")
                 raise ValueError
 
     return -1.0
 
 
-def SPECIAL_EQUATIONS(energy_keV, atomicNumber):
+def special_equations(energy_keV, atomic_number):  # noqa
     """
     Equations used in mac_zaluzec_cm2_g.
 
     @param energy_keV
-    @param atomicNumber
+    @param atomic_number
     @return macs
     """
-    E = energy_keV
-    z = atomicNumber
+    z = atomic_number
 
-    l = 12.3981 / E
-    if (z == 1):
-        if (E <= 2.0 and E >= 1):
-            macs = 3.0353 * math.pow(l, 0.01460)
+    l_A = 12.3981 / energy_keV  # noqa
+    if z == 1:
+        if 2.0 >= energy_keV >= 1:
+            macs = 3.0353 * math.pow(l_A, 0.01460)
             return macs
 
-        if (E <= 3.5 and E >= 1):
-            macs = 3.5 * math.pow(l, 0.05890)
+        if 3.5 >= energy_keV >= 1:
+            macs = 3.5 * math.pow(l_A, 0.05890)
             return macs
 
-        if (E <= 4.0 and E >= 1):
-            macs = 3.5 * math.pow(l, 0.07434)
+        if 4.0 >= energy_keV >= 1:
+            macs = 3.5 * math.pow(l_A, 0.07434)
             return macs
 
-        if (E <= 6.0 and E >= 1):
-            macs = 2.937 * math.pow(l, 0.27795)
+        if 6.0 >= energy_keV >= 1:
+            macs = 2.937 * math.pow(l_A, 0.27795)
             return macs
 
-        if (E <= 9.2 and E >= 1):
-            macs = 0.627 * math.pow(l, .4231)
+        if 9.2 >= energy_keV >= 1:
+            macs = 0.627 * math.pow(l_A, .4231)
             return macs
 
-        if (E <= 40.0 and E >= 1):
-            macs = 0.089 * math.pow(l, .44767)
+        if 40.0 >= energy_keV >= 1:
+            macs = 0.089 * math.pow(l_A, .44767)
             return macs
 
-    if (z == 2):
-        if (E >= 3.7 and E <= 6.0):
-            macs = 3.7 * math.pow(l, .10107)
+    if z == 2:
+        if 3.7 <= energy_keV <= 6.0:
+            macs = 3.7 * math.pow(l_A, .10107)
             return macs
 
-        if (E <= 9.5):
-            macs = 2.44950 * math.pow(l, .19040)
+        if energy_keV <= 9.5:
+            macs = 2.44950 * math.pow(l_A, .19040)
             return macs
 
-        if (E <= 18.):
-            macs = 1.1265 * math.pow(l, .21026)
+        if energy_keV <= 18.:
+            macs = 1.1265 * math.pow(l_A, .21026)
             return macs
 
-        if (E <= 40.):
-            macs = 0.08672 * math.pow(l, .18714)
+        if energy_keV <= 40.:
+            macs = 0.08672 * math.pow(l_A, .18714)
             return macs
 
-    if (z == 3):
-        if (E >= 5.90 and E <= 8.80):
-            macs = 5.9 * math.pow(l, .18233)
+    if z == 3:
+        if 5.90 <= energy_keV <= 8.80:
+            macs = 5.9 * math.pow(l_A, .18233)
             return macs
 
-        if (E <= 12.50):
-            macs = 4.17123 * math.pow(l, 0.26263)
+        if energy_keV <= 12.50:
+            macs = 4.17123 * math.pow(l_A, 0.26263)
             return macs
 
-        if (E <= 19.20):
-            macs = 1.97884 * math.pow(l, .26156)
+        if energy_keV <= 19.20:
+            macs = 1.97884 * math.pow(l_A, .26156)
             return macs
 
-        if (E <= 40.):
-            macs = .2920 * math.pow(l, .22601)
+        if energy_keV <= 40.:
+            macs = .2920 * math.pow(l_A, .22601)
             return macs
 
-    if (z == 4):
-        if (E >= 8.0 and E <= 12.50):
-            macs = 8. * math.pow(l, .38680)
+    if z == 4:
+        if 8.0 <= energy_keV <= 12.50:
+            macs = 8. * math.pow(l_A, .38680)
             return macs
 
-        if (E <= 19.80):
-            macs = 5.53694 * math.pow(l, .38371)
+        if energy_keV <= 19.80:
+            macs = 5.53694 * math.pow(l_A, .38371)
             return macs
 
-        if (E <= 40.):
-            macs = 0.63152 * math.pow(l, .29211)
+        if energy_keV <= 40.:
+            macs = 0.63152 * math.pow(l_A, .29211)
             return macs
 
-    if (z == 5):
-        if (E >= 10.2 and E <= 15.):
-            macs = 10.2 * math.pow(l, .62897)
+    if z == 5:
+        if 10.2 <= energy_keV <= 15.:
+            macs = 10.2 * math.pow(l_A, .62897)
             return macs
 
-        if (E <= 21.):
-            macs = 6.84584 * math.pow(l, .49970)
+        if energy_keV <= 21.:
+            macs = 6.84584 * math.pow(l_A, .49970)
             return macs
 
-        if (E <= 31.):
-            macs = 3.83941 * math.pow(l, .40524)
+        if energy_keV <= 31.:
+            macs = 3.83941 * math.pow(l_A, .40524)
             return macs
 
-        if (E >= 40.):
-            macs = .63152 * math.pow(l, .29211)
+        if energy_keV >= 40.:
+            macs = .63152 * math.pow(l_A, .29211)
             return macs
 
-    if (z == 6):
-        if (E >= 13. and E <= 21.):
-            macs = 13. * math.pow(l, 1.10987)
+    if z == 6:
+        if 13. <= energy_keV <= 21.:
+            macs = 13. * math.pow(l_A, 1.10987)
             return macs
 
-        if (E <= 27.5):
-            macs = 9.94906 * math.pow(l, .74709)
+        if energy_keV <= 27.5:
+            macs = 9.94906 * math.pow(l_A, .74709)
             return macs
 
-        if (E <= 40.):
-            macs = 2.588 * math.pow(l, .40943)
+        if energy_keV <= 40.:
+            macs = 2.588 * math.pow(l_A, .40943)
             return macs
 
-    if (z == 7):
-        if (E >= 15. and E < 21.):
-            macs = 15. * math.pow(l, 1.4640)
+    if z == 7:
+        if 15. <= energy_keV < 21.:
+            macs = 15. * math.pow(l_A, 1.4640)
             return macs
 
-        if (E <= 30.):
-            macs = 12.96310 * math.pow(l, 1.06418)
+        if energy_keV <= 30.:
+            macs = 12.96310 * math.pow(l_A, 1.06418)
             return macs
 
-        if (E <= 40.):
-            macs = 6.26451 * math.pow(l, .60023)
+        if energy_keV <= 40.:
+            macs = 6.26451 * math.pow(l_A, .60023)
             return macs
 
-    if (z == 8):
-        if (E >= 17.2 and E <= 25.):
-            macs = 17.2 * math.pow(l, 1.83450)
+    if z == 8:
+        if 17.2 <= energy_keV <= 25.:
+            macs = 17.2 * math.pow(l_A, 1.83450)
             return macs
 
-        if (E <= 40.):
-            macs = 13.21194 * math.pow(l, 1.07154)
+        if energy_keV <= 40.:
+            macs = 13.21194 * math.pow(l_A, 1.07154)
             return macs
 
-    if (z == 9):
-        if (E >= 20. and E <= 28.5):
-            macs = 20.0 * math.pow(l, 2.41791)
+    if z == 9:
+        if 20. <= energy_keV <= 28.5:
+            macs = 20.0 * math.pow(l_A, 2.41791)
             return macs
 
-        if (E <= 40.):
-            macs = 14.85851 * math.pow(l, 1.19931)
+        if energy_keV <= 40.:
+            macs = 14.85851 * math.pow(l_A, 1.19931)
             return macs
 
-    if (z == 10):
-        if (E >= 23. and E <= 30.):
-            macs = 23. * math.pow(l, 3.28063)
+    if z == 10:
+        if 23. <= energy_keV <= 30.:
+            macs = 23. * math.pow(l_A, 3.28063)
             return macs
 
-        if (E <= 40.):
-            macs = 19.86943 * math.pow(l, 1.79454)
+        if energy_keV <= 40.:
+            macs = 19.86943 * math.pow(l_A, 1.79454)
             return macs
 
-    if (z == 11):
-        if (E <= 25. and E <= 30.):
-            macs = 25. * math.pow(l, 3.51621)
+    if z == 11:
+        if energy_keV <= 25. and energy_keV <= 30.:
+            macs = 25. * math.pow(l_A, 3.51621)
             return macs
 
-        if (E <= 40.):
-            macs = 22.51741 * math.pow(l, 2.05417)
+        if energy_keV <= 40.:
+            macs = 22.51741 * math.pow(l_A, 2.05417)
             return macs
 
-    if (z == 12):
-        if (E >= 27.3 and E <= 30.):
-            macs = 27.3 * math.pow(l, 3.19488)
+    if z == 12:
+        if 27.3 <= energy_keV <= 30.:
+            macs = 27.3 * math.pow(l_A, 3.19488)
             return macs
 
-    if (z == 13):
-        if (E >= 29.5 and E < 40.):
-            macs = 29.5 * math.pow(l, 3.40890)
+    if z == 13:
+        if 29.5 <= energy_keV < 40.:
+            macs = 29.5 * math.pow(l_A, 3.40890)
             return macs
 
-    if (z == 14):
-        if (E >= 32.5 and E <= 40.):
-            macs = 32.5 * math.pow(l, 4.90164)
+    if z == 14:
+        if 32.5 <= energy_keV <= 40.:
+            macs = 32.5 * math.pow(l_A, 4.90164)
             return macs
 
-    if (z == 15):
-        if (E <= 35. and E <= 40.):
-            macs = 35. * math.pow(l, 5.66476)
+    if z == 15:
+        if energy_keV <= 35. and energy_keV <= 40.:
+            macs = 35. * math.pow(l_A, 5.66476)
             return macs
 
-    if (z == 16):
-        if (E >= 37.5 and E <= 40.):
-            macs = 37.5 * math.pow(l, 6.09135)
+    if z == 16:
+        if 37.5 <= energy_keV <= 40.:
+            macs = 37.5 * math.pow(l_A, 6.09135)
             return macs
 
     return 0.0
 
 
-def MACS_HENKE_EBISU(energy_keV, atomicNumber):
+def macs_henke_ebisu(energy_keV, atomic_number):  # noqa
     """
     Compute mass absorption coefficient from Henke and Ebisu (1974) model.
 
@@ -564,8 +566,8 @@ def MACS_HENKE_EBISU(energy_keV, atomicNumber):
 
     @note Use Zaluzec model for hydrogen absorber.
 
-    @param E energy in keV
-    @param z atomic number of the absorber.
+    @param energy_keV energy in keV
+    @param atomic_number atomic number of the absorber.
     @return mass absorption coefficient in ??.
     @retval -1.0 if energy is greater than 1.6 keV.
     @retval -1.0 if absorber is less than 3 or greater than 94.
@@ -573,37 +575,36 @@ def MACS_HENKE_EBISU(energy_keV, atomicNumber):
     if energy_keV <= 0.0:
         raise ValueError
 
-    E = energy_keV
-    z = atomicNumber
+    z = atomic_number
 
-    if (z == 1):
-        absp = mac_zaluzec_cm2_g(12.3981 / E, z)
-        return (absp)
+    if z == 1:
+        absp = mac_zaluzec_cm2_g(12.3981 / energy_keV, z)
+        return absp
 
-    if (E > 1.6):
-        return (-1)
+    if energy_keV > 1.6:
+        return -1
 
     zmin = 3
     zmax = 94
-    if ((z < zmin) or (z > zmax)):
-        return (-1)
+    if (z < zmin) or (z > zmax):
+        return -1
 
     i = 0
     emin = i
     emax = i + 1
-    ffitfener = 0
+    # ffitfener = 0
     nener = 14
 
     # Energy and there corresponding columns value in the kcoeff.prn (0) and lcoeff.prn (1) files.
     # position is a pair of (fileIndex, columnIndex).
     # Updated value to have the same energy for x-ray line and in the files.
-    energie = [0.183, 0.277, 0.392, 0.452, 0.525, 0.573, 0.637, 0.677, 0.705, 0.776, 0.848, 0.852, 0.930, 1.012]
+    energies_keV = [0.183, 0.277, 0.392, 0.452, 0.525, 0.573, 0.637, 0.677, 0.705, 0.776, 0.848, 0.852, 0.930, 1.012]  # noqa
     # Original values
-    # double energie[14] ={0.185, 0.281, 0.392, 0.452, 0.525, 0.573, 0.637, 0.677, 0.705, 0.776, 0.849, 0.852, 0.930, 1.012}
+    # energie[14] ={0.185, 0.281, 0.392, 0.452, 0.525, 0.573, 0.637, 0.677, 0.705, 0.776, 0.849, 0.852, 0.930, 1.012}
     position = [[0, 1], [0, 2], [0, 3], [1, 1], [0, 4], [1, 3], [1, 4], [0, 5], [1, 5], [1, 6], [0, 6], [1, 7], [1, 8],
                 [1, 9]]
 
-    if ((E >= 0.183) and (E <= 1.012)):
+    if 0.183 <= energy_keV <= 1.012:
         # Recherche de position dans les fichiers.
         condition = True
         while condition:
@@ -611,11 +612,11 @@ def MACS_HENKE_EBISU(energy_keV, atomicNumber):
             emax = i + 1
             i += 1
 
-            condition = ((energie[emax] < E) and (i < nener))
+            condition = ((energies_keV[emax] < energy_keV) and (i < nener))
 
         ffitfener = 0
     else:
-        if (E < 0.183):
+        if energy_keV < 0.183:
             emin = 1
             emax = 2
             ffitfener = 1
@@ -631,17 +632,17 @@ def MACS_HENKE_EBISU(energy_keV, atomicNumber):
     poscmax = position[emax][1]
     posl = z - 2
 
-    kcol = 6
-    lcol = 9
-
-    absmin = 0.0
-    absmax = 0.0
+    # kcol = 6
+    # lcol = 9
+    #
+    # absmin = 0.0
+    # absmax = 0.0
 
     # for INI File
-    file_path_K = get_current_module_path(__file__, "../../../data/casino/KCOEFF.PRN")
-    file_path_L = get_current_module_path(__file__, "../../../data/casino/LCOEFF.PRN")
+    file_path_K = get_current_module_path(__file__, "../../../data/casino/KCOEFF.PRN")  # noqa
+    file_path_L = get_current_module_path(__file__, "../../../data/casino/LCOEFF.PRN")  # noqa
 
-    if (posfmin == 0):
+    if posfmin == 0:
         with open(file_path_K, 'r') as kcoeff:
             lines = kcoeff.readlines()
 
@@ -654,7 +655,7 @@ def MACS_HENKE_EBISU(energy_keV, atomicNumber):
             items = lines[posl - 1].split()
             absmin = float(items[poscmin - 1])
 
-    if (posfmax == 0):
+    if posfmax == 0:
         with open(file_path_K, 'r') as kcoeff:
             lines = kcoeff.readlines()
 
@@ -667,19 +668,20 @@ def MACS_HENKE_EBISU(energy_keV, atomicNumber):
             items = lines[posl - 1].split()
             absmax = float(items[poscmax - 1])
 
-    absp = 0.0
-    if (ffitfener == 0):
-        absp = ((absmax - absmin) / (energie[emax] - energie[emin])) * (E - energie[emin]) + absmin
+    # absp = 0.0
+    if ffitfener == 0:
+        absp = ((absmax - absmin) / (energies_keV[emax] - energies_keV[emin])) * (energy_keV - energies_keV[emin]) + \
+               absmin
     else:
         # Fit exponentiel a faible energie.
         absp = math.exp(
-            ((math.log(absmax) - math.log(absmin)) / (math.log(energie[emax]) - math.log(energie[emin]))) * (
-                        math.log(E) - math.log(energie[emin])) + math.log(absmin))
+            ((math.log(absmax) - math.log(absmin)) / (math.log(energies_keV[emax]) - math.log(energies_keV[emin]))) * (
+                        math.log(energy_keV) - math.log(energies_keV[emin])) + math.log(absmin))
 
     return absp
 
 
-def MACSTOTAL(energy_keV, atomicNumber):
+def macs_total(energy_keV, atomic_number):  # noqa
     """
     Compute mass absorption coefficient by combining Leroux and Henke-Ebisu models.
 
@@ -689,34 +691,34 @@ def MACSTOTAL(energy_keV, atomicNumber):
     @todo Find the unit of the returned mass absorption coefficient.
 
     @param energy_keV electron energy in keV.
-    @param atomicNumber atomic number of the absorber
+    @param atomic_number atomic number of the absorber
     @return mass absorption coefficient in ??.
     """
 
-    if (energy_keV <= 1.01):
-        abst = MACS_HENKE_EBISU(energy_keV, atomicNumber)
+    if energy_keV <= 1.01:
+        abst = macs_henke_ebisu(energy_keV, atomic_number)
     else:
-        abst = MACS_HEINRICH(12.3981 / energy_keV, atomicNumber)
+        abst = macs_heinrich(12.3981 / energy_keV, atomic_number)
 
     return abst
 
 
-def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
+def macs_heinrich(wavelength_A, atomic_number_absorber):  # noqa
     """
     Compute mass absorption coefficient from Heinrich model.
 
     @todo Find the unit of the returned mass absorption coefficient.
 
     @param wavelength_A electron wavelength in Angstrom.
-    @param atomicNumberAbsorbeur
+    @param atomic_number_absorber
     @return mass absorption coefficient in ??.
     """
-    l = wavelength_A
+    l_A = wavelength_A  # noqa
 
-    z = atomicNumberAbsorbeur
-    atomicNumber = atomicNumberAbsorbeur
+    z = atomic_number_absorber
+    atomic_number = atomic_number_absorber
 
-    CTOTAL = 0
+    # c_total = 0
 
     ntot = 0
 
@@ -726,20 +728,20 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
     bmult = 1
     cmult = 1
 
-    Ec = np.zeros(10)
+    energy_c_keV = np.zeros(10)  # noqa
     n = np.zeros(4)
     a = np.zeros(5)
     b = np.zeros(5)
-    Ctot = np.zeros(6)
-    C = np.zeros((6, 7))
+    c_tot = np.zeros(6)
+    C = np.zeros((6, 7))  # noqa
 
     for i in range(10):
-        Ec[i] = transitions[atomicNumber - 1][i]
+        energy_c_keV[i] = transitions[atomic_number - 1][i]
 
-    E = 12.3981 / l
+    energy_keV = 12.3981 / l_A  # noqa
 
-    if (E > Ec[0]):
-        if (atomicNumber < 6):
+    if energy_keV > energy_c_keV[0]:
+        if atomic_number < 6:
             C[0][0] = -2.87536e-4
             C[0][1] = 1.808599e-3
             C[0][2] = 0
@@ -764,7 +766,7 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
             b[3] = 0
             b[4] = 0
 
-        if (atomicNumber > 5):
+        if atomic_number > 5:
             C[0][0] = 5.253e-3
             C[0][1] = 1.33257e-3
             C[0][2] = -7.5937e-5
@@ -789,7 +791,7 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
             b[3] = 0
             b[4] = 0
 
-    if ((E < Ec[0]) and (E > Ec[3])):
+    if energy_c_keV[0] > energy_keV > energy_c_keV[3]:
         C[0][0] = -9.24e-5
         C[0][1] = 1.41478e-4
         C[0][2] = -5.24999e-6
@@ -814,15 +816,15 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
         b[3] = 0
         b[4] = 0
 
-        if ((E < Ec[0]) and (E > Ec[1])):
+        if energy_c_keV[0] > energy_keV > energy_c_keV[1]:
             cmult = 1
-        if ((E < Ec[1]) and (E > Ec[2])):
+        if energy_c_keV[1] > energy_keV > energy_c_keV[2]:
             cmult = 0.858
-        if ((E < Ec[2]) and (E > Ec[3])):
+        if energy_c_keV[2] > energy_keV > energy_c_keV[3]:
             cmult = (0.8933 - z * 8.29e-3 + math.pow(z, 2) * 6.38e-5)
 
-    if ((E < Ec[3]) and (E > Ec[4])):
-        if (atomicNumber < 30):
+    if energy_c_keV[3] > energy_keV > energy_c_keV[4]:
+        if atomic_number < 30:
             C[0][0] = 1.889757e-2
             C[0][1] = -1.8517159e-3
             C[0][2] = 6.9602789e-5
@@ -830,7 +832,7 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
             C[0][4] = 7.2773258e-9
             C[0][5] = 0
 
-        if (atomicNumber > 29):
+        if atomic_number > 29:
             C[0][0] = 3.0039e-3
             C[0][1] = -1.73663566e-4
             C[0][2] = 4.0424792e-6
@@ -849,21 +851,21 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
         a[3] = 2.63199611e-2
         a[4] = -1.8641019e-4
 
-        if (atomicNumber < 61):
+        if atomic_number < 61:
             b[0] = 0
             b[1] = 5.654
             b[2] = -0.536839169
             b[3] = 0.018972278
             b[4] = -1.683474e-4
 
-        if (atomicNumber > 60):
+        if atomic_number > 60:
             b[0] = 0
             b[1] = -1232.4022
             b[2] = 51.114164
             b[3] = -0.699473097
             b[4] = 3.1779619e-3
 
-    if ((E < Ec[4]) and (E > Ec[8])):
+    if energy_c_keV[4] > energy_keV > energy_c_keV[8]:
         C[0][0] = 7.7708e-5
         C[0][1] = -7.83544e-6
         C[0][2] = 2.209365e-7
@@ -916,9 +918,9 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
         b[3] = 0
         b[4] = 0
 
-        bmult = Ec[7]
+        bmult = energy_c_keV[7]
 
-    if ((E < Ec[8]) and (E > Ec[9])):
+    if energy_c_keV[8] > energy_keV > energy_c_keV[9]:
         C[0][0] = 4.3156e-3
         C[0][1] = -1.4653e-4
         C[0][2] = 1.707073e-6
@@ -945,7 +947,7 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
         b[3] = 0
         b[4] = 0
 
-    if (E < Ec[9]):
+    if energy_keV < energy_c_keV[9]:
         cutoff = (0.252 * z - 31.1812) * z + 1042
 
         C[0][0] = 4.3156e-3
@@ -965,7 +967,7 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
 
     for i in range(5):
         for j in range(6):
-            Ctot[i] += cmult * C[i][j] * math.pow(z, j)
+            c_tot[i] += cmult * C[i][j] * math.pow(z, j)
     for i in range(4):
         ntot += n[i] * math.pow(z, i)
     for i in range(5):
@@ -973,28 +975,28 @@ def MACS_HEINRICH(wavelength_A, atomicNumberAbsorbeur):
     for i in range(5):
         btot += bmult * b[i] * math.pow(z, i)
 
-    if ((E < Ec[4]) and (E > Ec[5])):
-        CTOTAL = Ctot[0] * Ctot[1] * Ctot[2]
-    elif ((E < Ec[5]) and (E > Ec[6])):
-        CTOTAL = Ctot[0] * Ctot[1] * Ctot[3]
-    elif ((E < Ec[6]) and (E > Ec[7])):
-        CTOTAL = 0.95 * Ctot[0] * Ctot[1]
-    elif ((E < Ec[7]) and (E > Ec[8])):
-        CTOTAL = Ctot[0] * Ctot[1] * Ctot[4]
+    if energy_c_keV[4] > energy_keV > energy_c_keV[5]:
+        c_total = c_tot[0] * c_tot[1] * c_tot[2]
+    elif energy_c_keV[5] > energy_keV > energy_c_keV[6]:
+        c_total = c_tot[0] * c_tot[1] * c_tot[3]
+    elif energy_c_keV[6] > energy_keV > energy_c_keV[7]:
+        c_total = 0.95 * c_tot[0] * c_tot[1]
+    elif energy_c_keV[7] > energy_keV > energy_c_keV[8]:
+        c_total = c_tot[0] * c_tot[1] * c_tot[4]
     else:
-        CTOTAL = Ctot[0]
+        c_total = c_tot[0]
 
-    MACSH = CTOTAL * math.pow(z, 4) / A[atomicNumber] * math.pow((12.397 / E), ntot) * (
-                1 - math.exp((-E * 1000 + btot) / atot))
+    macsh = c_total * math.pow(z, 4) / A[atomic_number] * math.pow((12.397 / energy_keV), ntot) * (
+                1 - math.exp((-energy_keV * 1000 + btot) / atot))
 
-    if E < Ec[9]:
-        MACSH = 1.02 * CTOTAL * math.pow((12.397 / E), ntot) * CTOTAL * math.pow(z, 4) / A[atomicNumber] * (
-                    (E * 1000 - cutoff) / (Ec[9] - cutoff))
+    if energy_keV < energy_c_keV[9]:
+        macsh = 1.02 * c_total * math.pow((12.397 / energy_keV), ntot) * c_total * math.pow(z, 4) / A[atomic_number] * (
+                    (energy_keV * 1000 - cutoff) / (energy_c_keV[9] - cutoff))
 
-    return MACSH
+    return macsh
 
 
-def EFFICACITE(energy_keV):
+def efficiency(energy_keV):  # noqa
     """
     Compute x-ray detector collection efficiency.
 
@@ -1036,59 +1038,59 @@ def EFFICACITE(energy_keV):
     # Cristal.
     parameters[8] = 0.3
 
-    l = 12.3981 / energy_keV
+    l_A = 12.3981 / energy_keV  # noqa
 
     if energy_keV < 7.0:
         if energy_keV > 0.03:
-            if (parameters[1] != 0.0):
-                AAL = mac_zaluzec_cm2_g(l, 13) * MASS_DENSITY_AL_g_cm3 * parameters[1]
+            if parameters[1] != 0.0:
+                a_al = mac_zaluzec_cm2_g(l_A, 13) * MASS_DENSITY_AL_g_cm3 * parameters[1]
             else:
-                AAL = 0
+                a_al = 0
 
             # APA=(CH_C6H6*mac_zaluzec_cm2_g(l,1)+CC*mac_zaluzec_cm2_g(l,6))*D_C*a[2]
 
             if parameters[2] != 0.0:
-                AFORMVAR = (0.0707 * mac_zaluzec_cm2_g(l, 1)
-                            + 0.6063 * mac_zaluzec_cm2_g(l, 6)
-                            + 0.3231 * mac_zaluzec_cm2_g(l, 8)) * MASS_DENSITY_C_g_cm3 * parameters[2]
+                a_formvar = (0.0707 * mac_zaluzec_cm2_g(l_A, 1) +
+                             0.6063 * mac_zaluzec_cm2_g(l_A, 6) +
+                             0.3231 * mac_zaluzec_cm2_g(l_A, 8)) * MASS_DENSITY_C_g_cm3 * parameters[2]
             else:
-                AFORMVAR = 0
+                a_formvar = 0
 
             if parameters[3] != 0.0:
-                AAU = mac_zaluzec_cm2_g(l, 79) * MASS_DENSITY_AU_g_cm3 * parameters[3]
+                a_au = mac_zaluzec_cm2_g(l_A, 79) * MASS_DENSITY_AU_g_cm3 * parameters[3]
             else:
-                AAU = 0
+                a_au = 0
 
             if parameters[4] != 0.0:
-                ASID = mac_zaluzec_cm2_g(l, 14) * MASS_DENSITY_SI_g_cm3 * parameters[4]
+                a_si_dl = mac_zaluzec_cm2_g(l_A, 14) * MASS_DENSITY_SI_g_cm3 * parameters[4]
             else:
-                ASID = 0
+                a_si_dl = 0
 
             if parameters[5] != 0.0:
-                ABE = mac_zaluzec_cm2_g(l, 4) * MASS_DENSITY_BE_g_cm3 * parameters[5]
+                a_be = mac_zaluzec_cm2_g(l_A, 4) * MASS_DENSITY_BE_g_cm3 * parameters[5]
             else:
-                ABE = 0
+                a_be = 0
 
             if parameters[6] != 0.0:
-                AC = mac_zaluzec_cm2_g(l, 6) * MASS_DENSITY_C_g_cm3 * parameters[6]
+                a_c = mac_zaluzec_cm2_g(l_A, 6) * MASS_DENSITY_C_g_cm3 * parameters[6]
             else:
-                AC = 0
+                a_c = 0
 
             if parameters[7] != 0.0:
-                AH2O = (CH_H2O * mac_zaluzec_cm2_g(l, 1) + CO * mac_zaluzec_cm2_g(l, 8)) * MASS_DENSITY_H2O_g_cm3 * \
-                       parameters[7]
+                a_h2o = (CH_H2O * mac_zaluzec_cm2_g(l_A, 1) + CO * mac_zaluzec_cm2_g(l_A, 8)) * \
+                        MASS_DENSITY_H2O_g_cm3 * parameters[7]
             else:
-                AH2O = 0
+                a_h2o = 0
 
-            eff = math.exp(-AH2O - AAL - AFORMVAR - AAU - ASID - ABE - AC)
+            eff = math.exp(-a_h2o - a_al - a_formvar - a_au - a_si_dl - a_be - a_c)
             return eff
         else:
             return 0.0
 
     if energy_keV > 15.0:
-        TSI = parameters[8]
-        ASI = MACSTOTAL(12.3981 / l, 14) * MASS_DENSITY_SI_g_cm3 * TSI
-        eff = (1.0 - math.exp(-ASI))
+        tsi = parameters[8]
+        asi = macs_total(12.3981 / l_A, 14) * MASS_DENSITY_SI_g_cm3 * tsi
+        eff = (1.0 - math.exp(-asi))
 
         return eff
 
@@ -1096,39 +1098,3 @@ def EFFICACITE(energy_keV):
         return 1.0
 
     return 1.0
-
-
-if __name__ == '__main__':  # pragma: no cover
-    import matplotlib.pyplot as plt
-
-    energies_keV = np.linspace(0.001, 30.0, 500)
-
-    plt.figure()
-    efficiencies = [EFFICACITE(energy_keV) for energy_keV in energies_keV]
-    plt.plot(energies_keV, efficiencies)
-    # plt.xlim((0.2, 1.6))
-    plt.close()
-
-    energies_keV = np.linspace(0.1, 30.0, 500)
-    plt.figure()
-    for atomic_number in [1, 6, 8, 13, 14, 79]:
-        macs_cm2_g = [mac_zaluzec_cm2_g(12.3981 / energy_keV, atomic_number) for energy_keV in energies_keV]
-        plt.semilogy(energies_keV, macs_cm2_g, label=atomic_number)
-    plt.legend()
-    plt.close()
-
-    energies_keV = np.linspace(0.01, 2.0, 100)
-    plt.figure()
-    atomic_number = 6
-    macs_cm2_g = [mac_zaluzec_cm2_g(12.3981 / energy_keV, atomic_number) for energy_keV in energies_keV]
-    plt.semilogy(energies_keV, macs_cm2_g, label="Zaluzec")
-    macs_cm2_g = [MACS_HEINRICH(12.3981 / energy_keV, atomic_number) for energy_keV in energies_keV]
-    plt.semilogy(energies_keV, macs_cm2_g, label="Heinrich")
-    macs_cm2_g = [MACS_HENKE_EBISU(energy_keV, atomic_number) for energy_keV in energies_keV]
-    plt.semilogy(energies_keV, macs_cm2_g, label="Henke")
-    macs_cm2_g = [MACSTOTAL(energy_keV, atomic_number) for energy_keV in energies_keV]
-    plt.semilogy(energies_keV, macs_cm2_g, '.', label="Total")
-
-    plt.legend()
-
-    plt.show()

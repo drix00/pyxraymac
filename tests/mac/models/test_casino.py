@@ -32,8 +32,8 @@ import unittest
 # Local modules.
 
 # Project modules.
-from xray.mac.models.casino import mac_zaluzec_cm2_g, MACSTOTAL, MACS_HENKE_EBISU, EFFICACITE, MACS_HEINRICH, \
-    SPECIAL_EQUATIONS
+from xray.mac.models.casino import mac_zaluzec_cm2_g, macs_total, macs_henke_ebisu, efficiency, macs_heinrich, \
+    special_equations
 
 # Globals and constants variables.
 
@@ -121,7 +121,7 @@ class TestCasino(unittest.TestCase):
     def compare_mac(self, mac_ref_cm2_g, atomic_number):
         energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
         for energie_keV in energies_keV:  # noqa
-            mac_cm2_g = SPECIAL_EQUATIONS(energie_keV, atomic_number)
+            mac_cm2_g = special_equations(energie_keV, atomic_number)
             if mac_cm2_g is not None:
                 self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
             else:
@@ -129,7 +129,7 @@ class TestCasino(unittest.TestCase):
 
     def test_special_equations(self):
         """
-        Tests for method `SPECIAL_EQUATIONS`.
+        Tests for method `special_equations`.
         """
 
         atomic_number = 1
@@ -274,7 +274,7 @@ class TestCasino(unittest.TestCase):
 
     def test_macs_henke_ebisu(self):
         """
-        Tests for method `MACS_HENKE_EBISU`.
+        Tests for method `macs_henke_ebisu`.
         """
 
         atomic_number = 6
@@ -287,25 +287,25 @@ class TestCasino(unittest.TestCase):
 
         energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
         for energy_keV in energies_keV:  # noqa
-            mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
+            mac_cm2_g = macs_henke_ebisu(energy_keV, atomic_number)
             self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         mac_ref_cm2_g = 3.7542043000041594
         atomic_number = 1
         energy_keV = 1.2  # noqa
-        mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
+        mac_cm2_g = macs_henke_ebisu(energy_keV, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
         mac_ref_cm2_g = -1.0
         atomic_number = 2
         energy_keV = 1.2  # noqa
-        mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
+        mac_cm2_g = macs_henke_ebisu(energy_keV, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
         mac_ref_cm2_g = -1.0
         atomic_number = 96
         energy_keV = 1.2  # noqa
-        mac_cm2_g = MACS_HENKE_EBISU(energy_keV, atomic_number)
+        mac_cm2_g = macs_henke_ebisu(energy_keV, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
     def test_macs_total(self):
@@ -322,15 +322,15 @@ class TestCasino(unittest.TestCase):
 
         energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
         for energie_keV in energies_keV:  # noqa
-            mac_cm2_g = MACSTOTAL(energie_keV, atomic_number)
+            mac_cm2_g = macs_total(energie_keV, atomic_number)
             self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
 
-        self.assertRaises(ValueError, MACSTOTAL, 0.0, 1)
-        self.assertRaises(ValueError, MACSTOTAL, 0.0, 2)
+        self.assertRaises(ValueError, macs_total, 0.0, 1)
+        self.assertRaises(ValueError, macs_total, 0.0, 2)
 
     def test_macs_heinrich(self):
         """
-        Tests for method `MACS_HEINRICH`.
+        Tests for method `macs_heinrich`.
         """
 
         atomic_number = 6
@@ -343,14 +343,14 @@ class TestCasino(unittest.TestCase):
         energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
         for energy_keV in energies_keV:  # noqa
             wavelength_A = 12.3981/energy_keV  # noqa
-            mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
+            mac_cm2_g = macs_heinrich(wavelength_A, atomic_number)
             self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         mac_ref_cm2_g = 375.07124151210633
         atomic_number = 4
         energy_keV = 1.2  # noqa
         wavelength_A = 12.3981 / energy_keV  # noqa
-        mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
+        mac_cm2_g = macs_heinrich(wavelength_A, atomic_number)
         self.assertAlmostEqual(mac_ref_cm2_g, mac_cm2_g)
 
         atomic_number = 29
@@ -363,7 +363,7 @@ class TestCasino(unittest.TestCase):
         energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
         for energy_keV in energies_keV:
             wavelength_A = 12.3981/energy_keV  # noqa
-            mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
+            mac_cm2_g = macs_heinrich(wavelength_A, atomic_number)
             self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
         atomic_number = 79
@@ -388,12 +388,12 @@ class TestCasino(unittest.TestCase):
         energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
         for energy_keV in energies_keV:
             wavelength_A = 12.3981/energy_keV  # noqa
-            mac_cm2_g = MACS_HEINRICH(wavelength_A, atomic_number)
+            mac_cm2_g = macs_heinrich(wavelength_A, atomic_number)
             self.assertAlmostEqual(mac_ref_cm2_g[energy_keV], mac_cm2_g, msg=energy_keV)
 
     def test_efficiency(self):
         """
-        Tests for method `EFFICACITE`.
+        Tests for method `efficiency`.
         """
 
         efficiencies_ref = {0.02: 0.0,
@@ -412,5 +412,4 @@ class TestCasino(unittest.TestCase):
 
         energies_keV = sorted(efficiencies_ref.keys())  # noqa
         for energy_keV in energies_keV:
-            efficiency = EFFICACITE(energy_keV)
-            self.assertAlmostEqual(efficiencies_ref[energy_keV], efficiency, msg=energy_keV)
+            self.assertAlmostEqual(efficiencies_ref[energy_keV], efficiency(energy_keV), msg=energy_keV)
