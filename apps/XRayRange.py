@@ -46,9 +46,9 @@ class XRayRange(object):
 
         mac_energy = MacHeinrich1987.MacHeinrich1987(xray_transition_data)
 
-        self.macModel = MassAbsorptionCoefficient.MassAbsorptionCoefficient(macEnergy=mac_energy
-                                                                            , xrayTransitionData=xray_transition_data
-                                                                            , configurationFile=configuration_file)
+        self.macModel = MassAbsorptionCoefficient.MassAbsorptionCoefficient(mac_energy=mac_energy
+                                                                            , xray_transition_data=xray_transition_data
+                                                                            , configuration_file=configuration_file)
 
     def set_specimen(self, specimen):
         self.specimen = specimen
