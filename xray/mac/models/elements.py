@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: module_name
+.. py:currentmodule:: xray.mac.models.elements
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Description
+Element properties from file.
 """
 
 ###############################################################################
@@ -54,7 +54,7 @@ class SymbolError(KeyError):
     pass
 
 
-class ElementProperties():
+class ElementProperties:
     def __init__(self):
         self.data = None
 
@@ -87,7 +87,7 @@ class ElementProperties():
             value = str(self.data[SYMBOL][atomic_number])
         except KeyError as message:
             logging.error("%s for %i", message, atomic_number)
-            raise AtomicNumberError("No data for atomic number %i." % (atomic_number))
+            raise AtomicNumberError("No data for atomic number %i." % atomic_number)
 
         return value
 
@@ -99,7 +99,7 @@ class ElementProperties():
             value = str(self.data[NAME][atomic_number])
         except KeyError as message:
             logging.error("%s for %i", message, atomic_number)
-            raise AtomicNumberError("No data for atomic number %i." % (atomic_number))
+            raise AtomicNumberError("No data for atomic number %i." % atomic_number)
 
         return value
 
@@ -111,7 +111,7 @@ class ElementProperties():
             value = float(self.data[MASS_DENSITY_g_cm3][atomic_number])
         except KeyError as message:
             logging.error("%s for %i", message, atomic_number)
-            raise AtomicNumberError("No data for atomic number %i." % (atomic_number))
+            raise AtomicNumberError("No data for atomic number %i." % atomic_number)
 
         return value
 
@@ -123,7 +123,7 @@ class ElementProperties():
             value = float(self.data[ATOMIC_MASS_g_mol][atomic_number])
         except KeyError as message:
             logging.error("%s for %i", message, atomic_number)
-            raise AtomicNumberError("No data for atomic number %i." % (atomic_number))
+            raise AtomicNumberError("No data for atomic number %i." % atomic_number)
 
         return value
 
@@ -135,6 +135,6 @@ class ElementProperties():
             if symbol == temp_symbol:
                 return temp_atomic_number
 
-        message = "No atomic number for symbol %s" % (symbol)
+        message = "No atomic number for symbol %s" % symbol
         logging.error(message)
         raise SymbolError(message)

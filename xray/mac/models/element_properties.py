@@ -34,9 +34,9 @@ import math
 # Project modules.
 
 # Globals and constants variables.
-g_AvogadroNumber_atom_mol = 6.02205E23
+g_avogadro_number_atom_mol = 6.02205E23
 
-g_elementSymbol = [
+g_element_symbol = [
     "H", "He", "Li", "Be", "B", "C", "N", "O",
     "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S",
     "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr",
@@ -52,7 +52,7 @@ g_elementSymbol = [
     "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Unq",
     "Unp", "Unh"]
 
-g_elementName = [
+g_element_name = [
     "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium",
     "Magnesium", "Aluminum", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium",
     "Titanium", "Vanadium", "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium",
@@ -65,10 +65,10 @@ g_elementName = [
     "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium",
     "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Unnilquadium", "Unnilpentium", "Unnilhexium"]
 
-"""
+r"""
  * Mass density of element in atomic number order.
  *
- * For elment H to Cm (1--96).
+ * For element H to Cm (1--96).
  *
  * In \f$ \gram\per\centi\meter^{3} \f$.
  *
@@ -77,7 +77,7 @@ g_elementName = [
  *
  * @note Element Z = 85 and 87 set to 1 for the calculation.
 """
-g_massDensity_g_cm3 = [
+g_mass_density_g_cm3 = [
     0.0899, 0.1787, 0.5300, 1.8500, 2.3400, 2.6200, 1.2510, 1.4290,
     1.6960, 0.9010, 0.9700, 1.7400, 2.7000, 2.3300, 1.8200, 2.0700,
     3.1700, 1.7840, 0.8600, 1.5500, 3.0000, 4.5000, 5.8000, 7.1900,
@@ -91,7 +91,8 @@ g_massDensity_g_cm3 = [
     11.850, 11.400, 9.8000, 9.4000, 1.0000, 9.9100, 1.0000, 5.0000,
     10.070, 11.700, 15.400, 18.900, 20.400, 19.800, 13.600, 13.511
 ]
-"""
+
+r"""
  * Atomic weight of element in atomic number order.
  *
  * For element H to Sg (1--106).
@@ -101,7 +102,7 @@ g_massDensity_g_cm3 = [
  * From: Tableau periodique des elements, Sargent-Welch scientifique Canada
  * Limitee.
 """
-g_atomicMass_g_mol = [
+g_atomic_mass_g_mol = [
     1.0079000, 4.0026000, 6.9410000, 9.0121800, 10.810000, 12.011000,
     14.006700, 15.999400, 18.998403, 20.179000, 22.989770, 24.305000,
     26.981540, 28.085500, 30.973760, 32.060000, 35.453000, 39.948000,
@@ -130,7 +131,7 @@ g_atomicMass_g_mol = [
  *
  * @todo Add units.
 """
-g_FermiEnergy = [
+g_fermi_energy = [
     1.000, 1.000, 4.700, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000,
     1.000, 3.100, 1.000, 1.000, 0.555, 1.000, 1.000, 1.000, 1.000,
     1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000,
@@ -153,7 +154,7 @@ g_FermiEnergy = [
  *
  * @todo Add units.
 """
-g_kFermi = [
+g_k_fermi = [
     7.00E7, 7.00E7, 1.10E8, 7.00E7, 7.00E7, 7.00E7, 7.00E7, 7.00E7,
     7.00E7, 7.00E7, 9.00E7, 7.00E7, 7.00E7, 4.00E7, 7.00E7, 7.00E7,
     7.00E7, 7.00E7, 7.00E7, 7.00E7, 7.00E7, 7.00E7, 7.00E7, 7.00E7,
@@ -177,7 +178,7 @@ g_kFermi = [
  *
  * @todo Add units.
 """
-g_plasmonEnergy = [
+g_plasmon_energy = [
     15.0, 15.0, 7.10, 18.7, 22.7, 15.0, 15.0, 15.0, 15.0, 15.0, 5.70,
     10.3, 15.0, 16.7, 15.0, 15.0, 15.0, 15.0, 3.70, 8.80, 14.0, 17.9,
     21.8, 24.9, 21.6, 23.0, 20.9, 20.7, 19.3, 17.2, 13.8, 16.2, 15.0,
@@ -193,31 +194,31 @@ g_plasmonEnergy = [
 
 def get_mass_density_g_cm3(atomic_number):
     index = int(atomic_number) - 1
-    return g_massDensity_g_cm3[index]
+    return g_mass_density_g_cm3[index]
 
 
 def get_atomic_mass_g_mol(atomic_number):
     index = int(atomic_number) - 1
-    return g_atomicMass_g_mol[index]
+    return g_atomic_mass_g_mol[index]
 
 
-def get_fermi_energy_eV(atomic_number):
+def get_fermi_energy_eV(atomic_number):  # noqa
     index = int(atomic_number) - 1
-    return g_FermiEnergy[index]
+    return g_fermi_energy[index]
 
 
-def get_k_fermi_eV(atomic_number):
+def get_k_fermi_eV(atomic_number):  # noqa
     index = int(atomic_number) - 1
-    return g_kFermi[index]
+    return g_k_fermi[index]
 
 
-def get_plasmon_energy_eV(atomic_number):
+def get_plasmon_energy_eV(atomic_number):  # noqa
     index = int(atomic_number) - 1
-    return g_plasmonEnergy[index]
+    return g_plasmon_energy[index]
 
 
-def get_mean_ionization_energy_eV(atomic_number):
-    """
+def get_mean_ionization_energy_eV(atomic_number):  # noqa
+    r"""
      * Get the mean ionization potential from the atomic number.
      *
      * In \f$ \electronvolt \f$.
@@ -243,12 +244,12 @@ def get_k_ratio_correction(atomic_number):
      *
      * @param[in] atomicNumber Atomic number.
     """
-    value = 0.734 * math.pow(atomic_number, 0.037);
+    value = 0.734 * math.pow(atomic_number, 0.037)
 
     return value
 
 
-def get_k_ratio_correction_monsel(atomic_number, work_function_keV):
+def get_k_ratio_correction_monsel(atomic_number, work_function_keV):  # noqa
     """
 /// K value as defined by Monsel.
 /// Used in DE/DS calculation. Casino uses K Gauvin,but for low energy,
@@ -264,7 +265,7 @@ def get_k_ratio_correction_monsel(atomic_number, work_function_keV):
 
 
 def compute_atomic_density_atom_cm3(mass_density_g_cm3, atomic_mass_g_mol):
-    """
+    r"""
      * Compute the atomic density.
      *
      * \f[
@@ -280,29 +281,29 @@ def compute_atomic_density_atom_cm3(mass_density_g_cm3, atomic_mass_g_mol):
      * \param[in] atomicMass_g_mol
     """
 
-    return g_AvogadroNumber_atom_mol * mass_density_g_cm3 / atomic_mass_g_mol
+    return g_avogadro_number_atom_mol * mass_density_g_cm3 / atomic_mass_g_mol
 
 
 def get_symbol(atomic_number):
     index = int(atomic_number - 1)
-    return g_elementSymbol[index]
+    return g_element_symbol[index]
 
 
 def get_name(atomic_number):
     index = int(atomic_number) - 1
-    return g_elementName[index]
+    return g_element_name[index]
 
 
 def get_atomic_number_by_symbol(symbol):
     try:
-        return g_elementSymbol.index(symbol.capitalize()) + 1
+        return g_element_symbol.index(symbol.capitalize()) + 1
     except ValueError:
         print(symbol)
 
 
 def get_atomic_number_by_name(name):
     try:
-        return g_elementName.index(name.capitalize()) + 1
+        return g_element_name.index(name.capitalize()) + 1
     except ValueError:
         print(name)
 
@@ -326,7 +327,7 @@ def run_atomic_number_symbol():
 
     for atomic_number in atomic_numbers:
         symbol = get_symbol(atomic_number)
-        print("%s" % (symbol))
+        print("%s" % symbol)
 
 
 def create_csv_file(output_path):
@@ -338,7 +339,7 @@ def create_csv_file(output_path):
     file_path = os.path.join(output_path, file_name)
     print(file_path)
 
-    print(len(g_elementName))
+    print(len(g_element_name))
 
     with open(file_path, 'w', newline='\n') as output_file:
         writer = csv.writer(output_file)
