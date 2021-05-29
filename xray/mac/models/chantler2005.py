@@ -176,7 +176,7 @@ def compare_all_versions():
         ionization_energies = IonizationEnergies()
 
         for subshell in SUBSHELLS:
-            edge_energy_eV =  ionization_energies.ionization_energy_eV(atomic_number, subshell)
+            edge_energy_eV = ionization_energies.ionization_energy_eV(atomic_number, subshell)
             if edge_energy_eV > 0.0:
                 plt.axvline(edge_energy_eV, zorder=-10)
     plt.show()

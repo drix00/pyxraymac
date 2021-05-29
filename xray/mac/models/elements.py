@@ -96,7 +96,7 @@ class ElementProperties():
             self.read_data()
 
         try:
-            value =  str(self.data[NAME][atomic_number])
+            value = str(self.data[NAME][atomic_number])
         except KeyError as message:
             logging.error("%s for %i", message, atomic_number)
             raise AtomicNumberError("No data for atomic number %i." % (atomic_number))

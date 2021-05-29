@@ -168,11 +168,11 @@ class MacPouchou1991:
         self.data_mac_cm2_g[LINE_La][29][29] = 1755.0
 
     def is_available(self, atomic_number_absorber, atomic_number_emitter, line_emitter):
-        xrayTransitionKey = self.extract_transition_key(line_emitter)
+        xray_transition_key = self.extract_transition_key(line_emitter)
 
-        if xrayTransitionKey    in self.data_mac_cm2_g:
-            if atomic_number_emitter in self.data_mac_cm2_g[xrayTransitionKey]:
-                if atomic_number_absorber in self.data_mac_cm2_g[xrayTransitionKey][atomic_number_emitter]:
+        if xray_transition_key in self.data_mac_cm2_g:
+            if atomic_number_emitter in self.data_mac_cm2_g[xray_transition_key]:
+                if atomic_number_absorber in self.data_mac_cm2_g[xray_transition_key][atomic_number_emitter]:
                     return True
 
         return False
