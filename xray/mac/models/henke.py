@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.MacHenke
+.. py:currentmodule:: xray.mac.models.henke
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 MAC Henke model.
@@ -25,7 +25,6 @@ MAC Henke model.
 ###############################################################################
 
 # Standard library modules.
-from configparser import ConfigParser
 import tarfile
 import os.path
 import math
@@ -36,7 +35,7 @@ import math
 
 # Project modules.
 from xray.mac.models.elements import ElementProperties
-from xray.mac import create_path
+from xray.mac import create_root_path
 
 # Globals and constants variables.
 g_coefficient = [41746.75,
@@ -133,30 +132,30 @@ g_coefficient = [41746.75,
                  176.78]
 
 
-def getCoefficient(atomicNumber):
-    index = atomicNumber - 1
+def get_coefficient(atomic_number):
+    index = atomic_number - 1
 
     return g_coefficient[index]
 
 
-def WavelenghtElectron_nm(energy_eV):
-    h_Nms = 6.626E-34
+def wavelength_electron_nm(energy_eV):  # noqa
+    h_Nms = 6.626E-34  # noqa
     m0_kg = 9.109E-31
-    e_C = 1.602E-19
+    e_C = 1.602E-19  # noqa
 
-    argSqrt = 2.0 * m0_kg * e_C * energy_eV
+    arg_sqrt = 2.0 * m0_kg * e_C * energy_eV
 
-    value_m = h_Nms / math.sqrt(argSqrt)
+    value_m = h_Nms / math.sqrt(arg_sqrt)
 
     value_nm = value_m * 1.0E9
 
     return value_nm
 
 
-def WavelenghtElectronRelativistic_nm(energy_eV):
-    h_Nms = 6.626E-34
+def wavelength_electron_relativistic_nm(energy_eV):  # noqa
+    h_Nms = 6.626E-34  # noqa
     m0_kg = 9.109E-31
-    e_C = 1.602E-19
+    e_C = 1.602E-19  # noqa
     c_m_s = 2.998E8
 
     factor = 2.0 * m0_kg * e_C * energy_eV
@@ -165,19 +164,19 @@ def WavelenghtElectronRelativistic_nm(energy_eV):
 
     term = 1.0 + ratio
 
-    argSqrt = factor * term
+    arg_sqrt = factor * term
 
-    value_m = h_Nms / math.sqrt(argSqrt)
+    value_m = h_Nms / math.sqrt(arg_sqrt)
 
     value_nm = value_m * 1.0E9
 
     return value_nm
 
 
-def WavelenghtPhoton_nm(energy_eV):
-    h_Nms = 6.626E-34
+def wavelength_photon_nm(energy_eV):  # noqa
+    h_Nms = 6.626E-34  # noqa
     c_m_s = 2.998E8
-    e_C = 1.602E-19
+    e_C = 1.602E-19  # noqa
 
     value_m = h_Nms * c_m_s / (e_C * energy_eV)
 
@@ -192,34 +191,34 @@ class MacHenke(object):
 
         self._filename = "sf.tar.gz"
 
-    def computeCoefficient_keVcm2_g(self, atomicNumber):
+    def compute_coefficient_keVcm2_g(self, atomic_number):  # noqa
         r0_m = 2.817938e-15
-        h_Js = 6.62618E-34
+        h_Js = 6.62618E-34  # noqa
         c_m_s = 2.99792458E8
 
-        C_1_Jm2 = 1.0 / (math.pi * r0_m * h_Js * c_m_s)
+        C_1_Jm2 = 1.0 / (math.pi * r0_m * h_Js * c_m_s)  # noqa
 
-        J_eV = 1.602189E-19
+        J_eV = 1.602189E-19  # noqa
 
-        N0_atom_mol = 6.02205E23
+        N0_atom_mol = 6.02205E23  # noqa
 
         element_properties = ElementProperties()
-        A_g_mol = element_properties.atomic_mass_g_mol(atomicNumber)
+        A_g_mol = element_properties.atomic_mass_g_mol(atomic_number)  # noqa
 
-        K_atomJm2_g = 2.0 * N0_atom_mol / (math.pi * C_1_Jm2 * A_g_mol)
+        K_atomJm2_g = 2.0 * N0_atom_mol / (math.pi * C_1_Jm2 * A_g_mol)  # noqa
 
-        K_keVcm2_g = K_atomJm2_g / (J_eV * 1.0E3 * 1.0E-4)
+        K_keVcm2_g = K_atomJm2_g / (J_eV * 1.0E3 * 1.0E-4)  # noqa
 
         return K_keVcm2_g
 
-    def getElements(self):
+    def get_elements(self):
         elements = []
 
-        gzFilename = os.path.join(self.data_path, self._filename)
+        gz_filename = os.path.join(self.data_path, self._filename)
 
-        tarFile = tarfile.TarFile.gzopen(gzFilename, mode='r')
+        tar_file = tarfile.TarFile.gzopen(gz_filename, mode='r')
 
-        files = tarFile.getnames()
+        files = tar_file.getnames()
 
         for file in files:
             if '.nff' in file:
@@ -228,23 +227,23 @@ class MacHenke(object):
 
         return elements
 
-    def readData(self, atomicNumber):
-        gzFilename = os.path.join(self.data_path, self._filename)
+    def read_data(self, atomic_number):
+        gz_filename = os.path.join(self.data_path, self._filename)
 
-        tarFile = tarfile.TarFile.gzopen(gzFilename, mode='r')
+        tar_file = tarfile.TarFile.gzopen(gz_filename, mode='r')
 
-        files = tarFile.getnames()
+        files = tar_file.getnames()
 
         element_properties = ElementProperties()
-        symbol = element_properties.symbol(atomicNumber).lower()
+        symbol = element_properties.symbol(atomic_number).lower()
 
         filename = symbol + '.nff'
 
-        energies_eV = []
+        energies_eV = []  # noqa
         macs_cm2_g = []
 
         if filename in files:
-            lines = tarFile.extractfile(filename).readlines()
+            lines = tar_file.extractfile(filename).readlines()
 
             f1s = []
             f2s = []
@@ -252,7 +251,7 @@ class MacHenke(object):
             for line in lines[1:]:
                 values = line.split(b'\t')
 
-                energy_eV = float(values[0])
+                energy_eV = float(values[0])  # noqa
 
                 energies_eV.append(energy_eV)
 
@@ -262,42 +261,42 @@ class MacHenke(object):
 
                 f2s.append(f2)
 
-                mac_cm2_g = self.compute_mac_cm2_g(atomicNumber, energy_eV, f2)
+                mac_cm2_g = self.compute_mac_cm2_g(atomic_number, energy_eV, f2)
 
                 macs_cm2_g.append(mac_cm2_g)
 
-        tarFile.close()
+        tar_file.close()
 
         return energies_eV, macs_cm2_g
 
-    def writeMAC(self, results_path):
-        create_path(results_path)
+    def write_mac(self, results_path):
+        create_root_path(results_path)
 
-        elements = self.getElements()
+        elements = self.get_elements()
 
         for element in elements:
 
             element_properties = ElementProperties()
-            atomicNumber = element_properties.atomic_number(element)
+            atomic_number = element_properties.atomic_number(element)
 
-            energies_eV, macs_cm2_g = self.readData(atomicNumber)
+            energies_eV, macs_cm2_g = self.read_data(atomic_number)  # noqa
 
             assert len(energies_eV) == len(macs_cm2_g)
 
             filename = str(element) + ".dat"
             filename = os.path.join(results_path, filename)
 
-            macFile = open(filename, 'w')
+            mac_file = open(filename, 'w')
 
             for index in range(len(energies_eV)):
                 line = str(energies_eV[index]) + "\t" + str(macs_cm2_g[index]) + "\n"
-                macFile.write(line)
+                mac_file.write(line)
 
-            macFile.close()
+            mac_file.close()
 
-    def compute_mac_cm2_g(self, atomicNumber, energy_eV, f2):
+    def compute_mac_cm2_g(self, atomic_number, energy_eV, f2):  # noqa
 
-        factor = self.computeCoefficient_keVcm2_g(atomicNumber) / 1.0E-3
+        factor = self.compute_coefficient_keVcm2_g(atomic_number) / 1.0E-3
 
         mac_cm2_g = f2 * factor / energy_eV
 

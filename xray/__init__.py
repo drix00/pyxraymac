@@ -33,4 +33,3 @@ Meta package for all python x-ray related libraries for project OpenMicroanalysi
 # Project modules.
 
 # Globals and constants variables.
-

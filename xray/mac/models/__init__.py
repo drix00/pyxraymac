@@ -33,4 +33,3 @@ Package for the MAC models.
 # Project modules.
 
 # Globals and constants variables.
-

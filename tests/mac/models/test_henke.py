@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: tests.mac.models.test_MacHenke
+.. py:currentmodule:: tests.mac.models.test_henke
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.MacHenke` module.
+Tests for the :py:mod:`xray.mac.models.henke` module.
 """
 
 ###############################################################################
@@ -34,7 +34,8 @@ import pytest
 # Local modules.
 
 # Project modules.
-import xray.mac.models.MacHenke as MacHenke
+from xray.mac.models.henke import MacHenke
+from xray.mac.models.henke import wavelength_electron_nm, wavelength_electron_relativistic_nm, wavelength_photon_nm
 from xray.mac import get_current_module_path
 
 # Globals and constants variables.
@@ -49,7 +50,7 @@ class TestMacHenke(unittest.TestCase):
         if not os.path.isdir(data_path):
             pytest.skip("Data path file not found: {}".format(data_path))
 
-        self.macData = MacHenke.MacHenke(data_path)
+        self.macData = MacHenke(data_path)
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
@@ -61,14 +62,14 @@ class TestMacHenke(unittest.TestCase):
     def test_constructor(self):
         data_path = get_current_module_path(__file__, "../../../data/henke1993/data")
 
-        mac_data = MacHenke.MacHenke(data_path)
+        mac_data = MacHenke(data_path)
 
         self.assertTrue(mac_data.data_path != "")
 
         self.assertEqual("sf.tar.gz", mac_data._filename)
 
     def test_read_data(self):
-        enegies_eV, macs_cm2_g = self.macData.readData(28)  # noqa
+        enegies_eV, macs_cm2_g = self.macData.read_data(28)  # noqa
 
         self.assertAlmostEqual(10.0, enegies_eV[0])
 
@@ -99,13 +100,13 @@ class TestMacHenke(unittest.TestCase):
 
         for energy_eV in wavelengths_electron_non_relativistic_williams1996_nm:
             self.assertAlmostEqual(wavelengths_electron_non_relativistic_williams1996_nm[energy_eV],
-                                   MacHenke.WavelenghtElectron_nm(energy_eV), 4)
+                                   wavelength_electron_nm(energy_eV), 4)
 
             self.assertAlmostEqual(wavelengths_electron_relativistic_williams1996_nm[energy_eV],
-                                   MacHenke.WavelenghtElectronRelativistic_nm(energy_eV), 4)
+                                   wavelength_electron_relativistic_nm(energy_eV), 4)
 
         for energy_eV in wavelengths_photon_A:
-            self.assertAlmostEqual(wavelengths_photon_A[energy_eV] / 10.0, MacHenke.WavelenghtPhoton_nm(energy_eV), 1)
+            self.assertAlmostEqual(wavelengths_photon_A[energy_eV] / 10.0, wavelength_photon_nm(energy_eV), 1)
 
     def test_compute_mac_cm2_g(self):
         mac_cm2_g = self.macData.compute_mac_cm2_g(28, 10.2, 1.14)

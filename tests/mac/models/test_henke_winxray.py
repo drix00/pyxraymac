@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: tests.mac.models.test_MacHenkeWinxray
+.. py:currentmodule:: tests.mac.models.test_henke_winxray
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.MacHenkeWinxray` module.
+Tests for the :py:mod:`xray.mac.models.henke_winxray` module.
 """
 
 ###############################################################################
@@ -34,7 +34,7 @@ import pytest
 # Local modules.
 
 # Project modules.
-import xray.mac.models.MacHenkeWinxray as MacHenkeWinxray
+from xray.mac.models.henke_winxray import MacHenkeWinxray
 from xray.mac import get_current_module_path
 
 # Globals and constants variables.
@@ -49,7 +49,7 @@ class TestMacHenkeWinxray(unittest.TestCase):
         if not os.path.isdir(data_path):
             pytest.skip("Data path file not found: {}".format(data_path))
 
-        self.macData = MacHenkeWinxray.MacHenkeWinxray(data_path)
+        self.macData = MacHenkeWinxray(data_path)
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
@@ -61,14 +61,14 @@ class TestMacHenkeWinxray(unittest.TestCase):
     def test_constructor(self):
         data_path = get_current_module_path(__file__, "../../../data/henke1993/winxray")
 
-        mac_data = MacHenkeWinxray.MacHenkeWinxray(data_path)
+        mac_data = MacHenkeWinxray(data_path)
 
         self.assertTrue(mac_data.pathnameBinary != "")
 
         self.assertTrue(mac_data.pathnameText != "")
 
     def test_read_text_data(self):
-        enegies_eV, mac_cm2_g = self.macData.readTextData(28)  # noqa
+        enegies_eV, mac_cm2_g = self.macData.read_text_data(28)  # noqa
 
         self.assertEqual(500, len(enegies_eV))
 
@@ -83,7 +83,7 @@ class TestMacHenkeWinxray(unittest.TestCase):
         self.assertEqual(9.77398, mac_cm2_g[-1])
 
     def test_read_binary_data(self):
-        enegies_eV, mac_cm2_g = self.macData.readBinaryData(28)  # noqa
+        enegies_eV, mac_cm2_g = self.macData.read_binary_data(28)  # noqa
 
         self.assertEqual(500, len(enegies_eV))
 

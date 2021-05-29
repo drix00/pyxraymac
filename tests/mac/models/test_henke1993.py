@@ -62,23 +62,23 @@ class TestMacHenke1993(unittest.TestCase):
         data_path = get_current_module_path(__file__, "../../../data/henke1993/data")
 
         mac = MacHenke1993(data_path)
-        self.assertTrue(len(mac.macData) == 0)
+        self.assertTrue(len(mac.mac_data) == 0)
 
     def test_compute_mac_cm2_g(self):
-        mac_cm2_g = self.mac.computeMac_cm2_g(10.2, 28)
+        mac_cm2_g = self.mac.compute_mac_cm2_g(10.2, 28)
 
         self.assertAlmostEqual(9.709, mac_cm2_g*1.0E-4, 2)
 
-        mac_cm2_g = self.mac.computeMac_cm2_g(1486.7, 28)
+        mac_cm2_g = self.mac.compute_mac_cm2_g(1486.7, 28)
 
         self.assertAlmostEqual(4.285, mac_cm2_g*1.0E-3, 2)
 
     def test_copper_m_edges(self):
-        mac1_cm2_g = self.mac.computeMac_cm2_g(130.0, 29)
+        mac1_cm2_g = self.mac.compute_mac_cm2_g(130.0, 29)
 
-        mac2_cm2_g = self.mac.computeMac_cm2_g(115.0, 29)
+        mac2_cm2_g = self.mac.compute_mac_cm2_g(115.0, 29)
 
-        mac3_cm2_g = self.mac.computeMac_cm2_g(50.0, 29)
+        mac3_cm2_g = self.mac.compute_mac_cm2_g(50.0, 29)
 
         # Normal behavior if the M edge is present in the data.
         # For Henke data, the M edge is not present.

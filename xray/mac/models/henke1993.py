@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: module_name
+.. py:currentmodule:: xray.mac.models.henke1993
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Description
+Henke 1993 MAC model.
 """
 
 ###############################################################################
@@ -34,8 +34,8 @@ from scipy.interpolate import interp1d
 # Local modules.
 
 # Project modules.
-from xray.mac.models.MacHenke import MacHenke
-from xray.mac.models.MacHenkeWinxray import MacHenkeWinxray
+from xray.mac.models.henke import MacHenke
+from xray.mac.models.henke_winxray import MacHenkeWinxray
 
 # Globals and constants variables.
 LINEAR = 'linear'
@@ -46,49 +46,41 @@ QUADRATIC = 'quadratic'
 CUBIC = 'cubic'
 
 
-class Interpolation1D(object):
+class Interpolation1D:
     def __init__(self, x, y, kind=LINEAR):
         self._interpolateFunc = interp1d(x, y, kind=kind)
 
-        self._compute = self._computeV07
-
     def __call__(self, x_new):
-        return self._compute(x_new)
-
-    def _computeV07(self, xNew):
-        return self._interpolateFunc(xNew)
-
-    def _computeV06(self, xNew):
-        return self._interpolateFunc(xNew)[0]
+        return self._interpolateFunc(x_new)
 
 
 class MacHenke1993:
     def __init__(self, data_path, model='Henke'):
         if model == 'HenkeWinxray':
-            self.macModel = MacHenkeWinxray(data_path)
+            self.mac_model = MacHenkeWinxray(data_path)
         else:
-            self.macModel = MacHenke(data_path)
+            self.mac_model = MacHenke(data_path)
 
         self.minimumEnergy_eV = 0.0
 
         self.minimumMAC_cm2_g = 0.0
 
-        self.macData = {}
+        self.mac_data = {}
 
-        self._vec_computeMac_cm2_g = numpy.vectorize(self._computeMac_cm2_g)
+        self._vec_computeMac_cm2_g = numpy.vectorize(self._compute_mac_cm2_g)
 
-    def computeMac_cm2_g(self, energyEmitter_eV, atomicNumberAbsorber):
-        if isinstance(energyEmitter_eV, numpy.ndarray):
-            return self._vec_computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
+    def compute_mac_cm2_g(self, energy_emitter_eV, atomic_number_absorber):  # noqa
+        if isinstance(energy_emitter_eV, numpy.ndarray):
+            return self._vec_computeMac_cm2_g(energy_emitter_eV, atomic_number_absorber)
         else:
-            return self._computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
+            return self._compute_mac_cm2_g(energy_emitter_eV, atomic_number_absorber)
 
-    def _computeMac_cm2_g(self, energyEmitter_eV, atomicNumberAbsorber):
-        if not atomicNumberAbsorber in self.macData:
-            energies_eV, macs_cm2_g = self.macModel.readData(atomicNumberAbsorber)
+    def _compute_mac_cm2_g(self, energy_emitter_eV, atomic_number_absorber):  # noqa
+        if atomic_number_absorber not in self.mac_data:
+            energies_eV, macs_cm2_g = self.mac_model.read_data(atomic_number_absorber)  # noqa
 
             if len(energies_eV) > 0:
-                self.macData.setdefault(atomicNumberAbsorber, {})
+                self.mac_data.setdefault(atomic_number_absorber, {})
 
                 self.minimumEnergy_eV = energies_eV[0]
 
@@ -98,48 +90,20 @@ class MacHenke1993:
 
                 self.maximumMAC_cm2_g = macs_cm2_g[-1]
 
-                self.macData[atomicNumberAbsorber] = Interpolation1D(energies_eV, macs_cm2_g)
+                self.mac_data[atomic_number_absorber] = Interpolation1D(energies_eV, macs_cm2_g)
 
             else:
-                logging.error("No mac for %i and %0.1f", atomicNumberAbsorber, energyEmitter_eV)
+                logging.error("No mac for %i and %0.1f", atomic_number_absorber, energy_emitter_eV)
                 return 0.0
 
-        if energyEmitter_eV <= self.minimumEnergy_eV:
+        if energy_emitter_eV <= self.minimumEnergy_eV:
             return self.minimumMAC_cm2_g
 
-        if energyEmitter_eV >= self.maximumEnergy_eV:
+        if energy_emitter_eV >= self.maximumEnergy_eV:
             return self.maximumMAC_cm2_g
 
-        if atomicNumberAbsorber in self.macData:
-            return self.macData[atomicNumberAbsorber](energyEmitter_eV)
+        if atomic_number_absorber in self.mac_data:
+            return self.mac_data[atomic_number_absorber](energy_emitter_eV)
         else:
-            logging.error("No mac for %i and %0.1f", atomicNumberAbsorber, energyEmitter_eV)
+            logging.error("No mac for %i and %0.1f", atomic_number_absorber, energy_emitter_eV)
             return 0.0
-
-
-def run():
-    macHenke1993 = MacHenke1993("MassAbsorptionCoefficient.cfg")
-    xrayKaLines = {'Cr': 5414.0, 'Mn': 5898.0, 'Ni': 7477.0}
-
-    atomicNumberAbsorber = 26
-
-    for element in xrayKaLines:
-        energyEmitter_eV = xrayKaLines[element]
-        mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
-        print("%s: %f" % (element, mac_cm2_g))
-
-
-def run_al():
-    macHenke1993 = MacHenke1993("MassAbsorptionCoefficient.cfg")
-    xrayKaLines = {'Al': 1487.0}
-
-    atomicNumberAbsorber = 13
-
-    for element in xrayKaLines:
-        energyEmitter_eV = xrayKaLines[element]
-        mac_cm2_g = macHenke1993.computeMac_cm2_g(energyEmitter_eV, atomicNumberAbsorber)
-        print("%s: %f" % (element, mac_cm2_g))
-
-
-if __name__ == '__main__':  # pragma: no cover
-    run_al()

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.MacHenkeWinxray
+.. py:currentmodule:: xray.mac.models.henke_winxray
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 MAC Henke model from Winxray program.
@@ -25,7 +25,6 @@ MAC Henke model from Winxray program.
 ###############################################################################
 
 # Standard library modules.
-from configparser import ConfigParser
 import os.path
 import struct
 
@@ -45,12 +44,12 @@ class MacHenkeWinxray(object):
         self.pathnameBinary = os.path.join(data_path, "binary")
         self.pathnameText = os.path.join(data_path, "text")
 
-    def readData(self, atomicNumber):
-        return self.readTextData(atomicNumber)
+    def read_data(self, atomic_number):
+        return self.read_text_data(atomic_number)
 
-    def readTextData(self, atomicNumber):
+    def read_text_data(self, atomic_number):
         element_properties = ElementProperties()
-        symbol = element_properties.symbol(atomicNumber).lower()
+        symbol = element_properties.symbol(atomic_number).lower()
 
         filename = symbol + '.dat'
 
@@ -58,7 +57,7 @@ class MacHenkeWinxray(object):
 
         lines = open(filename, 'r').readlines()
 
-        energies_eV = []
+        energies_eV = []  # noqa
         mac_cm2_g = []
 
         for line in lines:
@@ -70,9 +69,9 @@ class MacHenkeWinxray(object):
 
         return energies_eV, mac_cm2_g
 
-    def readBinaryData(self, atomicNumber):
+    def read_binary_data(self, atomic_number):
         element_properties = ElementProperties()
-        symbol = element_properties.symbol(atomicNumber).lower()
+        symbol = element_properties.symbol(atomic_number).lower()
 
         filename = symbol + '_eV.mhb'
 
@@ -80,24 +79,19 @@ class MacHenkeWinxray(object):
 
         data = open(filename, 'rb').read()
 
-        dummy_start, stop = 0, struct.calcsize('f'*2)
-
-        # energyMinimum, energyMaximum = struct.unpack('f'*2, data[start:stop])
+        stop = struct.calcsize('f'*2)
 
         start, stop = stop, stop + struct.calcsize('if')
 
-        numberPoints = struct.unpack('if', data[start:stop])[0]
+        number_points = struct.unpack('if', data[start:stop])[0]
 
-        energies_eV = [0.0]*numberPoints
-        mac_cm2_g = [0.0]*numberPoints
+        energies_eV = [0.0]*number_points  # noqa
+        mac_cm2_g = [0.0]*number_points
 
-        for index in range(numberPoints):
+        for index in range(number_points):
             start, stop = stop, stop + struct.calcsize('ff')
 
             values = struct.unpack('ff', data[start:stop])
-
-            # energies_eV.append(values[0])
-            # mac_cm2_g.append(values[1])
 
             energies_eV[index] = values[0]
             mac_cm2_g[index] = values[1]

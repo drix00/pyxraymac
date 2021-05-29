@@ -61,3 +61,10 @@ def create_path(root_path, path):
     new_path.mkdir(parents=True, exist_ok=True)
 
     return new_path
+
+
+def create_root_path(root_path):
+    new_path = Path(root_path)
+    new_path.mkdir(parents=True, exist_ok=True)
+
+    return new_path

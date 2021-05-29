@@ -106,7 +106,7 @@ def graphic_henke_heinrich(thesis_image_path):
 
         macsHDTSA.append(mac_cm2_g)
 
-        mac_cm2_g = henke1993.computeMac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
+        mac_cm2_g = henke1993.compute_mac_cm2_g(xrayEnergy_eV, atomic_number_absorber)
 
         macsHenke.append(mac_cm2_g)
 
@@ -195,7 +195,7 @@ def test_mac():
             mac_cm2_g = heinrichDTSA.compute_mac_cm2_g(xrayEnergy_eV, atomic_number)
             macsHDTSA.append(mac_cm2_g)
 
-            mac_cm2_g = henke1993.computeMac_cm2_g(xrayEnergy_eV, atomic_number)
+            mac_cm2_g = henke1993.compute_mac_cm2_g(xrayEnergy_eV, atomic_number)
             macsHenke.append(mac_cm2_g)
 
         pylab.figure()
