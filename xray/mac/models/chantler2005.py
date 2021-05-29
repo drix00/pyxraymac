@@ -47,7 +47,7 @@ ENERGY_UNIT_eV = "eV"
 ENERGY_UNIT_keV = "keV"
 
 
-class Chantler2005():
+class Chantler2005:
     def __init__(self):
         self.minimum_energy_eV = 0.0
         self.minimum_mac_cm2_g = 0.0
@@ -78,10 +78,10 @@ class Chantler2005():
             try:
                 if items[index] != '':
                     if energy_unit == ENERGY_UNIT_keV:
-                        energy_keV = float(items[index])
-                        energy_eV = energy_keV*1.0e3
+                        energy_keV = float(items[index])  # noqa
+                        energy_eV = energy_keV * 1.0e3  # noqa
                     else:
-                        energy_eV = float(items[index])
+                        energy_eV = float(items[index])  # noqa
 
                     mac_cm2_g = float(items[index+1])
 
@@ -96,14 +96,14 @@ class Chantler2005():
             atomic_number += 1
             index += 2
 
-    def compute_mac_cm2_g(self, energy_emitter_eV, atomic_number_absorber):
+    def compute_mac_cm2_g(self, energy_emitter_eV, atomic_number_absorber):  # noqa
         return self._compute_mac_cm2_g(energy_emitter_eV, atomic_number_absorber)
 
-    def _compute_mac_cm2_g(self, energyEmitter_eV, atomic_number_absorber):
+    def _compute_mac_cm2_g(self, energyEmitter_eV, atomic_number_absorber):  # noqa
         if atomic_number_absorber not in self.mac_data:
             self.read_mac_data()
 
-            energies_eV = self.experimental_data[atomic_number_absorber][ENERGIES_eV]
+            energies_eV = self.experimental_data[atomic_number_absorber][ENERGIES_eV]  # noqa
             macs_cm2_g = self.experimental_data[atomic_number_absorber][MAC_cm2_g]
 
             if len(energies_eV) > 0:
@@ -156,13 +156,13 @@ def compare_all_versions():
             filename = filenames[filename_key]
 
             if filename_key == "NISTMonte2":
-                file_path = get_current_module_path(__file__, "../../data/chantler2005/%s" % (filename))
+                file_path = get_current_module_path(__file__, "../../data/chantler2005/%s" % filename)
                 mac.read_mac_data(file_path, ENERGY_UNIT_eV)
             else:
-                file_path = get_current_module_path(__file__, "../../data/chantler2005/%s" % (filename))
+                file_path = get_current_module_path(__file__, "../../data/chantler2005/%s" % filename)
                 mac.read_mac_data(file_path)
 
-            energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]
+            energies_eV = mac.experimental_data[atomic_number][ENERGIES_eV]  # noqa
             mac_cm2_g = mac.experimental_data[atomic_number][MAC_cm2_g]
 
             if filename_key == "Default":
@@ -176,7 +176,7 @@ def compare_all_versions():
         ionization_energies = IonizationEnergies()
 
         for subshell in SUBSHELLS:
-            edge_energy_eV = ionization_energies.ionization_energy_eV(atomic_number, subshell)
+            edge_energy_eV = ionization_energies.ionization_energy_eV(atomic_number, subshell)  # noqa
             if edge_energy_eV > 0.0:
                 plt.axvline(edge_energy_eV, zorder=-10)
     plt.show()
@@ -198,7 +198,7 @@ def create_hdf5_file():
         for atomic_number in sorted(mac.experimental_data.keys()):
             group_name = "{:02d}".format(atomic_number)
             group_atomic_number = group_elements.require_group(group_name)
-            energies_eV = np.array(mac.experimental_data[atomic_number][ENERGIES_eV])
+            energies_eV = np.array(mac.experimental_data[atomic_number][ENERGIES_eV])  # noqa
             macs_cm2_g = np.array(mac.experimental_data[atomic_number][MAC_cm2_g])
 
             group_atomic_number.create_dataset(ENERGIES_eV, data=energies_eV)
