@@ -46,7 +46,7 @@ class TestMacHenkeWinxray(unittest.TestCase):
         unittest.TestCase.setUp(self)
 
         data_path = get_current_module_path(__file__, "../../../data/henke1993/winxray")
-        if not os.path.isdir(data_path):
+        if not os.path.isdir(data_path):  # pragma: no cover
             pytest.skip("Data path file not found: {}".format(data_path))
 
         self.macData = MacHenkeWinxray(data_path)

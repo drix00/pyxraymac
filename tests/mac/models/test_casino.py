@@ -122,10 +122,7 @@ class TestCasino(unittest.TestCase):
         energies_keV = sorted(mac_ref_cm2_g.keys())  # noqa
         for energie_keV in energies_keV:  # noqa
             mac_cm2_g = special_equations(energie_keV, atomic_number)
-            if mac_cm2_g is not None:
-                self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
-            else:
-                self.assertEqual(None, mac_cm2_g, msg=energie_keV)
+            self.assertAlmostEqual(mac_ref_cm2_g[energie_keV], mac_cm2_g, msg=energie_keV)
 
     def test_special_equations(self):
         """
