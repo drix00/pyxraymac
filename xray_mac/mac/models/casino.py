@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.casino
+.. py:currentmodule:: xray_mac.mac.models.casino
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Compute mass absorption coefficient like in CASINO v2.
@@ -34,7 +34,7 @@ import numpy as np
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 # Define used to related element name and atomic number.

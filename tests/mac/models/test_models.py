@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: tests
+.. py:currentmodule:: tests.mac.test_models
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests packages for the project.
+Tests for the :py:mod:`xray_mac.mac.models` package.
 """
 
-###############################################################################
-# Copyright 2024 Hendrix Demers
+
+# Copyright 2025 Hendrix Demers
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,12 +22,10 @@ Tests packages for the project.
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-###############################################################################
 
 # Standard library modules.
 
 # Third party modules.
-import pytest
 
 # Local modules.
 
@@ -36,4 +34,9 @@ import pytest
 # Globals and constants variables.
 
 
-slow_test = pytest.mark.slow
+def test_is_discovered():
+    """
+    Test used to validate the file is included in the tests
+    by the test framework.
+    """
+    assert True

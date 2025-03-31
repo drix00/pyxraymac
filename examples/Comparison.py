@@ -41,9 +41,9 @@ import pyHendrixDemersTools.Files as Files
 import pyHendrixDemersTools.Graphics as Graphics
 
 # Project modules.
-import xray.mac.models.heinrich1987 as MacHeinrich1987
-import xray.mac.models.heinrich_dtsa as MacHeinrichDTSA
-import xray.mac.models.henke1993 as MacHenke1993
+import xray_mac.mac.models.heinrich1987 as MacHeinrich1987
+import xray_mac.mac.models.heinrich_dtsa as MacHeinrichDTSA
+import xray_mac.mac.models.henke1993 as MacHenke1993
 
 # Globals and constants variables.
 # g_output = "Thesis"

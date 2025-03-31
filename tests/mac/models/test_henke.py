@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_henke
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.henke` module.
+Tests for the :py:mod:`xray_mac.mac.models.henke` module.
 """
 
 ###############################################################################
@@ -34,9 +34,9 @@ import pytest
 # Local modules.
 
 # Project modules.
-from xray.mac.models.henke import MacHenke
-from xray.mac.models.henke import wavelength_electron_nm, wavelength_electron_relativistic_nm, wavelength_photon_nm
-from xray.mac import get_current_module_path
+from xray_mac.mac.models.henke import MacHenke
+from xray_mac.mac.models.henke import wavelength_electron_nm, wavelength_electron_relativistic_nm, wavelength_photon_nm
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 

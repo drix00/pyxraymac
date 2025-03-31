@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_henke1993
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.henke1993` module.
+Tests for the :py:mod:`xray_mac.mac.models.henke1993` module.
 """
 
 ###############################################################################
@@ -34,8 +34,8 @@ import pytest
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
-from xray.mac.models.henke1993 import MacHenke1993
+from xray_mac.mac import get_current_module_path
+from xray_mac.mac.models.henke1993 import MacHenke1993
 
 # Globals and constants variables.
 

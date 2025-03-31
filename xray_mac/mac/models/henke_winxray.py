@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.henke_winxray
+.. py:currentmodule:: xray_mac.mac.models.henke_winxray
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 MAC Henke model from Winxray program.
@@ -33,7 +33,7 @@ import struct
 # Local modules.
 
 # Project modules.
-from xray.mac.models.elements import ElementProperties
+from xray_mac.mac.models.elements import ElementProperties
 
 # Globals and constants variables.
 

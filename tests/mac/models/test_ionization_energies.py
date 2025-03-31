@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_ionization_energies
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.ionization_energies` module.
+Tests for the :py:mod:`xray_mac.mac.models.ionization_energies` module.
 """
 
 ###############################################################################
@@ -32,8 +32,8 @@ import unittest
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
-from xray.mac.models.ionization_energies import IonizationEnergies, SUBSHELLS, IonizationEnergiesDtsa
+from xray_mac.mac import get_current_module_path
+from xray_mac.mac.models.ionization_energies import IonizationEnergies, SUBSHELLS, IonizationEnergiesDtsa
 
 # Globals and constants variables.
 

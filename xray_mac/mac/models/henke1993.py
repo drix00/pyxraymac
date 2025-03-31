@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.henke1993
+.. py:currentmodule:: xray_mac.mac.models.henke1993
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Henke 1993 MAC model.
@@ -34,8 +34,8 @@ from scipy.interpolate import interp1d
 # Local modules.
 
 # Project modules.
-from xray.mac.models.henke import MacHenke
-from xray.mac.models.henke_winxray import MacHenkeWinxray
+from xray_mac.mac.models.henke import MacHenke
+from xray_mac.mac.models.henke_winxray import MacHenkeWinxray
 
 # Globals and constants variables.
 LINEAR = 'linear'

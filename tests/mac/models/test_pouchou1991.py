@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_pouchou1991
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.pouchou1991` module.
+Tests for the :py:mod:`xray_mac.mac.models.pouchou1991` module.
 """
 
 ###############################################################################
@@ -32,7 +32,7 @@ import unittest
 # Local modules.
 
 # Project modules.
-from xray.mac.models.pouchou1991 import MacPouchou1991
+from xray_mac.mac.models.pouchou1991 import MacPouchou1991
 
 # Globals and constants variables.
 

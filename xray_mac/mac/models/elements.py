@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.elements
+.. py:currentmodule:: xray_mac.mac.models.elements
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Element properties from file.
@@ -33,7 +33,7 @@ import logging
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 ATOMIC_NUMBER = "atomic number"

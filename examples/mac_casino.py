@@ -34,7 +34,7 @@ import numpy as np
 # Project modules.
 
 # Globals and constants variables.
-from xray.mac.models.casino import efficiency, mac_zaluzec_cm2_g, macs_heinrich, macs_henke_ebisu, macs_total
+from xray_mac.mac.models.casino import efficiency, mac_zaluzec_cm2_g, macs_heinrich, macs_henke_ebisu, macs_total
 
 
 if __name__ == '__main__':  # pragma: no cover

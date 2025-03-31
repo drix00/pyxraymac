@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_element_properties
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.element_properties` module.
+Tests for the :py:mod:`xray_mac.mac.models.element_properties` module.
 """
 
 

@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_heinrich_dtsa
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.heinrich_dtsa` module.
+Tests for the :py:mod:`xray_mac.mac.models.heinrich_dtsa` module.
 """
 
 ###############################################################################
@@ -32,7 +32,7 @@ import unittest
 # Local modules.
 
 # Project modules.
-from xray.mac.models.heinrich_dtsa import MacHeinrichDTSA
+from xray_mac.mac.models.heinrich_dtsa import MacHeinrichDTSA
 
 # Globals and constants variables.
 

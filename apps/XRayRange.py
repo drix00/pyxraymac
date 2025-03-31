@@ -34,8 +34,8 @@ import pySpecimenTools.SampleRegion as SampleRegion
 import pydtsadata.XRayTransitionData as XRayTransitionData
 
 # Project modules.
-import xray.MacHeinrich1987 as MacHeinrich1987
-import xray.mac.models.MassAbsorptionCoefficient as MassAbsorptionCoefficient
+import xray_mac.MacHeinrich1987 as MacHeinrich1987
+import xray_mac.mac.models.MassAbsorptionCoefficient as MassAbsorptionCoefficient
 
 # Globals and constants variables.
 

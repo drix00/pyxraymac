@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.ionization_energy
+.. py:currentmodule:: xray_mac.mac.models.ionization_energy
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Container of ionization energy for each atomic number and subshell.
@@ -32,7 +32,7 @@ import csv
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 SUBSHELLS = ["K",

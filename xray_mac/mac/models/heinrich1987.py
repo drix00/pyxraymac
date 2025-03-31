@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.heinrich1987
+.. py:currentmodule:: xray_mac.mac.models.heinrich1987
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 MAC Heinrich 1987 model.
@@ -35,8 +35,8 @@ import numpy
 # Local modules.
 
 # Project modules.
-from xray.mac.models.element_properties import get_atomic_mass_g_mol
-from xray.mac.models.ionization_energies import IonizationEnergiesDtsa
+from xray_mac.mac.models.element_properties import get_atomic_mass_g_mol
+from xray_mac.mac.models.ionization_energies import IonizationEnergiesDtsa
 
 
 # Globals and constants variables.

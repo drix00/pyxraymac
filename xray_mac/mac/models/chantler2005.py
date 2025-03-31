@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.chantler2005
+.. py:currentmodule:: xray_mac.mac.models.chantler2005
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Chantler 2005 MAC model.
@@ -32,7 +32,7 @@ import logging
 from scipy.interpolate import interp1d
 
 # Local modules.
-from xray.mac import get_current_module_path
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 SECTION_NAME = "Chantler2005"
@@ -143,7 +143,7 @@ class Chantler2005:
 
 def compare_all_versions():
     import matplotlib.pyplot as plt
-    from xray.mac.models.ionization_energies import IonizationEnergies, SUBSHELLS
+    from xray_mac.mac.models.ionization_energies import IonizationEnergies, SUBSHELLS
 
     mac = Chantler2005()
 

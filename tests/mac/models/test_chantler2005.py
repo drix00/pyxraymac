@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_chantler2005
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.chantler2005` module.
+Tests for the :py:mod:`xray_mac.mac.models.chantler2005` module.
 """
 
 ###############################################################################
@@ -32,8 +32,8 @@ import unittest
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
-from xray.mac.models.chantler2005 import Chantler2005, ENERGIES_eV, MAC_cm2_g, ENERGY_UNIT_eV
+from xray_mac.mac import get_current_module_path
+from xray_mac.mac.models.chantler2005 import Chantler2005, ENERGIES_eV, MAC_cm2_g, ENERGY_UNIT_eV
 
 # Globals and constants variables.
 
@@ -48,7 +48,7 @@ class TestChantler2005(unittest.TestCase):
 
     def test_skeleton(self):
         # self.fail("Test if the testcase is working.")
-        self.assert_(True)
+        assert True
 
     def test_read_mac_data(self):
         file_path = get_current_module_path(__file__, "../../../data/chantler2005/FFastMAC.csv")

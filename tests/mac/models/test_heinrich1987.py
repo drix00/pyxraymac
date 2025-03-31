@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_heinrich1987
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.heinrich1987` module.
+Tests for the :py:mod:`xray_mac.mac.models.heinrich1987` module.
 """
 
 ###############################################################################
@@ -34,8 +34,8 @@ import unittest
 # Project modules.
 import numpy as np
 
-from xray.mac.models.heinrich1987 import MacHeinrich1987
-from xray.mac.models.ionization_energies import IonizationEnergiesDtsa
+from xray_mac.mac.models.heinrich1987 import MacHeinrich1987
+from xray_mac.mac.models.ionization_energies import IonizationEnergiesDtsa
 
 
 # Globals and constants variables.

@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray
+.. py:currentmodule:: xray_mac.mac.models
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Meta package for all python x-ray related libraries for project OpenMicroanalysis.
+Package for the MAC models.
 """
 
 ###############################################################################

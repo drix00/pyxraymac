@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.heinrich_dtsa
+.. py:currentmodule:: xray_mac.mac.models.heinrich_dtsa
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 MAC Heinrich model from DTSA program.
@@ -32,8 +32,8 @@ import math
 # Local modules.
 
 # Project modules.
-from xray.mac.models.ionization_energies import IonizationEnergies
-from xray.mac.models.element_properties import get_atomic_mass_g_mol
+from xray_mac.mac.models.ionization_energies import IonizationEnergies
+from xray_mac.mac.models.element_properties import get_atomic_mass_g_mol
 
 # Globals and constants variables.
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.henke
+.. py:currentmodule:: xray_mac.mac.models.henke
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 MAC Henke model.
@@ -34,8 +34,8 @@ import math
 # Local modules.
 
 # Project modules.
-from xray.mac.models.elements import ElementProperties
-from xray.mac import create_root_path
+from xray_mac.mac.models.elements import ElementProperties
+from xray_mac.mac import create_root_path
 
 # Globals and constants variables.
 g_coefficient = [41746.75,

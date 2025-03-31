@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.penelope
+.. py:currentmodule:: xray_mac.mac.models.penelope
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 PENELOPE MAC model.
@@ -47,7 +47,7 @@ import zipfile
 # Local modules.
 
 # Project modules.
-from xray.mac.models.elements import ElementProperties
+from xray_mac.mac.models.elements import ElementProperties
 
 # Globals and constants variables.
 import numpy as np

@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.penelope
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.penelope` module.
+Tests for the :py:mod:`xray_mac.mac.models.penelope` module.
 """
 
 
@@ -33,8 +33,8 @@ import os.path
 # Local modules.
 
 # Project modules.
-from xray.mac import get_current_module_path
-from xray.mac.models.penelope import list_files, PhotoElectric
+from xray_mac.mac import get_current_module_path
+from xray_mac.mac.models.penelope import list_files, PhotoElectric
 
 # Globals and constants variables.
 

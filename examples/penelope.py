@@ -32,8 +32,8 @@ import matplotlib.pyplot as plt
 # Local modules.
 
 # Project modules.
-from xray.mac.models.penelope import PhotoElectric, SHELL_NAMES
-from xray.mac import get_current_module_path
+from xray_mac.mac.models.penelope import PhotoElectric, SHELL_NAMES
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 

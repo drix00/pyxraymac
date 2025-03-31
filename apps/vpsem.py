@@ -32,7 +32,7 @@ import numpy as np
 # Local modules.
 
 # Project modules.
-from xray.mac.models.chantler2005 import Chantler2005
+from xray_mac.mac.models.chantler2005 import Chantler2005
 
 # Globals and constants variables.
 

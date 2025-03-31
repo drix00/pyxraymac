@@ -36,7 +36,7 @@ import pytest
 
 # Project modules.
 import AbsorptionJumpRatio as AbsorptionJumpRatio
-from xray.mac import get_current_module_path
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 

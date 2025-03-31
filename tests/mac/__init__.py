@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac` package.
+Tests for the :py:mod:`xray_mac.mac` package.
 """
 
 ###############################################################################

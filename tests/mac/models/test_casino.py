@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_casino
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.casino` module.
+Tests for the :py:mod:`xray_mac.mac.models.casino` module.
 """
 
 ###############################################################################
@@ -32,7 +32,7 @@ import unittest
 # Local modules.
 
 # Project modules.
-from xray.mac.models.casino import mac_zaluzec_cm2_g, macs_total, macs_henke_ebisu, efficiency, macs_heinrich, \
+from xray_mac.mac.models.casino import mac_zaluzec_cm2_g, macs_total, macs_henke_ebisu, efficiency, macs_heinrich, \
     special_equations
 
 # Globals and constants variables.
@@ -61,9 +61,7 @@ class TestCasino(unittest.TestCase):
         """
         First test to check if the testcase is working with the testing framework.
         """
-
-        # self.fail("Test if the testcase is working.")
-        self.assert_(True)
+        assert True
 
     def test_mac_zaluzec_cm2_g(self):
         """

@@ -5,7 +5,7 @@
 .. py:currentmodule:: tests.mac.models.test_elements
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the :py:mod:`xray.mac.models.elements` module.
+Tests for the :py:mod:`xray_mac.mac.models.elements` module.
 """
 
 ###############################################################################
@@ -32,8 +32,8 @@ import unittest
 # Local modules.
 
 # Project modules.
-from xray.mac.models.elements import ElementProperties, ATOMIC_NUMBER, AtomicNumberError
-from xray.mac import get_current_module_path
+from xray_mac.mac.models.elements import ElementProperties, ATOMIC_NUMBER, AtomicNumberError
+from xray_mac.mac import get_current_module_path
 
 # Globals and constants variables.
 

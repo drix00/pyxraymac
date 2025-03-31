@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: xray.mac.models.pouchou1991
+.. py:currentmodule:: xray_mac.mac.models.pouchou1991
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Mass absorption coefficients tables from Pouchou and Pichoir (1991).
